@@ -630,7 +630,7 @@
                 window.globalUsersDB = (await fetchDataJson(`${FIREBASE_BASE}/global_users.json`)) || {};
             } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
-            await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
+            await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 8000))]);
 
             try {
                 const [data, commData] = await Promise.all([

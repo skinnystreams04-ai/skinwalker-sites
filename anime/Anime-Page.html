@@ -970,7 +970,7 @@
                 } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
                 loadingScreen.innerText = "Авторизация Twitch...";
-                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
+                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 8000))]);
 
                 loadingScreen.innerText = "Инициализация графиков...";
                 initCharts();

@@ -454,7 +454,7 @@
             try {
                 const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`);
                 if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
-                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
+                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 8000))]);
 
                 const [animeRes, commRes] = await Promise.all([
                     fetch(`${FIREBASE_BASE}/anime_db.json`),

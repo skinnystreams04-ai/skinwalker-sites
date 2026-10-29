@@ -1056,7 +1056,7 @@
             try {
                 const loadingScreen = document.getElementById('loading-screen');
                 try { const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' }); if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; } } catch(e) {}
-                loadingScreen.innerText = "Авторизация Twitch..."; await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
+                loadingScreen.innerText = "Авторизация Twitch..."; await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 8000))]);
                 loadingScreen.innerText = "Инициализация графиков..."; initCharts();
                 const urlParams = new URLSearchParams(window.location.search); currentFranchiseId = urlParams.get('id');
                 if(!currentFranchiseId) throw new Error("Игра не выбрана в ссылке!");

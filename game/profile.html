@@ -452,7 +452,7 @@
                 window.animeCommData = commDb;
                 window.gamesCommData = gamesCommDb;
 
-                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
+                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 8000))]);
                 processData(targetUserId, globalUsers, animeDb, commDb, gamesDb, gamesCommDb);
                 
                 document.getElementById('loading-screen').style.display = 'none';

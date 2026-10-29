@@ -724,7 +724,7 @@
 
             if (token) {
                 try {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Authorization': 'Bearer ' + token } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Authorization': 'Bearer ' + token, 'Client-ID': TWITCH_CLIENT_ID } });
                     if (res.ok) {
                         const json = await res.json();
                         window.currentUserLogin = json.data[0].login;
@@ -733,7 +733,7 @@
                         document.getElementById('tw-avatar').src = json.data[0].profile_image_url || 'https://static-cdn.jtvnw.net/user-default-pictures-uv/aecdef652747d66f-profile_image-300x300.png';
                         
                         try {
-                            const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${window.currentUserId}`, { headers: { 'Authorization': 'Bearer ' + token } });
+                            const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${window.currentUserId}`, { headers: { 'Authorization': 'Bearer ' + token, 'Client-ID': TWITCH_CLIENT_ID } });
                             const colorJson = await colorRes.json();
                             if (colorJson.data && colorJson.data.length > 0 && colorJson.data[0].color) {
                                 document.getElementById('tw-username').style.color = colorJson.data[0].color;
@@ -741,11 +741,11 @@
                         } catch(e) { document.getElementById('tw-username').style.color = '#cba6f7'; }
 
                         try {
-                            const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${STREAMER_LOGIN}`, { headers: { 'Authorization': 'Bearer ' + token } });
+                            const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${STREAMER_LOGIN}`, { headers: { 'Authorization': 'Bearer ' + token, 'Client-ID': TWITCH_CLIENT_ID } });
                             const bJson = await bRes.json();
                             window.broadcasterId = bJson.data[0].id;
 
-                            const subRes = await fetch(`https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=${window.broadcasterId}&user_id=${window.currentUserId}`, { headers: { 'Authorization': 'Bearer ' + token } });
+                            const subRes = await fetch(`https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=${window.broadcasterId}&user_id=${window.currentUserId}`, { headers: { 'Authorization': 'Bearer ' + token, 'Client-ID': TWITCH_CLIENT_ID } });
                             if (subRes.status === 200) { detectedRole = "SUB"; } else { detectedRole = "F"; }
                         } catch(e) { detectedRole = "F"; }
 
