@@ -680,7 +680,7 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function loginTwitch() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=user:read:follows`; }
+        function loginTwitch() { window.SkinwalkerTwitch.login(); }
         function logoutTwitch() { try { localStorage.removeItem('twitch_token'); } catch(e){} location.reload(); }
 
         function getUserInfo(username, fallbackTwitchColor) {
