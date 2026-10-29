@@ -338,12 +338,12 @@
                 }
 
                 if (token) {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                     if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
                     currentUser = (await res.json()).data[0];
 
                     try {
-                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const colorData = await colorRes.json();
                         currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
                     } catch(e) {}
@@ -454,7 +454,7 @@
             try {
                 const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`);
                 if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
-                await checkTwitchAuth();
+                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
 
                 const [animeRes, commRes] = await Promise.all([
                     fetch(`${FIREBASE_BASE}/anime_db.json`),

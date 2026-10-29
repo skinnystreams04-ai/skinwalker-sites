@@ -718,12 +718,12 @@
                 }
 
                 if (token) {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                     if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
                     currentUser = (await res.json()).data[0];
 
                     try {
-                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const colorData = await colorRes.json();
                         currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
                     } catch(e) {}
@@ -733,13 +733,13 @@
                     // --- ПРОВЕРКА НА ФОЛЛОУ ---
                     let isFollower = false;
                     try {
-                        const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const broadcasterId = (await bRes.json()).data[0].id;
 
                         if (currentUser.id === broadcasterId) {
                             isFollower = true; // Стримеру можно всё
                         } else {
-                            const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                            const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                             
                             // Если у юзера старый токен без новых прав - принудительно разлогиниваем его
                             if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; }
@@ -970,7 +970,7 @@
                 } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
                 loadingScreen.innerText = "Авторизация Twitch...";
-                await checkTwitchAuth();
+                await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
 
                 loadingScreen.innerText = "Инициализация графиков...";
                 initCharts();

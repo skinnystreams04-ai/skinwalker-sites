@@ -564,12 +564,12 @@
                 }
 
                 if (token) {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                     if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
                     currentUser = (await res.json()).data[0];
 
                     try {
-                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const colorData = await colorRes.json();
                         currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
                     } catch(e) {}
@@ -694,18 +694,18 @@
                 if (hash && hash.includes('access_token')) { token = new URLSearchParams(hash.substring(1)).get('access_token'); try { localStorage.setItem('twitch_token', token); } catch(e){} window.history.replaceState(null, null, window.location.pathname + window.location.search); }
 
                 if (token) {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                     if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
                     currentUser = (await res.json()).data[0];
-                    try { const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } }); const colorData = await colorRes.json(); currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null; } catch(e) {}
+                    try { const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } }); const colorData = await colorRes.json(); currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null; } catch(e) {}
                     
                     const uInfo = getUserInfo(currentUser.login, currentUser.color);
                     let isFollower = false;
                     try {
-                        const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const broadcasterId = (await bRes.json()).data[0].id;
                         if (currentUser.id === broadcasterId) isFollower = true; 
-                        else { const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } }); if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; } const fData = await fRes.json(); if (fData.data && fData.data.length > 0) isFollower = true; }
+                        else { const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } }); if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; } const fData = await fRes.json(); if (fData.data && fData.data.length > 0) isFollower = true; }
                     } catch(e) {}
                     window.isUserFollower = isFollower;
 
@@ -1056,7 +1056,7 @@
             try {
                 const loadingScreen = document.getElementById('loading-screen');
                 try { const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' }); if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; } } catch(e) {}
-                loadingScreen.innerText = "Авторизация Twitch..."; await checkTwitchAuth();
+                loadingScreen.innerText = "Авторизация Twitch..."; await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
                 loadingScreen.innerText = "Инициализация графиков..."; initCharts();
                 const urlParams = new URLSearchParams(window.location.search); currentFranchiseId = urlParams.get('id');
                 if(!currentFranchiseId) throw new Error("Игра не выбрана в ссылке!");

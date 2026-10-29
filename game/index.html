@@ -396,12 +396,12 @@
                 token = window.SkinwalkerTwitch.consumeRedirectToken();
 
                 if (token) {
-                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                     if (res.status === 401) { window.SkinwalkerTwitch.clearToken(); return; }
                     currentUser = (await res.json()).data[0];
 
                     try {
-                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const colorData = await colorRes.json();
                         currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
                     } catch(e) {}
@@ -457,7 +457,7 @@
                 if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
             } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
-            await checkTwitchAuth();
+            await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
 
             try {
                 const [gamesRes, commRes] = await Promise.all([
