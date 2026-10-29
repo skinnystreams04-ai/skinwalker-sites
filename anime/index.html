@@ -617,15 +617,20 @@
 
         const DATA_REQUEST_TIMEOUT = 8000;
         async function fetchDataJson(url) {
-            const response = await Promise.race([
-                fetch(url, { cache: 'no-store' }),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Data request timed out')), DATA_REQUEST_TIMEOUT))
-            ]);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), DATA_REQUEST_TIMEOUT);
+            let response;
+            try {
+                response = await fetch(url, { cache: 'no-store', signal: controller.signal });
+            } finally {
+                clearTimeout(timeoutId);
+            }
             if (!response.ok) throw new Error(`Data request failed: ${response.status}`);
             return response.json();
         }
 
-        async function initApp() {
+        let initPromise = null;
+        async function loadAppData() {
             try {
                 window.globalUsersDB = (await fetchDataJson(`${FIREBASE_BASE}/global_users.json`)) || {};
             } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
@@ -669,6 +674,8 @@
                                 streamer.atm += safeNum(s.scores.theory.atmosphere); streamer.countTh++;
                             }
                         }
+
+
 
                         const sComm = (commData || {})[franchiseId] && (commData || {})[franchiseId][s.seasonId] ? (commData || {})[franchiseId][s.seasonId].ratings : null;
                         if (sComm) {
@@ -755,6 +762,12 @@
                     loading.style.display = 'flex';
                 }
             }
+        }
+
+        function initApp() {
+            if (initPromise) return initPromise;
+            initPromise = loadAppData().finally(() => { initPromise = null; });
+            return initPromise;
         }
 
         function applyFiltersAndSort() {
