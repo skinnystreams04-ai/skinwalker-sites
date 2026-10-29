@@ -615,22 +615,29 @@
             setInterval(updateOnline, 60000); 
         }
 
+        const DATA_REQUEST_TIMEOUT = 8000;
+        async function fetchDataJson(url) {
+            const response = await Promise.race([
+                fetch(url, { cache: 'no-store' }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Data request timed out')), DATA_REQUEST_TIMEOUT))
+            ]);
+            if (!response.ok) throw new Error(`Data request failed: ${response.status}`);
+            return response.json();
+        }
+
         async function initApp() {
             try {
-                const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
-                if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
+                window.globalUsersDB = (await fetchDataJson(`${FIREBASE_BASE}/global_users.json`)) || {};
             } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
             await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
 
             try {
-                const [animeRes, commRes] = await Promise.all([
-                    fetch(`${FIREBASE_BASE}/anime_db.json`, { cache: 'no-store' }),
-                    fetch(`${FIREBASE_BASE}/community_db.json`, { cache: 'no-store' })
+                const [data, commData] = await Promise.all([
+                    fetchDataJson(`${FIREBASE_BASE}/anime_db.json`),
+                    fetchDataJson(`${FIREBASE_BASE}/community_db.json`).catch(() => ({}))
                 ]);
-                const data = await animeRes.json();
-                const commData = (await commRes.json()) || {};
-                window.globalCommData = commData;
+                window.globalCommData = commData || {};
 
                 const room = document.getElementById('trophy-room');
                 if (!data) { room.innerHTML = "<div class='loading'>Коллекция пуста.</div>"; return; }
@@ -658,7 +665,7 @@
                             }
                         }
 
-                        const sComm = commData[franchiseId] && commData[franchiseId][s.seasonId] ? commData[franchiseId][s.seasonId].ratings : null;
+                        const sComm = (commData || {})[franchiseId] && (commData || {})[franchiseId][s.seasonId] ? (commData || {})[franchiseId][s.seasonId].ratings : null;
                         if (sComm) {
                             for (const [uid, r] of Object.entries(sComm)) {
                                 const isMe = currentUser && uid === currentUser.id;
@@ -734,7 +741,14 @@
                 document.getElementById('display-mode-switch').checked = (currentDisplayMode === 'tier'); 
                 toggleDisplayMode();
 
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error('Не удалось загрузить каталог аниме:', e);
+                const loading = document.getElementById('loading-screen');
+                if (loading) {
+                    loading.innerText = 'Не удалось загрузить данные. Повторите попытку.';
+                    loading.style.display = 'flex';
+                }
+            }
         }
 
         function applyFiltersAndSort() {

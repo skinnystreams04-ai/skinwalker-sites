@@ -451,24 +451,31 @@
             setInterval(updateOnline, 60000); 
         }
 
+        const DATA_REQUEST_TIMEOUT = 8000;
+        async function fetchDataJson(url) {
+            const response = await Promise.race([
+                fetch(url, { cache: 'no-store' }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Data request timed out')), DATA_REQUEST_TIMEOUT))
+            ]);
+            if (!response.ok) throw new Error(`Data request failed: ${response.status}`);
+            return response.json();
+        }
+
         async function initApp() {
             try {
-                const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
-                if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
+                window.globalUsersDB = (await fetchDataJson(`${FIREBASE_BASE}/global_users.json`)) || {};
             } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
             await Promise.race([checkTwitchAuth(), new Promise(resolve => setTimeout(resolve, 2500))]);
 
             try {
-                const [gamesRes, commRes] = await Promise.all([
-                    fetch(`${FIREBASE_BASE}/games_db.json`, { cache: 'no-store' }),
-                    fetch(`${FIREBASE_BASE}/games_community_db.json`, { cache: 'no-store' })
+                const [data, commData] = await Promise.all([
+                    fetchDataJson(`${FIREBASE_BASE}/games_db.json`),
+                    fetchDataJson(`${FIREBASE_BASE}/games_community_db.json`).catch(() => ({}))
                 ]);
+                const safeCommData = commData || {};
                 
-                const data = await gamesRes.json();
-                const commData = (await commRes.json()) || {};
-                
-                window.globalCommData = commData; 
+                window.globalCommData = safeCommData; 
                 
                 const room = document.getElementById('trophy-room');
                 if (!data) { room.innerHTML = "<div class='loading'>База пуста.</div>"; return; }
@@ -494,7 +501,7 @@
                     let chat = { overall:0, visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0, countOv:0, countTh:0 };
                     let me = { overall:0, visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0, countOv:0, countTh:0 };
 
-                    const gComm = commData[gameId] ? commData[gameId].ratings : null;
+                    const gComm = safeCommData[gameId] ? safeCommData[gameId].ratings : null;
                     if (gComm) {
                         for (const [uid, r] of Object.entries(gComm)) {
                             const isMe = currentUser && uid === currentUser.id;
@@ -574,7 +581,14 @@
                 toggleRoleSelect();
                 applyFiltersAndSort(); 
 
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error('Не удалось загрузить каталог игр:', e);
+                const loading = document.getElementById('loading-screen');
+                if (loading) {
+                    loading.innerText = 'Не удалось загрузить данные. Повторите попытку.';
+                    loading.style.display = 'flex';
+                }
+            }
         }
 
         function applyFiltersAndSort() {
