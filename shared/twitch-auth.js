@@ -2,7 +2,8 @@
     'use strict';
 
     const clientId = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
-    const tokenKeys = ['twitch_token', 'tw_token'];
+    const tokenKey = 'twitch_token';
+    const legacyTokenKey = 'tw_token';
     const scopes = {
         auction: 'user:read:subscriptions user:write:chat',
         default: ''
@@ -23,24 +24,29 @@
     }
 
     function getToken() {
-        for (const key of tokenKeys) {
-            const token = localStorage.getItem(key);
-            if (token) return token;
+        let token = localStorage.getItem(tokenKey);
+        if (!token) {
+            token = localStorage.getItem(legacyTokenKey);
+            if (token) {
+                localStorage.setItem(tokenKey, token);
+                localStorage.removeItem(legacyTokenKey);
+            }
+        }
+        if (token) {
+            return token;
         }
         return null;
     }
 
     function saveToken(token) {
         if (!token) return;
-        tokenKeys.forEach(function (key) {
-            localStorage.setItem(key, token);
-        });
+        localStorage.setItem(tokenKey, token);
+        localStorage.removeItem(legacyTokenKey);
     }
 
     function clearToken() {
-        tokenKeys.forEach(function (key) {
-            localStorage.removeItem(key);
-        });
+        localStorage.removeItem(tokenKey);
+        localStorage.removeItem(legacyTokenKey);
     }
 
     function consumeRedirectToken() {

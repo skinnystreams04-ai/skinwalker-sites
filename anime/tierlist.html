@@ -307,7 +307,7 @@
 
         // --- АВТОРИЗАЦИЯ И ШАПКА ---
         function loginTwitch() { window.SkinwalkerTwitch.login(); }
-        function logoutTwitch() { try { localStorage.removeItem('twitch_token'); } catch(e){} location.reload(); }
+        function logoutTwitch() { window.SkinwalkerTwitch.clearToken(); location.reload(); }
 
         function getUserInfo(username, fallbackTwitchColor) {
             const lowerName = username.toLowerCase();
@@ -329,17 +329,17 @@
             try {
                 const hash = window.location.hash;
                 let token = null;
-                try { token = localStorage.getItem('twitch_token'); } catch(e){}
+                try { token = window.SkinwalkerTwitch.getToken(); } catch(e){}
 
                 if (hash && hash.includes('access_token')) {
                     token = new URLSearchParams(hash.substring(1)).get('access_token');
-                    try { localStorage.setItem('twitch_token', token); } catch(e){}
+                    try { window.SkinwalkerTwitch.saveToken(token); } catch(e){}
                     window.history.replaceState(null, null, window.location.pathname + window.location.search); 
                 }
 
                 if (token) {
                     const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
-                    if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
+                    if (res.status === 401) { window.SkinwalkerTwitch.clearToken(); return; }
                     currentUser = (await res.json()).data[0];
 
                     try {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Аукцион - Оверлей V48.0 (Labels Fixed)</title>
+    <script src="../shared/twitch-auth.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
 
@@ -603,19 +604,18 @@
         let detectedRole = "F"; 
 
         function loginTwitch() {
-            const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=user:read:subscriptions+user:write:chat&force_verify=true`;
-            window.location.href = authUrl;
+            window.SkinwalkerTwitch.login();
         }
 
         function logoutTwitch() {
-            localStorage.removeItem('tw_token');
+            window.SkinwalkerTwitch.clearToken();
             window.currentUserLogin = null; window.currentUserId = null; window.broadcasterId = null;
             document.getElementById('profile-auth').style.display = 'none';
             document.getElementById('profile-unauth').style.display = 'flex';
         }
 
         async function sendTwitchCommand(cmd) {
-            let token = localStorage.getItem('tw_token');
+            let token = window.SkinwalkerTwitch.getToken();
             if(!token || !window.currentUserId || !window.broadcasterId) { 
                 showToast('Сначала войди через Twitch!', true); return; 
             }
@@ -713,7 +713,7 @@
         }
 
         async function checkTwitchAuth() {
-            let token = localStorage.getItem('tw_token');
+            let token = window.SkinwalkerTwitch.getToken();
             const hash = window.location.hash;
             if (hash && hash.includes('access_token=')) {
                 const params = new URLSearchParams(hash.substring(1));
