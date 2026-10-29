@@ -1,0 +1,628 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РђРЅРёРјРµ РўРёСЂ-Р»РёСЃС‚</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/site-header.css">
+    <script src="../shared/site-header.js" defer></script>
+    <script src="../shared/twitch-auth.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <style>
+
+        /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+        .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
+        .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
+        .nav-logo-wrap:hover { filter: brightness(1.2); }
+        .logo-arrow { font-size: 14px; opacity: 0.7; transition: transform 0.3s; }
+        .logo-dropdown:hover .logo-arrow { transform: rotate(180deg); }
+        .logo-dropdown-content { display: none; position: absolute; left: 0; top: 100%; margin-top: -5px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border, #283325); border-radius: 12px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 200px; backdrop-filter: blur(10px); flex-direction: column; gap: 5px; }
+        .logo-dropdown:hover .logo-dropdown-content { display: flex; }
+        .logo-link { color: #a4b09c; text-decoration: none; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; text-transform: uppercase; padding: 10px 15px; border-radius: 8px; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; }
+        .logo-link:hover { background: rgba(0,0,0,0.4); color: var(--site-color); text-shadow: 0 0 10px var(--site-color); border-color: var(--site-color); }
+        .logo-link.active { color: var(--site-color); background: rgba(0,0,0,0.3); border-left: 3px solid var(--site-color); border-radius: 4px 8px 8px 4px; }
+
+        /* Р“Р›РћР‘РђР›Р¬РќР«Р• Р¦Р’Р•РўРђ Р РҐРђРњР•Р›Р•РћРќ */
+        :root {
+            --theme-primary: #a6e3a1;
+            --theme-glow: rgba(166, 227, 161, 0.5);
+            --theme-panel-border: #283325;
+            --btn-color: #a6e3a1;
+        }
+
+        body { margin: 0; padding: 0 0 40px 0; font-family: 'Neucha', cursive; background: #0b0d0a; color: #a4b09c; min-height: 100vh; overflow-x: hidden; }
+
+        /* РџР›РђР’РќР«Р• РџР•Р Р•РҐРћР”Р« Р”Р›РЇ РҐРђРњР•Р›Р•РћРќРђ */
+        .top-nav, .nav-logo, .board-title, .tier-board, .board-header, .visual-dropdown-content {
+            transition: color 0.5s ease, text-shadow 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
+        }
+
+        /* РЈРќРР’Р•Р РЎРђР›Р¬РќРђРЇ РЁРђРџРљРђ */
+        .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; z-index: 1000; }
+        .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; text-shadow: 0 0 10px var(--theme-glow); cursor: pointer; }
+        .nav-logo:hover { filter: brightness(1.2); }
+
+        .nav-btn { background: transparent; border: none; color: #a4b09c; padding: 5px 0; font-family: inherit; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; position: relative; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; outline: none; }
+        .nav-btn::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -6px; left: 50%; background-color: var(--btn-color, #a6e3a1); transition: 0.3s; transform: translateX(-50%); box-shadow: 0 0 8px var(--btn-color, #a6e3a1); }
+        .nav-btn:hover { color: var(--btn-color, #a6e3a1); text-shadow: 0 0 10px var(--btn-color, #a6e3a1); }
+        .nav-btn:hover::after, .nav-btn.active::after { width: 100%; }
+
+        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ (РљРђРљ Р’ РҐРђР‘Р•) */
+        .visual-dropdown { position: relative; display: inline-block; }
+        .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border, #283325); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
+        .visual-dropdown.show .visual-dropdown-content { display: flex; }
+        .mode-toggle { display: flex; align-items: center; gap: 10px; font-size: 18px; justify-content: center; margin: 0; font-family: 'Neucha', cursive; }
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(14, 17, 13, 0.6); border: 1px solid var(--theme-panel-border, #283325); transition: .4s; border-radius: 34px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #a4b09c; transition: .4s; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        input:checked + .slider { background-color: rgba(255, 215, 0, 0.15); border-color: #ffd700; }
+        input:checked + .slider:before { transform: translateX(22px); background-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
+        .mode-label { font-weight: bold; text-shadow: 1px 1px 2px #000; transition: 0.3s; cursor: pointer; font-family: 'Neucha', cursive; }
+        .mode-label.active { color: #fff; text-shadow: 0 0 8px currentColor; }
+        .mode-label.inactive { color: #6b7a62; }
+        .role-toggles { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 0; }
+        .role-toggle-btn { background: transparent; border: none; border-bottom: 2px solid rgba(107, 122, 98, 0.3); color: #6b7a62; padding: 4px 2px; font-family: 'Neucha', cursive, sans-serif; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; outline: none; }
+        .role-toggle-btn:hover { color: #c4d1b8; border-bottom-color: rgba(196, 209, 184, 0.5); }
+        .role-toggle-btn.active.streamer { color: #cba6f7; border-bottom-color: #cba6f7; text-shadow: 0 0 8px rgba(203, 166, 247, 0.6); }
+        .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
+        .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
+
+        /* РњРРќРРњРђР›РРЎРўРР§РќР«Р• РљРќРћРџРљР РљРђРџРЎРЈР›Р« (Р”Р›РЇ Р”РћРЎРљР РўРР -Р›РРЎРўРђ) */
+        .tier-role-filters { display: flex; gap: 5px; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+        .tier-role-btn { background: transparent; border: none; color: #6b7a62; font-family: 'Neucha', cursive; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; padding: 6px 16px; border-radius: 8px; outline: none; }
+        .tier-role-btn:hover { color: #c4d1b8; }
+        .tier-role-btn.active.streamer { color: #cba6f7; background: rgba(203, 166, 247, 0.15); text-shadow: 0 0 8px rgba(203, 166, 247, 0.6); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .tier-role-btn.active.user { color: #a6e3a1; background: rgba(166, 227, 161, 0.15); text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .tier-role-btn.active.chat { color: #b8a87b; background: rgba(184, 168, 123, 0.15); text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+
+        /* РџР РћР¤РР›Р¬ TWITCH Р’ РЁРђРџРљР• */
+        .nav-auth .twitch-btn { background: #6441a5; color: white; padding: 8px 16px; border-radius: 8px; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; cursor: pointer; border: 1px solid #4a307a; transition: 0.2s; letter-spacing: 1px;}
+        .nav-auth .twitch-btn:hover { background: #7d5bbe; box-shadow: 0 0 15px rgba(100, 65, 165, 0.8); }
+        .user-profile-neon { display: flex; align-items: center; gap: 18px; background: rgba(15, 20, 15, 0.2); backdrop-filter: blur(16px); padding: 10px 25px 10px 10px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: 0.3s ease; }
+        .user-profile-neon:hover { background: rgba(15, 20, 15, 0.3); border-color: rgba(166, 227, 161, 0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 15px rgba(166, 227, 161, 0.1); }
+        .avatar-glow-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
+        .avatar-glow-wrap::before { content: ''; position: absolute; width: 120%; height: 120%; border-radius: 50%; background: var(--user-color, #a6e3a1); filter: blur(10px); opacity: 0.3; transition: 0.3s; }
+        .user-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--user-color, #a6e3a1); position: relative; z-index: 2; object-fit: cover; }
+        .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+        .profile-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .profile-name-top { font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; letter-spacing: 1px; }
+        .profile-bottom { display: flex; align-items: center; gap: 15px; }
+        .role-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 10px; border-radius: 6px; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .role-sub { background: #6441a5; color: #fff; border: 1px solid #4a307a; } 
+        .role-vip { background: #e05e85; color: #fff; border: 1px solid #b83d63; }
+        .role-f { background: #333333; color: #a4b09c; border: 1px solid #222; }
+        .wallet-item { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+        .wallet-item img { width: 18px; height: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+        .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px; font-family: 'Neucha', cursive;}
+        .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
+
+        /* Р”РРќРђРњРР§Р•РЎРљРР™ Р¤РћРќ (РћРіСЂР°РЅРёС‡РµРЅ РѕРєРЅРѕРј) */
+        #dynamic-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background-size: cover; background-position: center; 
+            filter: blur(40px) brightness(0.3); opacity: 0; 
+            z-index: -1; pointer-events: none; 
+            transition: opacity 0.5s ease, background-image 0.5s ease; 
+        }
+        #dynamic-bg.active { opacity: 1; }
+
+        /* РћРЎРќРћР’Рђ РўРР -Р›РРЎРўРђ */
+        .tier-board { 
+            position: relative; z-index: 1; 
+            margin: 20px 40px; display: flex; flex-direction: column; 
+            background: rgba(11, 13, 10, 0.6); backdrop-filter: blur(10px); 
+            border: 1px solid var(--theme-panel-border); border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; 
+        }
+        
+        .board-header { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: rgba(14, 17, 13, 0.8); border-bottom: 1px solid var(--theme-panel-border); }
+        .board-title { font-family: 'Neucha', cursive; color: var(--theme-primary); font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow); }
+        
+        #tier-content-area { position: relative; z-index: 2; }
+        .tier-row { display: flex; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); min-height: 140px; transition: background 0.3s; }
+        .tier-row:last-child { border-bottom: none; }
+        
+        .tier-label { width: 100px; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; flex-shrink: 0; box-shadow: 5px 0 15px rgba(0,0,0,0.5); z-index: 2; }
+        .tier-content { display: flex; flex-wrap: wrap; gap: 12px; padding: 15px; flex: 1; align-content: flex-start; min-height: 120px; }
+
+        /* РљРђР РўРћР§РљРђ РђРќРРњР• */
+        .tier-item { width: 100px; height: 150px; border-radius: 6px; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); background-size: cover; background-position: center; transition: all 0.2s ease-out; border: 2px solid transparent; text-decoration: none; display: block; }
+        .tier-item:hover { transform: scale(1.1) translateY(-5px); z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 15px var(--theme-light, rgba(255,255,255,0.1)); border-color: var(--theme-light, rgba(255,255,255,0.3)); }
+        
+        .front-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px 6px 6px 6px; box-sizing: border-box; background: linear-gradient(0deg, rgba(11,13,10,1) 0%, rgba(11,13,10,0.8) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
+        .anime-title { color: var(--theme-light, #e4e4e4); font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 2px 2px 4px #000, 0 0 10px rgba(0,0,0,0.8); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.1; transition: color 0.3s; }
+        .item-score { text-align: center; font-size: 18px; font-weight: bold; padding-bottom: 2px; text-shadow: 1px 1px 2px #000; font-family: 'Neucha', cursive; }
+
+        /* Р—РђР› РЎР›РђР’Р« (Р›РР”Р•Р Р‘РћР Р”) */
+        .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
+        .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
+        .leaderboard-list { overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; }
+        .lb-item { display: flex; align-items: center; justify-content: space-between; background: rgba(14, 17, 13, 0.8); border: 1px solid #283325; padding: 12px 20px; border-radius: 8px; transition: 0.3s; text-decoration: none; }
+        .lb-item:hover { transform: scale(1.02); border-color: #a6e3a1; background: rgba(166,227,161,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .lb-rank { font-size: 24px; font-weight: bold; font-family: sans-serif; color: #6b7a62; width: 45px; text-align: center; }
+        .lb-rank.top-1 { color: #ffd700; text-shadow: 0 0 15px rgba(255,215,0,0.8); font-size: 32px; }
+        .lb-user { display: flex; align-items: center; gap: 15px; flex: 1; margin-left: 15px; }
+        .lb-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .lb-name { font-size: 22px; font-weight: bold; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-stats { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .lb-count { font-size: 26px; font-weight: bold; color: #fff; line-height: 1; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-count-label { font-size: 11px; color: #6b7a62; text-transform: uppercase; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; margin-top: 4px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-online { background: #a6e3a1; box-shadow: 0 0 8px #a6e3a1; }
+        .status-offline { background: #555; }
+    </style>
+</head>
+<body>
+    
+    <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 50px;">
+            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <div class="logo-dropdown">
+                <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
+                <div class="logo-dropdown-content">
+                    <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;"><span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ</a>
+                    <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;"><span style="font-size: 14px;">в–¶</span> РРіСЂС‹</a>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 25px; align-items: center;">
+                <a href="index.html" class="nav-btn" style="--btn-color: #ffd700;">РҐР°Р±</a>
+                <a href="tierlist.html" class="nav-btn active" style="--btn-color: #ff4a4a; color: #ff4a4a; text-shadow: 0 0 10px rgba(255, 74, 74, 0.5);">РўРёСЂ-Р»РёСЃС‚</a>
+                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                
+                <!-- РњР•РќР® Р’РР—РЈРђР›Рђ (РўРћР§РќРћ РљРђРљ Р’ РҐРђР‘Р•) -->
+                <div class="visual-dropdown" id="visual-dropdown">
+                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <div class="visual-dropdown-content">
+                        <div class="mode-toggle" style="margin: 0; justify-content: center;">
+                            <span id="label-score" class="mode-label inactive" onclick="document.getElementById('display-mode-switch').click()">123</span>
+                            <label class="switch">
+                                <input type="checkbox" id="display-mode-switch" onchange="toggleDisplayMode()">
+                                <span class="slider"></span>
+                            </label>
+                            <span id="label-tier" class="mode-label active" style="color: #ffd700;" onclick="document.getElementById('display-mode-switch').click()">S-F</span>
+                        </div>
+                        <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
+                        <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleGlobalRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleGlobalRoleVis('me')">РЇ</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleGlobalRoleVis('chat')">Р§Р°С‚</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-auth" id="nav-auth">
+            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+        </div>
+    </nav>
+
+    <!-- === РћРЎРќРћР’Рђ РўРР -Р›РРЎРўРђ === -->
+    <div class="tier-board">
+        <!-- Р¤РѕРЅ РҐР°РјРµР»РµРѕРЅР° Р·Р°РїРµСЂС‚ РІРЅСѓС‚СЂРё РґРѕСЃРєРё -->
+        <div id="dynamic-bg"></div>
+        
+        <div class="board-header">
+            <div class="board-title">РђРЅРёРјРµ РўРёСЂ-Р»РёСЃС‚</div>
+            
+            <!-- РљРќРћРџРљР-РљРђРџРЎРЈР›Р« Р”Р›РЇ Р’Р«Р‘РћР Рђ Р РћР›Р РўРР -Р›РРЎРўРђ -->
+            <div class="tier-role-filters" id="tier-role-filters">
+                <button id="btn-streamer" class="tier-role-btn streamer active" onclick="setRole('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                <button id="btn-chat" class="tier-role-btn chat" onclick="setRole('chat')">Р§Р°С‚</button>
+            </div>
+        </div>
+
+        <!-- Р’РћРў РўРћРў РЎРђРњР«Р™ РљРћРќРўР•Р™РќР•Р , РљРћРўРћР Р«Р™ РўР« РЎР›РЈР§РђР™РќРћ РЈР”РђР›РР› -->
+        <div id="tier-content-area">
+            <div style="text-align: center; font-size: 20px; color: #829c73; padding: 50px;">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…...</div>
+        </div>
+    </div>
+
+    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
+    <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
+        <div class="leaderboard-box" style="height: 700px;">
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="filterLeaderboard()">
+            </div>
+            <div class="leaderboard-list" id="leaderboard-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const TWITCH_CLIENT_ID = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
+        const REDIRECT_URI = '../anime/';
+        const FIREBASE_BASE = 'https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app';
+        
+        let currentUser = null;
+        let globalFranchises = [];
+
+        // Р§РёС‚Р°РµРј ID СЋР·РµСЂР° РёР· СЃСЃС‹Р»РєРё (РґР»СЏ РїРµСЂСЃРѕРЅР°Р»СЊРЅРѕРіРѕ С‚РёСЂ-Р»РёСЃС‚Р°)
+        let targetUserId = new URLSearchParams(window.location.search).get('user');
+        let currentTierRole = targetUserId ? 'user' : 'streamer'; 
+        let targetUserName = "Р—СЂРёС‚РµР»СЊ";
+
+        // Р¦РІРµС‚Р° РґР»СЏ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅС‹С… Р»РёРЅРёР№ С‚РёСЂРѕРІ
+        const tierColors = { 'S': '255, 74, 74', 'A': '255, 215, 0', 'B': '203, 166, 247', 'C': '137, 180, 250', 'D': '166, 227, 161', 'F': '136, 136, 136' };
+
+        const tiersConfig = [
+            { id: 'S', color: '#ff4a4a', min: 9.0 },
+            { id: 'A', color: '#ffd700', min: 8.0 },
+            { id: 'B', color: '#cba6f7', min: 7.0 },
+            { id: 'C', color: '#89b4fa', min: 5.0 },
+            { id: 'D', color: '#a6e3a1', min: 3.0 },
+            { id: 'F', color: '#888888', min: 0.1 }
+        ];
+
+        // --- Р“Р›РћР‘РђР›Р¬РќР«Р• РџР•Р Р•РњР•РќРќР«Р• Р’РР—РЈРђР›Рђ ---
+        let currentDisplayMode = localStorage.getItem('skinwalker_display_mode') || 'score';
+        let visRoles = JSON.parse(localStorage.getItem('skinwalker_vis_roles')) || { streamer: true, me: true, chat: true };
+
+        function initRoleVis() {
+            Object.keys(visRoles).forEach(role => {
+                const btn = document.getElementById(`toggle-${role}`);
+                if (btn) {
+                    if (visRoles[role]) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleGlobalRoleVis(role) {
+            visRoles[role] = !visRoles[role];
+            localStorage.setItem('skinwalker_vis_roles', JSON.stringify(visRoles));
+            initRoleVis();
+        }
+
+        function toggleDisplayMode() {
+            const switchEl = document.getElementById('display-mode-switch');
+            if (!switchEl) return;
+            currentDisplayMode = switchEl.checked ? 'tier' : 'score';
+            localStorage.setItem('skinwalker_display_mode', currentDisplayMode);
+            
+            const labelTier = document.getElementById('label-tier');
+            const labelScore = document.getElementById('label-score');
+            if (labelTier) {
+                labelTier.className = currentDisplayMode === 'tier' ? 'mode-label active' : 'mode-label inactive';
+                labelTier.style.color = currentDisplayMode === 'tier' ? '#ffd700' : '';
+            }
+            if (labelScore) {
+                labelScore.className = currentDisplayMode === 'score' ? 'mode-label active' : 'mode-label inactive';
+                labelScore.style.color = currentDisplayMode === 'score' ? '#a6e3a1' : '';
+            }
+        }
+
+        // --- Р›РћР“РРљРђ РњР•РќР® ---
+        function toggleVisualMenu() { document.getElementById('visual-dropdown').classList.toggle('show'); }
+        window.addEventListener('click', function(e) {
+            if (!document.getElementById('visual-dropdown').contains(e.target)) {
+                document.getElementById('visual-dropdown').classList.remove('show');
+            }
+        });
+
+        // --- РђР’РўРћР РР—РђР¦РРЇ Р РЁРђРџРљРђ ---
+        function loginTwitch() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=`; }
+        function logoutTwitch() { try { localStorage.removeItem('twitch_token'); } catch(e){} location.reload(); }
+
+        function getUserInfo(username, fallbackTwitchColor) {
+            const lowerName = username.toLowerCase();
+            const dbUser = window.globalUsersDB ? window.globalUsersDB[lowerName] : null; 
+            let r = "F"; let g = 0; let t = 0; let c = fallbackTwitchColor || '#a4b09c';
+            if (dbUser) {
+                if (dbUser.role) r = dbUser.role.toUpperCase();
+                if (dbUser.wallet_gold) g = dbUser.wallet_gold;
+                if (dbUser.wallet_tickets) t = dbUser.wallet_tickets;
+                if (dbUser.color && dbUser.color.trim() !== "") c = dbUser.color;
+            }
+            let badgeHtml = `<span class="role-badge role-f">FOLLOW</span>`;
+            if (r === 'SUB' || r === 'SUBSCRIBER') badgeHtml = `<span class="role-badge role-sub">SUB</span>`;
+            else if (r === 'VIP') badgeHtml = `<span class="role-badge role-vip">VIP</span>`;
+            return { role: r, gold: g, tickets: t, color: c, badge: badgeHtml };
+        }
+
+        async function checkTwitchAuth() {
+            try {
+                const hash = window.location.hash;
+                let token = null;
+                try { token = localStorage.getItem('twitch_token'); } catch(e){}
+
+                if (hash && hash.includes('access_token')) {
+                    token = new URLSearchParams(hash.substring(1)).get('access_token');
+                    try { localStorage.setItem('twitch_token', token); } catch(e){}
+                    window.history.replaceState(null, null, window.location.pathname + window.location.search); 
+                }
+
+                if (token) {
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
+                    currentUser = (await res.json()).data[0];
+
+                    try {
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorData = await colorRes.json();
+                        currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
+                    } catch(e) {}
+                    
+                    const uInfo = getUserInfo(currentUser.login, currentUser.color);
+                    
+                    document.getElementById('nav-auth').innerHTML = `
+                        <div class="user-profile-neon">
+                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                                <img src="${currentUser.profile_image_url}" class="user-avatar">
+                            </div>
+                            <div class="profile-info">
+                                <div class="profile-top">
+                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span>
+                                    <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                </div>
+                                <div class="profile-bottom">
+                                    ${uInfo.badge}
+                                    <div class="wallet-item" style="color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);">
+                                        <img src="../icons/BILET_GOLD.png" onerror="this.style.display='none'"> <span>${uInfo.gold}</span>
+                                    </div>
+                                    <div class="wallet-item" style="color: #a6e3a1; text-shadow: 0 0 10px rgba(166, 227, 161, 0.3);">
+                                        <img src="../icons/BILET.png" onerror="this.style.display='none'"> <span>${uInfo.tickets}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+        }
+
+        // --- Р›РћР“РРљРђ Р—РђР›Рђ РЎР›РђР’Р« ---
+        let lbAllUsers = [];
+
+        function openLeaderboard() {
+            if (!window.globalCommData) return;
+            const userStats = {};
+            for (const [franchiseId, seasons] of Object.entries(window.globalCommData)) {
+                for (const [seasonId, seasonData] of Object.entries(seasons)) {
+                    if (seasonData.ratings) {
+                        for (const [userId, rating] of Object.entries(seasonData.ratings)) {
+                            if ((Number(rating.overall) > 0) || (rating.theory && Object.values(rating.theory).some(v => Number(v) > 0))) {
+                                if (!userStats[userId]) { userStats[userId] = { id: userId, name: rating.displayName || userId, avatar: rating.profileImage || 'https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png', count: 0 }; }
+                                userStats[userId].count++;
+                                if (rating.displayName) userStats[userId].name = rating.displayName;
+                                if (rating.profileImage) userStats[userId].avatar = rating.profileImage;
+                            }
+                        }
+                    }
+                }
+            }
+            lbAllUsers = Object.values(userStats).sort((a, b) => b.count - a.count);
+            document.getElementById('lb-search').value = '';
+            renderLeaderboard(lbAllUsers);
+            document.getElementById('leaderboard-modal').style.display = 'flex';
+        }
+
+        function renderLeaderboard(usersArray) {
+            const listEl = document.getElementById('leaderboard-list');
+            listEl.innerHTML = '';
+            if (usersArray.length === 0) {
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>'; return;
+            }
+            usersArray.forEach((u) => {
+                const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
+                const rank = originalIndex + 1;
+                let rankClass = ''; let crown = rank;
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+
+                const dbUser = window.globalUsersDB ? window.globalUsersDB[u.name.toLowerCase()] : null;
+                const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
+                const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
+                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+
+                const html = `
+                <a href="profile.html?user=${u.id}" class="lb-item">
+                    <div class="lb-rank ${rankClass}" style="width: 45px; text-align: center;">${crown}</div>
+                    <div class="lb-user" style="flex: 1; margin-left: 10px;">
+                        <img src="${u.avatar}" class="lb-avatar" style="border-color: ${color};">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div class="lb-name" style="color: ${color}; text-shadow: 0 0 8px ${color}80; line-height: 1;">${u.name}</div>
+                            <div style="display: flex; align-items: center;">${statusDot}</div>
+                        </div>
+                    </div>
+                    <div class="lb-stats">
+                        <div class="lb-count">${u.count}</div>
+                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                    </div>
+                </a>`;
+                listEl.insertAdjacentHTML('beforeend', html);
+            });
+        }
+        function filterLeaderboard() {
+            const query = document.getElementById('lb-search').value.toLowerCase().trim();
+            if (!query) { renderLeaderboard(lbAllUsers); return; }
+            const filtered = lbAllUsers.filter(u => u.name.toLowerCase().includes(query));
+            renderLeaderboard(filtered);
+        }
+
+        // --- Р›РћР“РРљРђ РўРР -Р›РРЎРўРђ ---
+        const safeNum = (v) => Number(v) || 0;
+        const getAvg = (sum, count) => count > 0 ? parseFloat((sum/count).toFixed(1)) : 0;
+
+        async function initTierList() {
+            try {
+                const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`);
+                if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
+                await checkTwitchAuth();
+
+                const [animeRes, commRes] = await Promise.all([
+                    fetch(`${FIREBASE_BASE}/anime_db.json`),
+                    fetch(`${FIREBASE_BASE}/community_db.json`)
+                ]);
+                const data = await animeRes.json() || {};
+                const commData = await commRes.json() || {};
+                window.globalCommData = commData;
+
+                for (const [franchiseId, seasonsObj] of Object.entries(data)) {
+                    const seasons = Object.entries(seasonsObj).map(([seasonId, sData]) => ({seasonId, ...sData}));
+                    let strOvr = 0, strCnt = 0, chatOvr = 0, chatCnt = 0, userOvr = 0, userCnt = 0;
+
+                    seasons.forEach(s => {
+                        if (s.scores && safeNum(s.scores.overall) > 0) { strOvr += safeNum(s.scores.overall); strCnt++; }
+                        const sComm = commData[franchiseId]?.[s.seasonId]?.ratings;
+                        if (sComm) {
+                            for (const [uid, r] of Object.entries(sComm)) {
+                                if (safeNum(r.overall) > 0) { 
+                                    chatOvr += safeNum(r.overall); chatCnt++; 
+                                    if (targetUserId && uid === targetUserId) {
+                                        userOvr += safeNum(r.overall); userCnt++;
+                                        if (r.displayName) targetUserName = r.displayName;
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    globalFranchises.push({
+                        id: franchiseId,
+                        title: franchiseId.replace(/_/g, ' '),
+                        coverUrl: seasons[0]?.coverUrl || '',
+                        scores: {
+                            streamer: getAvg(strOvr, strCnt),
+                            chat: getAvg(chatOvr, chatCnt),
+                            user: getAvg(userOvr, userCnt)
+                        }
+                    });
+                }
+
+                // РЎРѕР·РґР°РµРј РІРєР»Р°РґРєСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РµСЃР»Рё СЌС‚Рѕ С‡РµР№-С‚Рѕ Р»РёС‡РЅС‹Р№ С‚РёСЂ-Р»РёСЃС‚
+                if (targetUserId) {
+                    const btnText = targetUserName === "Р—СЂРёС‚РµР»СЊ" ? "РЇ" : targetUserName;
+                    const filtersBox = document.getElementById('tier-role-filters') || document.getElementById('role-toggles');
+                    if (filtersBox && !document.getElementById('btn-user')) {
+                        filtersBox.insertAdjacentHTML('beforeend', `<button id="btn-user" class="tier-role-btn user" onclick="setRole('user')">${btnText}</button>`);
+                    }
+                }
+
+                setRole(currentTierRole);
+            } catch (e) { 
+                console.error("РљР РРўРР§Р•РЎРљРђРЇ РћРЁРР‘РљРђ:", e);
+                document.getElementById('tier-content-area').innerHTML = `<div style="text-align:center; padding:50px; color:#ff5555;">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё!<br><span style="font-size:14px; color:#a4b09c; font-family:sans-serif;">${e.name}: ${e.message}</span></div>`; 
+            }
+        }
+
+        function setRole(role) {
+            currentTierRole = role;
+            // Р‘РµР·РѕРїР°СЃРЅРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ РєР»Р°СЃСЃРѕРІ РєРЅРѕРїРѕРє, С‡С‚РѕР±С‹ СЃРєСЂРёРїС‚ РЅРµ РєСЂР°С€РёР»СЃСЏ
+            const btnS = document.getElementById('btn-streamer');
+            if (btnS) btnS.classList.toggle('active', role === 'streamer');
+            const btnC = document.getElementById('btn-chat');
+            if (btnC) btnC.classList.toggle('active', role === 'chat');
+            const btnU = document.getElementById('btn-user');
+            if (btnU) btnU.classList.toggle('active', role === 'user');
+            
+            renderTierList();
+        }
+
+        function renderTierList() {
+            const role = currentTierRole;
+            const board = document.getElementById('tier-content-area');
+            board.innerHTML = '';
+            let hasAnyCards = false;
+
+            tiersConfig.forEach(tier => {
+                let items = globalFranchises.filter(f => {
+                    const score = f.scores[role];
+                    if (score === 0) return false; 
+                    
+                    if (tier.id === 'S') return score >= tier.min;
+                    if (tier.id === 'F') return score >= tier.min && score < 3.0;
+                    const nextTier = tiersConfig[tiersConfig.indexOf(tier) - 1];
+                    return score >= tier.min && score < nextTier.min;
+                });
+
+                if (items.length > 0) hasAnyCards = true;
+                items.sort((a, b) => b.scores[role] - a.scores[role]);
+
+                let itemsHtml = items.map(f => {
+                    const safeIdForLink = encodeURIComponent(f.id).replace(/'/g, "%27");
+                    const safeCoverUrl = f.coverUrl.replace(/'/g, "\\'");
+                    return `
+                    <div class="tier-item" title="${f.title}" data-cover="${safeCoverUrl}" style="background-image: url('${safeCoverUrl}');" 
+                         onmouseenter="applyChameleon(this)" onmouseleave="removeChameleon()" 
+                         onclick="window.location.href='Anime-Page.html?id=${safeIdForLink}'">
+                        <div class="front-overlay">
+                            <div class="item-score" style="color: ${tier.color}">${f.scores[role]}</div>
+                            <div class="anime-title">${f.title}</div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                const rgb = tierColors[tier.id];
+                board.insertAdjacentHTML('beforeend', `
+                    <div class="tier-row" style="background: linear-gradient(90deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 100px, rgba(${rgb}, 0.12) 100px, rgba(0,0,0,0.2) 600px); border-bottom: 1px solid rgba(${rgb}, 0.3);">
+                        <div class="tier-label" style="background: rgba(${rgb}, 0.2); border-right: 2px solid rgb(${rgb}); color: rgb(${rgb}); text-shadow: 0 0 15px rgb(${rgb});">${tier.id}</div>
+                        <div class="tier-content">${itemsHtml}</div>
+                    </div>
+                `);
+            });
+
+            if (!hasAnyCards) {
+                board.innerHTML = '<div style="text-align: center; font-size: 20px; color: #6b7a62; padding: 50px;">РџРѕРєР° РЅРµС‚ РѕС†РµРЅРѕРє РґР»СЏ СЌС‚РѕРіРѕ С‚РёСЂ-Р»РёСЃС‚Р°...</div>';
+            }
+            
+            extractCoverColors();
+        }
+
+        // --- Р›РћР“РРљРђ РҐРђРњР•Р›Р•РћРќРђ Р”Р›РЇ РљРђР РўРћР§Р•Рљ ---
+        function extractCoverColors() {
+            if (typeof ColorThief === 'undefined') return;
+            const colorThief = new ColorThief();
+            document.querySelectorAll('.tier-item').forEach(card => {
+                const imgUrl = card.getAttribute('data-cover');
+                if (!imgUrl) return;
+                const hiddenImg = new Image();
+                hiddenImg.crossOrigin = 'Anonymous';
+                hiddenImg.onload = function() {
+                    try {
+                        const color = colorThief.getColor(hiddenImg);
+                        let r = color[0], g = color[1], b = color[2];
+                        const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+                        if (luminance < 90) { r = Math.min(255, r+80); g = Math.min(255, g+80); b = Math.min(255, b+80); }
+                        
+                        card.style.setProperty('--theme-light', `rgb(${r}, ${g}, ${b})`); 
+                        card.dataset.rgb = `${r}, ${g}, ${b}`;
+                    } catch(e) {}
+                };
+                hiddenImg.src = imgUrl + '?bypassCache=' + Date.now();
+            });
+        }
+
+        function applyChameleon(card) {
+            const bg = document.getElementById('dynamic-bg');
+            bg.style.backgroundImage = `url('${card.getAttribute('data-cover')}')`;
+            bg.classList.add('active');
+
+            if (card.dataset.rgb) {
+                const rgb = card.dataset.rgb;
+                document.documentElement.style.setProperty('--theme-primary', `rgb(${rgb})`);
+                document.documentElement.style.setProperty('--theme-glow', `rgba(${rgb}, 0.5)`);
+                document.documentElement.style.setProperty('--theme-panel-border', `rgba(${rgb}, 0.4)`);
+            }
+        }
+
+        function removeChameleon() {
+            document.getElementById('dynamic-bg').classList.remove('active');
+            document.documentElement.style.removeProperty('--theme-primary');
+            document.documentElement.style.removeProperty('--theme-glow');
+            document.documentElement.style.removeProperty('--theme-panel-border');
+        }
+
+        initRoleVis();
+        initTierList();
+    </script>
+</body>
+</html>
+
+

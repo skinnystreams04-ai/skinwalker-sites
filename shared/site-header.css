@@ -1,0 +1,98 @@
+.shared-site-header {
+    --shared-header-primary: var(--theme-primary, #a6e3a1);
+    --shared-header-glow: var(--theme-glow, rgba(166, 227, 161, 0.5));
+    position: relative;
+    z-index: 2100;
+}
+
+.shared-site-header .shared-site-switcher {
+    position: relative;
+    display: inline-block;
+    padding: 10px 0;
+}
+
+.shared-site-header .shared-site-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--shared-header-primary);
+    font: bold 24px 'Neucha', cursive;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--shared-header-glow);
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.shared-site-header .shared-site-title:hover {
+    filter: brightness(1.2);
+}
+
+.shared-site-header .shared-site-arrow {
+    font-size: 14px;
+    opacity: 0.7;
+    transition: transform 0.3s ease;
+}
+
+.shared-site-header .shared-site-switcher:hover .shared-site-arrow,
+.shared-site-header .shared-site-switcher:focus-within .shared-site-arrow {
+    transform: rotate(180deg);
+}
+
+.shared-site-header .shared-site-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    min-width: 220px;
+    gap: 5px;
+    padding: 10px;
+    flex-direction: column;
+    background: rgba(14, 17, 13, 0.97);
+    border: 1px solid var(--theme-panel-border, #283325);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.shared-site-header .shared-site-switcher:hover .shared-site-menu,
+.shared-site-header .shared-site-switcher:focus-within .shared-site-menu {
+    display: flex;
+}
+
+.shared-site-header .shared-site-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: #a4b09c;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: bold 18px 'Neucha', cursive;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+}
+
+.shared-site-header .shared-site-link:hover,
+.shared-site-header .shared-site-link.active {
+    color: var(--site-color);
+    background: rgba(0, 0, 0, 0.35);
+    border-color: var(--site-color);
+    text-shadow: 0 0 10px var(--site-color);
+}
+
+.shared-site-header .shared-site-link.active {
+    border-left-width: 3px;
+}
+
+@media (max-width: 700px) {
+    .shared-site-header .shared-site-title {
+        font-size: 19px;
+        letter-spacing: 1px;
+    }
+
+    .shared-site-header .shared-site-menu {
+        min-width: 190px;
+    }
+}

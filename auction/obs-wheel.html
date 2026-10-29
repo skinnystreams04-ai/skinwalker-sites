@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>OBS РђСѓРєС†РёРѕРЅ Р СѓР»РµС‚РєР°</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background: transparent; font-family: 'Neucha', cursive; }
+        
+        .wheel-overlay { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
+        .wheel-overlay.active { opacity: 1; }
+        
+        .wheel-scale-box { position: relative; width: 500px; height: 500px; transform: scale(0.1); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .wheel-overlay.active .wheel-scale-box { transform: scale(1.4); } /* РљСЂСѓРїРЅРѕ РґР»СЏ OBS */
+        
+        #wheel-canvas { position: absolute; width: 475px; height: 475px; top: 12.5px; left: 12.5px; border-radius: 50%; background-image: url('../icons/wheel/Wheel_Base.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 1; }
+        #wheel-frame { position: absolute; width: 500px; height: 500px; top: 0; left: 0; background-image: url('../icons/wheel/Frame_Free.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 5; }
+        
+        .wheel-result { text-align: center; margin-top: 150px; opacity: 0; transform: translateY(40px); transition: all 0.5s ease; background: rgba(11, 13, 10, 0.95); padding: 15px 40px; border-radius: 12px; border: 3px solid #8abf86; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .wheel-overlay.free .wheel-result { border-color: #b0b8a8; }
+        .wheel-result.show { opacity: 1; transform: translateY(0); }
+        
+        .res-user { color: #b8a87b; font-size: 32px; margin-bottom: 5px; text-transform: uppercase; }
+        .res-text { font-size: 48px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px currentColor; }
+    </style>
+</head>
+<body>
+
+    <div class="wheel-overlay" id="wheel-modal">
+        <div class="wheel-scale-box"><canvas id="wheel-canvas" width="800" height="800"></canvas><div id="wheel-frame"></div></div>
+        <div class="wheel-result" id="wheel-result"><div class="res-user" id="res-user">РљР РЈРўРРў: Р—Р РРўР•Р›Р¬</div><div class="res-text" id="res-text">РќР°РіСЂР°РґР°!</div></div>
+    </div>
+
+    <script>
+        const firebaseUrl = "https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app/auction_data.json";
+        const configUrl = "https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app/auction_config.json";
+
+        let currentConfig = null;
+        let spinQueue = []; // рџ”Ґ РўРђ РЎРђРњРђРЇ РћР§Р•Р Р•Р”Р¬ рџ”Ґ
+        let isSpinning = false;
+        let lastProcessedSpinTime = 0;
+        let isFirstLoad = true;
+        let refreshTimer = null;
+        let fallbackRefreshTimer = null;
+        let firebaseStreamsStarted = false;
+
+        function scheduleCloudRefresh() {
+            if (refreshTimer) return;
+            refreshTimer = setTimeout(async () => {
+                refreshTimer = null;
+                await fetchFromCloud();
+            }, 250);
+        }
+
+        function startFirebaseStreams() {
+            if (firebaseStreamsStarted || typeof EventSource === 'undefined') return;
+            firebaseStreamsStarted = true;
+            [firebaseUrl, configUrl].forEach(url => {
+                const source = new EventSource(url);
+                source.addEventListener('put', scheduleCloudRefresh);
+                source.addEventListener('patch', scheduleCloudRefresh);
+                source.addEventListener('cancel', () => {
+                    console.error('Firebase stream cancelled:', url);
+                    scheduleCloudRefresh();
+                });
+                source.onerror = () => {
+                    console.error('Firebase stream disconnected:', url);
+                };
+            });
+        }
+        let lastConfigFetch = 0;
+
+        async function fetchFromCloud() {
+            try {
+                const now = Date.now();
+                const dataRes = await fetch(firebaseUrl + "?nocache=" + now);
+                const data = await dataRes.json();
+                if (!currentConfig || now - lastConfigFetch >= 30000) {
+                    const confRes = await fetch(configUrl + "?nocache=" + now);
+                    currentConfig = await confRes.json();
+                    lastConfigFetch = now;
+                }
+
+                if (data && data.last_spin && currentConfig && currentConfig.wheels) {
+                    const spinData = data.last_spin;
+                    if (isFirstLoad) { lastProcessedSpinTime = spinData.timestamp; isFirstLoad = false; } 
+                    else if (spinData.timestamp > lastProcessedSpinTime) { 
+                        lastProcessedSpinTime = spinData.timestamp; 
+                        spinQueue.push(spinData); // Р”РћР‘РђР’Р›РЇР•Рњ Р’ РћР§Р•Р Р•Р”Р¬!
+                    }
+                } else { isFirstLoad = false; }
+            } catch (error) { console.error('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё OBS-РєРѕР»РµСЃР°:', error); }
+        }
+        
+        // РСЃРїРѕР»СЊР·СѓРµРј Firebase stream; СЂРµРґРєРёР№ Р·Р°РїСЂРѕСЃ РѕСЃС‚Р°С‘С‚СЃСЏ СЂРµР·РµСЂРІРѕРј РїСЂРё СЃР±РѕРµ СЃРѕР±С‹С‚РёР№.
+        async function fetchLoop() {
+            await fetchFromCloud();
+            startFirebaseStreams();
+            if (fallbackRefreshTimer) clearTimeout(fallbackRefreshTimer);
+            fallbackRefreshTimer = setTimeout(fetchLoop, typeof EventSource === 'undefined' ? 4000 : 300000);
+        }
+        fetchLoop();
+
+        // РџСЂРѕС†РµСЃСЃРѕСЂ РѕС‡РµСЂРµРґРё (РїСЂРѕРІРµСЂСЏРµС‚ РєР°Р¶РґС‹Рµ РїРѕР»СЃРµРєСѓРЅРґС‹)
+        setInterval(() => {
+            if (!isSpinning && spinQueue.length > 0) {
+                const nextSpin = spinQueue.shift(); // Р‘РµСЂРµРј РїРµСЂРІРѕРіРѕ РёР· РѕС‡РµСЂРµРґРё
+                startWheelAnimation(nextSpin);
+            }
+        }, 500);
+
+        function startWheelAnimation(spinData) {
+            isSpinning = true; 
+            const overlay = document.getElementById('wheel-modal'); const canvas = document.getElementById('wheel-canvas'); const ctx = canvas.getContext('2d'); const resultBox = document.getElementById('wheel-result'); 
+            
+            resultBox.classList.remove('show'); overlay.className = 'wheel-overlay active'; canvas.style.transform = `scale(1) rotate(0rad)`;
+            
+            let itemsRaw = []; let neonColor = "#8abf86"; 
+            if (spinData.action === "SPIN_FREE_WHEEL") { itemsRaw = currentConfig.wheels.free.buffs; overlay.classList.add('free'); neonColor = "#b0b8a8"; }
+            else { isSpinning = false; overlay.className = 'wheel-overlay'; return; }
+            
+            const activeItems = itemsRaw.filter(i => i.active);
+            if (activeItems.length === 0) { isSpinning = false; overlay.className = 'wheel-overlay'; return; }
+            
+            const targetIndex = spinData.index; const targetItem = activeItems[targetIndex];
+            const cx = 400, cy = 400; const sliceAngle = (Math.PI * 2) / activeItems.length;
+            ctx.clearRect(0, 0, 800, 800); const lineRadius = 400; const textRadius = 265; 
+            
+            let totalActiveWeight = 0;
+            activeItems.forEach(item => { totalActiveWeight += Number(item.weight) || 1; });
+            const rarity = currentConfig.wheels.rarity || { legendary: 5, epic: 15, rare: 30 };
+
+            for (let i = 0; i < activeItems.length; i++) {
+                const startA = i * sliceAngle; const endA = startA + sliceAngle;
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, lineRadius, startA, endA); ctx.closePath(); 
+                ctx.strokeStyle = "rgba(0, 0, 0, 0.8)"; ctx.lineWidth = 4; ctx.stroke();
+                
+                ctx.save(); ctx.translate(cx, cy); ctx.rotate(startA + sliceAngle / 2); ctx.textAlign = "right"; ctx.textBaseline = "middle";
+                
+                const itemWeight = Number(activeItems[i].weight) || 1;
+                const probability = (itemWeight / totalActiveWeight) * 100;
+                
+                let text = activeItems[i].name; if(text.length > 10) text = text.substring(0, 8) + "...";
+                text += ` (${probability.toFixed(1)}%)`;
+
+                ctx.font = "bold 24px 'Neucha', cursive, sans-serif"; ctx.lineWidth = 6; ctx.strokeStyle = "black"; 
+                ctx.strokeText(text, textRadius, 0); 
+                
+                let itemColor = neonColor; 
+                if (probability <= rarity.legendary) itemColor = "#f9e2af";
+                else if (probability <= rarity.epic) itemColor = "#cba6f7";
+                else if (probability <= rarity.rare) itemColor = "#89b4fa";
+
+                ctx.fillStyle = itemColor; 
+                ctx.fillText(text, textRadius, 0); 
+                ctx.restore();
+            }
+            
+            const spins = 5; const targetCenterAngle = targetIndex * sliceAngle + (sliceAngle / 2); const finalAngle = (spins * Math.PI * 2) - (Math.PI / 2) - targetCenterAngle; const randomOffset = (Math.random() - 0.5) * (sliceAngle * 0.7); const absoluteFinalAngle = finalAngle + randomOffset;
+            let startTime = null; const duration = (currentConfig.wheels.spin_duration || 5) * 1000;
+            
+            function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+            function animateWheel(timestamp) {
+                if (!startTime) startTime = timestamp; const progress = Math.min((timestamp - startTime) / duration, 1);
+                canvas.style.transform = `scale(1) rotate(${absoluteFinalAngle * easeOut(progress)}rad)`;
+                if (progress < 1) { requestAnimationFrame(animateWheel); } else {
+                    document.getElementById('res-user').innerText = `РљР РЈРўРРў: ${spinData.user}`; 
+                    document.getElementById('res-text').innerText = `${targetItem.name}`;
+                    
+                    const targetWeight = Number(targetItem.weight) || 1;
+                    const targetProb = (targetWeight / totalActiveWeight) * 100;
+                    let resultColor = neonColor;
+                    if (targetProb <= rarity.legendary) resultColor = "#f9e2af";
+                    else if (targetProb <= rarity.epic) resultColor = "#cba6f7";
+                    else if (targetProb <= rarity.rare) resultColor = "#89b4fa";
+                    document.getElementById('res-text').style.color = resultColor;
+
+                    resultBox.classList.add('show');
+                    
+                    // РЈР±РёСЂР°РµРј РєРѕР»РµСЃРѕ Рё РґР°РµРј РїР°СѓР·Сѓ РїРµСЂРµРґ СЃР»РµРґСѓСЋС‰РёРј
+                    setTimeout(() => { 
+                        overlay.classList.remove('active'); 
+                        setTimeout(() => { isSpinning = false; }, 600); // 0.6 СЃРµРє РЅР° РёСЃС‡РµР·РЅРѕРІРµРЅРёРµ
+                    }, 4000); 
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+    </script>
+</body>
+</html>
+
+
+

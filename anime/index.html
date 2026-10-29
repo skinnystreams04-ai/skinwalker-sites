@@ -1,0 +1,1010 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skinwalker РђРЅРёРјРµ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/site-header.css">
+    <script src="../shared/site-header.js" defer></script>
+    <script src="../shared/twitch-auth.js" defer></script>
+    <script src="../shared/firebase-stream.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <style>
+
+       /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+        .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
+        .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
+        .nav-logo-wrap:hover { filter: brightness(1.2); }
+        .logo-arrow { font-size: 14px; opacity: 0.7; transition: transform 0.3s; }
+        .logo-dropdown:hover .logo-arrow { transform: rotate(180deg); }
+        
+        .logo-dropdown-content { display: none; position: absolute; left: 0; top: 100%; margin-top: -5px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border, #283325); border-radius: 12px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 200px; backdrop-filter: blur(10px); flex-direction: column; gap: 5px; }
+        .logo-dropdown:hover .logo-dropdown-content { display: flex; }
+        
+        .logo-link { color: #a4b09c; text-decoration: none; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; text-transform: uppercase; padding: 10px 15px; border-radius: 8px; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; }
+        .logo-link:hover { background: rgba(0,0,0,0.4); color: var(--site-color); text-shadow: 0 0 10px var(--site-color); border-color: var(--site-color); }
+        .logo-link.active { color: var(--site-color); background: rgba(0,0,0,0.3); border-left: 3px solid var(--site-color); border-radius: 4px 8px 8px 4px; }
+ 
+        /* Р“Р›РћР‘РђР›Р¬РќР«Р• Р¦Р’Р•РўРђ Р РҐРђРњР•Р›Р•РћРќ */
+        :root {
+            --theme-primary: #a6e3a1;
+            --theme-glow: rgba(166, 227, 161, 0.5);
+            --theme-panel-border: #283325;
+            --btn-color: #a6e3a1;
+        }
+
+        body { margin: 0; padding: 0 0 40px 0; font-family: 'Neucha', cursive, sans-serif; background-color: #0b0d0a; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); color: #a4b09c; min-height: 100vh; overflow-x: hidden; }
+
+        /* РџР›РђР’РќР«Р• РџР•Р Р•РҐРћР”Р« Р”Р›РЇ РҐРђРњР•Р›Р•РћРќРђ */
+        .top-nav, .nav-logo, .hub-right-panel, .controls-bar, .search-input, .sort-select {
+            transition: color 0.5s ease, text-shadow 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
+        }
+
+        /* Р”РРќРђРњРР§Р•РЎРљРР™ Р¤РћРќ */
+        #dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: blur(40px) brightness(0.2); opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.5s ease, background-image 0.5s ease; }
+        #dynamic-bg.active { opacity: 1; }
+
+        /* РЁРђРџРљРђ */
+        .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; z-index: 1000; }
+        .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; text-shadow: 0 0 10px var(--theme-glow); cursor: pointer; }
+        .nav-logo:hover { filter: brightness(1.2); }
+
+        .nav-btn { background: transparent; border: none; color: #a4b09c; padding: 5px 0; font-family: inherit; font-size: 18px; font-weight: bold; cursor: pointer; transition: color 0.5s ease, text-shadow 0.5s ease; position: relative; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; outline: none; }
+        .nav-btn::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -6px; left: 50%; background-color: var(--btn-color, #a6e3a1); transition: width 0.3s ease, background-color 0.5s ease, box-shadow 0.5s ease; transform: translateX(-50%); box-shadow: 0 0 8px var(--btn-color, #a6e3a1); }
+        .nav-btn:hover { color: var(--btn-color, #a6e3a1); text-shadow: 0 0 10px var(--btn-color, #a6e3a1); }
+        .nav-btn:hover::after { width: 100%; }
+        .nav-btn.active::after { width: 100%; }
+
+        .nav-auth .twitch-btn { background: #6441a5; color: white; padding: 8px 16px; border-radius: 8px; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; cursor: pointer; border: 1px solid #4a307a; transition: 0.2s; letter-spacing: 1px;}
+        .nav-auth .twitch-btn:hover { background: #7d5bbe; box-shadow: 0 0 15px rgba(100, 65, 165, 0.8); }
+        
+        .user-profile-neon { display: flex; align-items: center; gap: 18px; background: rgba(15, 20, 15, 0.2); backdrop-filter: blur(16px); padding: 10px 25px 10px 10px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: 0.3s ease; }
+        .user-profile-neon:hover { background: rgba(15, 20, 15, 0.3); border-color: rgba(166, 227, 161, 0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 15px rgba(166, 227, 161, 0.1); }
+        .avatar-glow-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
+        .avatar-glow-wrap::before { content: ''; position: absolute; width: 120%; height: 120%; border-radius: 50%; background: var(--user-color, #a6e3a1); filter: blur(10px); opacity: 0.3; transition: 0.3s; }
+        .user-profile-neon:hover .avatar-glow-wrap::before { opacity: 0.6; }
+        .user-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--user-color, #a6e3a1); position: relative; z-index: 2; object-fit: cover; }
+        .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+        .profile-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .profile-name-top { font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; letter-spacing: 1px; }
+        .profile-bottom { display: flex; align-items: center; gap: 15px; }
+        .role-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 10px; border-radius: 6px; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .role-sub { background: #6441a5; color: #fff; border: 1px solid #4a307a; } 
+        .role-vip { background: #e05e85; color: #fff; border: 1px solid #b83d63; }
+        .role-f { background: #333333; color: #a4b09c; border: 1px solid #222; }
+        .wallet-item { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+        .wallet-item img { width: 18px; height: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+        .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px; font-family: 'Neucha', cursive;}
+        .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
+
+        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ */
+        .visual-dropdown { position: relative; display: inline-block; }
+        .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
+        .visual-dropdown.show .visual-dropdown-content { display: flex; }
+        .mode-toggle { display: flex; align-items: center; gap: 10px; font-size: 18px; justify-content: center; margin: 0; }
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(14, 17, 13, 0.6); border: 1px solid #283325; transition: .4s; border-radius: 34px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #a4b09c; transition: .4s; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        input:checked + .slider { background-color: rgba(255, 215, 0, 0.15); border-color: #ffd700; }
+        input:checked + .slider:before { transform: translateX(22px); background-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
+        .mode-label { font-weight: bold; text-shadow: 1px 1px 2px #000; transition: 0.3s; cursor: pointer; }
+        .mode-label.active { color: #fff; text-shadow: 0 0 8px currentColor; }
+        .mode-label.inactive { color: #6b7a62; }
+        .role-toggles { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 0; }
+        .role-toggle-btn { background: transparent; border: none; border-bottom: 2px solid rgba(107, 122, 98, 0.3); color: #6b7a62; padding: 4px 2px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; outline: none; }
+        .role-toggle-btn:hover { color: #c4d1b8; border-bottom-color: rgba(196, 209, 184, 0.5); }
+        .role-toggle-btn.active.streamer { color: #cba6f7; border-bottom-color: #cba6f7; text-shadow: 0 0 8px rgba(203, 166, 247, 0.6); }
+        .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
+        .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
+
+        /* РџРђРќР•Р›Р¬ РЈРџР РђР’Р›Р•РќРРЇ */
+        .controls-bar { display: flex; justify-content: flex-start; align-items: center; gap: 15px; padding: 12px 25px; margin: 0 40px 30px 40px; background: rgba(14, 17, 13, 0.4); backdrop-filter: blur(15px); border: 1px solid var(--theme-panel-border); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: border-color 0.5s ease, box-shadow 0.5s ease; }
+        .controls-divider { width: 1px; height: 30px; background: var(--theme-panel-border); margin: 0 10px; transition: 0.5s ease; }
+        .search-input, .sort-select { background: transparent; border: none; border-bottom: 1px solid var(--theme-panel-border); color: #c4d1b8; padding: 8px 12px; font-family: 'Neucha', cursive; font-size: 18px; outline: none; border-radius: 0; transition: border-color 0.5s ease, box-shadow 0.5s ease;}
+        .search-input { width: 250px; }
+        .search-input::placeholder { color: #6b7a62; }
+        .sort-select { cursor: pointer; appearance: none; padding-right: 30px; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23829c73%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 10px top 50%; background-size: 12px auto; }
+        .sort-select option { background: #0b0d0a; color: #c4d1b8; }
+        .search-input:focus, .sort-select:focus { border-bottom: 1px solid var(--theme-primary); box-shadow: 0 5px 15px -5px var(--theme-glow); }
+        .sort-dir-btn { background: transparent; border: none; color: #6b7a62; padding: 0 5px 0 15px; font-family: sans-serif; font-size: 24px; font-weight: bold; cursor: pointer; outline: none; transition: 0.2s; display: flex; justify-content: center; align-items: center; line-height: 1; }
+        .sort-dir-btn:hover { color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); transform: translateY(-3px); }
+
+        /* РћРЎРќРћР’РќРђРЇ РЎР•РўРљРђ */
+        .main-layout { display: flex; gap: 30px; padding: 0 40px; max-width: 100%; margin: 0 auto; align-items: flex-start; width: 100%; box-sizing: border-box; }
+        
+        /* РЎС‚РµРєР»СЏРЅРЅР°СЏ РІРёС‚СЂРёРЅР° */
+        .trophy-room { 
+            flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; 
+            background: rgba(14, 17, 13, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--theme-panel-border); border-radius: 12px; padding: 25px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); align-content: flex-start; 
+            transition: border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+       /* РџР РђР’РђРЇ РџРђРќР•Р›Р¬ РҐРђР‘Рђ */
+        .hub-right-panel { width: 420px; flex-shrink: 0; background: #0b0d0a; border: 2px solid var(--theme-panel-border); border-radius: 12px; position: sticky; top: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; transition: border-color 0.5s ease, box-shadow 0.5s ease; }
+        .preview-placeholder { padding: 40px 20px; text-align: center; color: #6b7a62; font-size: 18px; display: flex; height: 100%; align-items: center; justify-content: center; }
+        .preview-cover { width: 100%; height: 200px; object-fit: cover; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); border-bottom: 2px solid var(--theme-panel-border); transition: border-color 0.5s ease; }
+        .preview-content { padding: 0 20px 20px 20px; margin-top: -60px; position: relative; z-index: 2; display: flex; flex-direction: column; }
+        .preview-title { font-size: 24px; font-weight: bold; color: #fff; text-transform: uppercase; line-height: 1.1; text-align: center; transition: color 0.4s; text-shadow: 2px 2px 5px #000; }
+
+        /* Р“Р РђР¤РРљ Р РљР РРўР•Р РР Р’ РџРђРќР•Р›Р */
+        .theory-container { background: transparent; border: none; padding: 0; }
+        .crit-row { display: flex; justify-content: space-between; font-size: 14px; color: #a4b09c; padding: 4px 10px; border-radius: 0 6px 6px 0; margin-bottom: 6px; transition: 0.3s; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .crit-row span:last-child { font-weight: bold; font-family: 'Neucha', cursive, sans-serif; font-size: 17px; color: #fff; text-shadow: 1px 1px 2px #000; }
+
+        /* РљРђР РўРћР§РљР (РЎ РђРќРРњР• РћР‘Р›РћР–РљРћР™ РќРђ Р’Р•РЎР¬ Р­РљР РђРќ) */
+        .card-container { width: 100%; aspect-ratio: 2 / 3; position: relative; max-width: 220px; justify-self: center; }
+        .card-container::before { content: ''; position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background: var(--card-color); filter: blur(40px); opacity: 0.15; z-index: -1; transition: 0.5s; border-radius: 50%; }
+        .card-container:hover::before { opacity: 0.35; transform: scale(1.05); }
+
+        .card-face { position: absolute; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; display: flex; flex-direction: column; transition: 0.3s; border: 2px solid var(--card-border); box-shadow: 0 0 15px var(--card-shadow); cursor: pointer; }
+        .card-container:hover .card-face { border-color: var(--card-color); box-shadow: 0 0 30px var(--card-shadow-hover); transform: translateY(-8px); }
+        
+        .ep-badge { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); background: rgba(11, 13, 10, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--card-border); color: var(--theme-light, #c4d1b8); font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 6px; z-index: 10; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.8); text-transform: uppercase; text-shadow: 1px 1px 2px #000; transition: 0.5s; white-space: nowrap; }
+        .front-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 10px 10px 10px; box-sizing: border-box; background: linear-gradient(0deg, var(--overlay-solid, rgba(11, 13, 10, 1)) 0%, var(--overlay-fade, rgba(11, 13, 10, 0.95)) 60%, rgba(11, 13, 10, 0) 100%); display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
+        
+        .scores-row { display: flex; justify-content: space-between; align-items: stretch; margin-bottom: 6px; gap: 6px; }
+        .score-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 2px; border-radius: 6px; flex: 1; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: 0.3s;}
+        .score-label { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; text-shadow: 1px 1px 2px #000; text-align: center; }
+        .main-score { font-size: 24px; font-weight: bold; line-height: 1; letter-spacing: 2px; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 2px 2px 4px #000; text-align: center; font-family: 'Neucha', cursive, sans-serif;}
+        .main-score span { font-size: 11px; color: #c4d1b8; text-shadow: none !important; letter-spacing: normal; }
+
+        .divider { border-top: 1px dashed #4a5c41; margin: 6px 0 8px 0; }
+        .anime-title { color: var(--theme-light, #c4d1b8); font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 0 0 10px var(--card-shadow-hover), 2px 2px 5px #000; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; width: 100%; line-height: 1.2; transition: 0.5s; }
+
+        .theory-container { background: transparent; border: none; padding: 0; }
+        .crit-row { display: flex; justify-content: space-between; font-size: 14px; color: #a4b09c; padding: 4px 10px; border-radius: 0 6px 6px 0; margin-bottom: 6px; transition: 0.3s; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .crit-row span:last-child { font-weight: bold; font-family: 'Neucha', cursive, sans-serif; font-size: 17px; color: #fff; text-shadow: 1px 1px 2px #000; }
+        
+        .loading { font-size: 24px; color: #829c73; text-align: center; margin-top: 50px; width: 100%; grid-column: 1 / -1; }
+
+        .vod-badge { position: absolute; top: 12px; left: 12px; background: rgba(11, 13, 10, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--card-border); color: var(--theme-light, #a6e3a1); width: 32px; height: 32px; border-radius: 8px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 10px var(--card-shadow); display: flex; justify-content: center; align-items: center; pointer-events: none; transition: 0.5s; }
+        
+        body.is-admin .me-element { display: none !important; }
+
+        /* Р—РђР› РЎР›РђР’Р« Р РџРћРРЎРљ */
+        .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
+        .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
+        .leaderboard-list { overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; }
+        .lb-item { display: flex; align-items: center; justify-content: space-between; background: rgba(14, 17, 13, 0.8); border: 1px solid #283325; padding: 12px 20px; border-radius: 8px; transition: 0.3s; text-decoration: none; }
+        .lb-item:hover { transform: scale(1.02); border-color: #a6e3a1; background: rgba(166,227,161,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .lb-rank { font-size: 24px; font-weight: bold; font-family: sans-serif; color: #6b7a62; width: 45px; text-align: center; }
+        .lb-rank.top-1 { color: #ffd700; text-shadow: 0 0 15px rgba(255,215,0,0.8); font-size: 32px; }
+        .lb-rank.top-2 { color: #c0c0c0; text-shadow: 0 0 15px rgba(192,192,192,0.8); font-size: 28px; }
+        .lb-rank.top-3 { color: #cd7f32; text-shadow: 0 0 15px rgba(205,127,50,0.8); font-size: 26px; }
+        .lb-user { display: flex; align-items: center; gap: 15px; flex: 1; margin-left: 15px; }
+        .lb-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .lb-name { font-size: 22px; font-weight: bold; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-stats { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .lb-count { font-size: 26px; font-weight: bold; color: #fff; line-height: 1; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-count-label { font-size: 11px; color: #6b7a62; text-transform: uppercase; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; margin-top: 4px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-online { background: #a6e3a1; box-shadow: 0 0 8px #a6e3a1; }
+        .status-offline { background: #555; }
+    </style>
+</head>
+<body>
+    <div id="dynamic-bg"></div>
+    <div class="loading-screen" id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column;">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
+
+    <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 50px;">
+            
+            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <div class="logo-dropdown">
+                <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
+                <div class="logo-dropdown-content">
+                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР° РЅР° С‚РµРєСѓС‰СѓСЋ РїР°РїРєСѓ РђРЅРёРјРµ -->
+                    <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;">
+                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
+                    </a>
+                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР°: РІС‹Р№С‚Рё РЅР°Р·Р°Рґ (../) Рё Р·Р°Р№С‚Рё РІ РїР°РїРєСѓ Game -->
+                    <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;">
+                        <span style="font-size: 14px;">в–¶</span> РРіСЂС‹
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Р›РћРљРђР›Р¬РќРћР• РњР•РќР® (РўРѕР»СЊРєРѕ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃР°Р№С‚Р°) -->
+            <div style="display: flex; gap: 25px; align-items: center;">
+                <a href="index.html" class="nav-btn active" style="--btn-color: #ffd700; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">РҐР°Р±</a>
+                <a href="tierlist.html" class="nav-btn" style="--btn-color: #ff4a4a;">РўРёСЂ-Р»РёСЃС‚</a>
+                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                
+                <!-- РњР•РќР® Р’РР—РЈРђР›Рђ Р”Р›РЇ РҐРђР‘Рђ -->
+                <div class="visual-dropdown" id="visual-dropdown">
+                    <!-- ... С‚СѓС‚ РѕСЃС‚Р°Р»СЊРЅРѕР№ РєРѕРґ РјРµРЅСЋ РІРёР·СѓР°Р»Р° Р±РµР· РёР·РјРµРЅРµРЅРёР№ ... -->
+                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <div class="visual-dropdown-content">
+                        <div class="mode-toggle" style="margin: 0; justify-content: center;">
+                            <span id="label-score" class="mode-label inactive" onclick="document.getElementById('display-mode-switch').click()">123</span>
+                            <label class="switch">
+                                <input type="checkbox" id="display-mode-switch" onchange="toggleDisplayMode()">
+                                <span class="slider"></span>
+                            </label>
+                            <span id="label-tier" class="mode-label active" style="color: #ffd700;" onclick="document.getElementById('display-mode-switch').click()">S-F</span>
+                        </div>
+                        <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
+                        <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Р§Р°С‚</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-auth" id="nav-auth">
+            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+        </div>
+    </nav>
+
+    <div class="controls-bar" style="display: none;" id="controls-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ..." oninput="applyFiltersAndSort()">
+        <div class="controls-divider"></div>
+        <select id="sort-select" class="sort-select" onchange="toggleRoleSelect(); applyFiltersAndSort();">
+            <option value="overall">РџРѕ РС‚РѕРіРѕРІРѕР№ РѕС†РµРЅРєРµ</option>
+            <option value="avgTheory">РџРѕ СЃСЂРµРґРЅРµРјСѓ РљСЂРёС‚РµСЂРёРµРІ</option>
+            <option value="plot">РџРѕ РЎСЋР¶РµС‚Сѓ</option>
+            <option value="visuals">РџРѕ Р’РёР·СѓР°Р»Сѓ</option>
+            <option value="music">РџРѕ РњСѓР·С‹РєРµ</option>
+            <option value="world">РџРѕ РњРёСЂСѓ</option>
+            <option value="atmosphere">РџРѕ РџРµСЂСЃРѕРЅР°Р¶Р°Рј</option>
+            <option value="az">РџРѕ Р°Р»С„Р°РІРёС‚Сѓ (A-Z)</option>
+            <option value="date_watched">РџРѕ РґР°С‚Рµ РїСЂРѕСЃРјРѕС‚СЂР°</option>
+            <option value="release_year">РџРѕ РґР°С‚Рµ РІС‹РїСѓСЃРєР°</option>
+            <option value="episodes">РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ СЃРµСЂРёР№</option>
+        </select>
+        <div class="controls-divider" id="role-divider"></div>
+        <select id="role-select" class="sort-select" onchange="applyFiltersAndSort()">
+            <option value="streamer">РЎС‚СЂРёРјРµСЂ</option>
+            <option value="me" class="me-element">РЇ</option>
+            <option value="chat">Р§Р°С‚</option>
+        </select>
+        <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="РР·РјРµРЅРёС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ">в†“</button>
+    </div>
+
+    <div class="main-layout" id="main-layout" style="display: none;">
+        <div id="trophy-room" class="trophy-room"><div class="loading">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ Р±Р°Р·РѕР№...</div></div>
+        
+        <div class="hub-right-panel" id="hub-right-panel">
+            <div id="hub-preview-placeholder" class="preview-placeholder">РќР°РІРµРґРёС‚Рµ РєСѓСЂСЃРѕСЂ РЅР° Р»СЋР±РѕР№ С‚Р°Р№С‚Р» РІ СЃРµС‚РєРµ, С‡С‚РѕР±С‹ СѓРІРёРґРµС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ</div>
+            
+            <div id="hub-preview-container" style="display: none; flex-direction: column;">
+                <img id="hub-preview-cover" src="" class="preview-cover" alt="cover">
+                <div class="preview-content">
+                    <div id="hub-preview-title" class="preview-title" style="margin-bottom: 10px;">РќР°Р·РІР°РЅРёРµ</div>
+                    <div class="chart-container" style="height: 200px; margin-bottom: 15px;"><canvas id="hub-previewChart"></canvas></div>
+                    <div class="custom-legend" id="hub-preview-legend"></div>
+                    <div class="theory-container" id="hub-preview-theory" style="margin-top: 10px;"></div>
+                    <button id="hub-preview-btn" style="margin-top: 15px; width: 100%; background: #121612; border: 1px solid #4a5c41; color: #fff; padding: 10px; font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">РњРµРґРёР°С‚РµРєР° в–¶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
+    <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
+        <div class="leaderboard-box" style="height: 700px;">
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="filterLeaderboard()">
+            </div>
+            <div class="leaderboard-list" id="leaderboard-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const TWITCH_CLIENT_ID = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
+        const REDIRECT_URI = '../anime/';
+        const ADMIN_USERNAME = 'skinwalker_nozxc'; 
+        const FIREBASE_BASE = 'https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app';
+
+        let currentUser = null;
+        let allCharts = {};
+        let globalFranchises = []; 
+        let currentSortDir = 'desc';
+        let currentDisplayMode = localStorage.getItem('skinwalker_display_mode') || 'score';
+        let visRoles = JSON.parse(localStorage.getItem('skinwalker_vis_roles')) || { streamer: true, me: true, chat: true };
+        
+        function toggleVisualMenu() { document.getElementById('visual-dropdown').classList.toggle('show'); }
+        window.addEventListener('click', function(e) {
+            if (!document.getElementById('visual-dropdown').contains(e.target)) {
+                document.getElementById('visual-dropdown').classList.remove('show');
+            }
+        });
+
+        let lbAllUsers = [];
+
+        function openLeaderboard() {
+            if (!window.globalCommData) return;
+            const userStats = {};
+            for (const [franchiseId, seasons] of Object.entries(window.globalCommData)) {
+                for (const [seasonId, seasonData] of Object.entries(seasons)) {
+                    if (seasonData.ratings) {
+                        for (const [userId, rating] of Object.entries(seasonData.ratings)) {
+                            if ((Number(rating.overall) > 0) || (rating.theory && Object.values(rating.theory).some(v => Number(v) > 0))) {
+                                if (!userStats[userId]) { userStats[userId] = { id: userId, name: rating.displayName || userId, avatar: rating.profileImage || 'https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png', count: 0 }; }
+                                userStats[userId].count++;
+                                if (rating.displayName) userStats[userId].name = rating.displayName;
+                                if (rating.profileImage) userStats[userId].avatar = rating.profileImage;
+                            }
+                        }
+                    }
+                }
+            }
+            lbAllUsers = Object.values(userStats).sort((a, b) => b.count - a.count);
+            document.getElementById('lb-search').value = '';
+            renderLeaderboard(lbAllUsers);
+            document.getElementById('leaderboard-modal').style.display = 'flex';
+        }
+
+        function renderLeaderboard(usersArray) {
+            const listEl = document.getElementById('leaderboard-list');
+            listEl.innerHTML = '';
+            if (usersArray.length === 0) {
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>';
+                return;
+            }
+            
+            usersArray.forEach((u) => {
+                const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
+                const rank = originalIndex + 1;
+                
+                let rankClass = ''; let crown = rank;
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+
+                const dbUser = window.globalUsersDB[u.name.toLowerCase()];
+                const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
+                const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
+                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+
+                const html = `
+                <a href="profile.html?user=${u.id}" class="lb-item">
+                    <div class="lb-rank ${rankClass}" style="width: 45px; text-align: center;">${crown}</div>
+                    <div class="lb-user" style="flex: 1; margin-left: 10px;">
+                        <img src="${u.avatar}" class="lb-avatar" style="border-color: ${color};">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div class="lb-name" style="color: ${color}; text-shadow: 0 0 8px ${color}80; line-height: 1;">${u.name}</div>
+                            <div style="display: flex; align-items: center;">${statusDot}</div>
+                        </div>
+                    </div>
+                    <div class="lb-stats">
+                        <div class="lb-count">${u.count}</div>
+                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                    </div>
+                </a>`;
+                listEl.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function filterLeaderboard() {
+            const query = document.getElementById('lb-search').value.toLowerCase().trim();
+            if (!query) { renderLeaderboard(lbAllUsers); return; }
+            const filtered = lbAllUsers.filter(u => u.name.toLowerCase().includes(query));
+            renderLeaderboard(filtered);
+        }
+
+        function initRoleVis() {
+            Object.keys(visRoles).forEach(role => {
+                const btn = document.getElementById(`toggle-${role}`);
+                if (btn) {
+                    if (visRoles[role]) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleRoleVis(role) {
+            visRoles[role] = !visRoles[role];
+            localStorage.setItem('skinwalker_vis_roles', JSON.stringify(visRoles));
+            initRoleVis();
+            applyFiltersAndSort(); 
+            if (window.lastHoveredIndex !== undefined) openHubPreview(window.lastHoveredIndex);
+        }
+
+        function toggleDisplayMode() {
+            const switchEl = document.getElementById('display-mode-switch');
+            currentDisplayMode = switchEl.checked ? 'tier' : 'score';
+            localStorage.setItem('skinwalker_display_mode', currentDisplayMode);
+            
+            document.getElementById('label-tier').className = currentDisplayMode === 'tier' ? 'mode-label active' : 'mode-label inactive';
+            document.getElementById('label-tier').style.color = currentDisplayMode === 'tier' ? '#ffd700' : '';
+            document.getElementById('label-score').className = currentDisplayMode === 'score' ? 'mode-label active' : 'mode-label inactive';
+            document.getElementById('label-score').style.color = currentDisplayMode === 'score' ? '#a6e3a1' : '';
+            
+            applyFiltersAndSort(); 
+        }
+        
+        function getTierData(score) {
+            const num = Number(score) || 0;
+            if (num === 0) return { letter: 'вЂ”', color: '#6b7a62', glow: 'none' };
+            if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)' };
+            if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)' };
+            if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)' };
+            if (num >= 5.0) return { letter: 'C', color: '#89b4fa', glow: '0 0 15px rgba(137, 180, 250, 0.8)' };
+            if (num >= 3.0) return { letter: 'D', color: '#a6e3a1', glow: '0 0 15px rgba(166, 227, 161, 0.8)' };
+            return { letter: 'F', color: '#888888', glow: '0 0 15px rgba(136, 136, 136, 0.8)' };
+        } 
+        
+        window.globalUsersDB = {};
+
+        const radarColors = [
+            { bg: 'rgba(203, 166, 247, 0.2)', border: '#cba6f7' }, 
+            { bg: 'rgba(184, 168, 123, 0.2)', border: '#b8a87b' }, 
+            { bg: 'rgba(166, 227, 161, 0.2)', border: '#a6e3a1' }  
+        ];
+        
+        if (typeof Chart !== 'undefined') { Chart.defaults.font.family = "'Neucha', cursive, sans-serif"; Chart.defaults.color = "#829c73"; }
+
+        function getScoreColor(score, alpha = 1) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `rgba(107, 122, 98, ${alpha})`; 
+            
+            let r, g, b;
+            if (numScore <= 5.5) {
+                let p = (numScore - 1) / 4.5;
+                if (p < 0) p = 0;
+                r = Math.round(205 + p * (210 - 205));
+                g = Math.round(115 + p * (215 - 115));
+                b = Math.round(50 + p * (220 - 50));
+            } else {
+                let p = (numScore - 5.5) / 4.5;
+                if (p > 1) p = 1;
+                r = Math.round(210 + p * (255 - 210));
+                g = Math.round(215 + p * (235 - 215));
+                b = Math.round(220 + p * (20 - 220));
+            }
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function getScoreShadow(score, isLarge) {
+            const numScore = Number(score);
+            const base = isLarge 
+                ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 2px 2px 4px #000' 
+                : '1px 1px 2px #000';
+                
+            if (numScore === 0 || isNaN(numScore)) return base;
+            
+            const color = getScoreColor(score, 1);
+            const blur1 = Math.round(1 + (numScore / 10) * 5); 
+            let glow = `${base}, 0 0 ${blur1}px ${color}`;
+            
+            if (numScore >= 8) {
+                const blur2 = Math.round(blur1 * 1.5);
+                glow += `, 0 0 ${blur2}px ${color}`;
+            }
+            if (numScore === 10) {
+                glow += `, 0 0 15px rgba(255,255,255,0.3)`; 
+            }
+            return glow;
+        }
+
+        function getGlassBoxStyle(score) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `background: rgba(107,122,98,0.05); border: 1px solid rgba(107,122,98,0.2); box-shadow: none;`;
+            
+            const bg = getScoreColor(score, 0.1);
+            const border = getScoreColor(score, 0.5);
+            const glow = getScoreColor(score, 0.15);
+            let blur = Math.round(4 + (numScore / 10) * 8);
+            
+            return `background: ${bg}; border: 1px solid ${border}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 ${blur}px ${glow} inset, 0 0 ${blur}px ${glow};`;
+        }
+
+        function getGlassRowStyle(score) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `background: transparent; border-left: 2px solid rgba(107,122,98,0.3);`;
+            
+            const bg = getScoreColor(score, 0.1);
+            const border = getScoreColor(score, 0.8);
+            return `background: linear-gradient(90deg, ${bg} 0%, transparent 100%); border-left: 2px solid ${border};`;
+        }
+
+        function toggleRoleSelect() {
+            const sortVal = document.getElementById('sort-select').value;
+            const needsRole = ['overall', 'avgTheory', 'plot', 'visuals', 'music', 'world', 'atmosphere'].includes(sortVal);
+            const rs = document.getElementById('role-select');
+            const rd = document.getElementById('role-divider');
+            if(rs) rs.style.display = needsRole ? 'block' : 'none';
+            if(rd) rd.style.display = needsRole ? 'block' : 'none';
+        }
+
+        function toggleSortDir() {
+            currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
+            document.getElementById('sort-dir-btn').innerText = currentSortDir === 'desc' ? 'в†“' : 'в†‘';
+            applyFiltersAndSort();
+        }
+
+        const safeNum = (v) => Number(v) || 0;
+        const getAvg = (sum, count) => count > 0 ? parseFloat((sum/count).toFixed(1)) : 0;
+
+        function loginTwitch() { window.SkinwalkerTwitch.login(); }
+        function logoutTwitch() { window.SkinwalkerTwitch.logout(); }
+
+        function getUserInfo(username, fallbackTwitchColor) {
+            const lowerName = username.toLowerCase();
+            const dbUser = window.globalUsersDB[lowerName]; 
+
+            let r = "F"; let g = 0; let t = 0; let c = fallbackTwitchColor || '#a4b09c';
+            
+            if (dbUser) {
+                if (dbUser.role) r = dbUser.role.toUpperCase();
+                if (dbUser.wallet_gold) g = dbUser.wallet_gold;
+                if (dbUser.wallet_tickets) t = dbUser.wallet_tickets;
+                if (dbUser.color && dbUser.color.trim() !== "") c = dbUser.color;
+            }
+
+            let badgeHtml = `<span class="role-badge role-f">FOLLOW</span>`;
+            if (r === 'SUB' || r === 'SUBSCRIBER') badgeHtml = `<span class="role-badge role-sub">SUB</span>`;
+            else if (r === 'VIP') badgeHtml = `<span class="role-badge role-vip">VIP</span>`;
+
+            return { role: r, gold: g, tickets: t, color: c, badge: badgeHtml };
+        }
+
+        async function checkTwitchAuth() {
+            try {
+                const hash = window.location.hash;
+                let token = null;
+                token = window.SkinwalkerTwitch.consumeRedirectToken();
+
+                if (token) {
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    if (res.status === 401) { window.SkinwalkerTwitch.clearToken(); return; }
+                    currentUser = (await res.json()).data[0];
+
+                    try {
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorData = await colorRes.json();
+                        currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
+                    } catch(e) {}
+                    
+                    const uInfo = getUserInfo(currentUser.login, currentUser.color);
+                    
+                    document.getElementById('nav-auth').innerHTML = `
+                        <div class="user-profile-neon">
+                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                                <img src="${currentUser.profile_image_url}" class="user-avatar">
+                            </div>
+                            <div class="profile-info">
+                                <div class="profile-top">
+                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span>
+                                    <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                </div>
+                                <div class="profile-bottom">
+                                    ${uInfo.badge}
+                                    <div class="wallet-item" style="color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);">
+                                        <img src="../icons/BILET_GOLD.png" onerror="this.style.display='none'"> <span>${uInfo.gold}</span>
+                                    </div>
+                                    <div class="wallet-item" style="color: #a6e3a1; text-shadow: 0 0 10px rgba(166, 227, 161, 0.3);">
+                                        <img src="../icons/BILET.png" onerror="this.style.display='none'"> <span>${uInfo.tickets}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase()) {
+                        document.getElementById('admin-btn').style.display = 'flex';
+                        document.body.classList.add('is-admin');
+                    }
+                    startOnlineHeartbeat(); 
+                }
+            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+        }
+        
+        function startOnlineHeartbeat() {
+            if (!currentUser) return;
+            const updateOnline = () => {
+                const dbId = currentUser.login.toLowerCase();
+                fetch(`${FIREBASE_BASE}/global_users/${dbId}/last_online.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(Date.now())
+                }).catch(e => console.log('Heartbeat error', e));
+            };
+            updateOnline(); 
+            setInterval(updateOnline, 60000); 
+        }
+
+        async function initApp() {
+            try {
+                const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
+                if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
+            } catch(e) { console.warn("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±Р°Р·Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№", e); }
+
+            await checkTwitchAuth();
+
+            try {
+                const [animeRes, commRes] = await Promise.all([
+                    fetch(`${FIREBASE_BASE}/anime_db.json`, { cache: 'no-store' }),
+                    fetch(`${FIREBASE_BASE}/community_db.json`, { cache: 'no-store' })
+                ]);
+                const data = await animeRes.json();
+                const commData = (await commRes.json()) || {};
+                window.globalCommData = commData;
+
+                const room = document.getElementById('trophy-room');
+                if (!data) { room.innerHTML = "<div class='loading'>РљРѕР»Р»РµРєС†РёСЏ РїСѓСЃС‚Р°.</div>"; return; }
+                
+                globalFranchises = []; 
+
+                for (const [franchiseId, seasonsObj] of Object.entries(data)) {
+                    const seasons = Object.entries(seasonsObj).map(([seasonId, sData]) => ({seasonId, ...sData}));
+                    let totalEp = 0;
+                    
+                    let streamer = { overall:0, plot:0, vis:0, mus:0, wor:0, atm:0, countOv:0, countTh:0 };
+                    let chat = { overall:0, plot:0, vis:0, mus:0, wor:0, atm:0, countOv:0, countTh:0 };
+                    let me = { overall:0, plot:0, vis:0, mus:0, wor:0, atm:0, countOv:0, countTh:0 };
+
+                    seasons.forEach(s => {
+                        totalEp += parseInt(s.info.episodesTotal) || 0;
+                        
+                        if (s.scores && safeNum(s.scores.overall) > 0) { streamer.overall += safeNum(s.scores.overall); streamer.countOv++; }
+                        if (s.scores && s.scores.theory) {
+                            const thSum = safeNum(s.scores.theory.plot) + safeNum(s.scores.theory.visuals) + safeNum(s.scores.theory.music) + safeNum(s.scores.theory.world) + safeNum(s.scores.theory.atmosphere);
+                            if (thSum > 0) {
+                                streamer.plot += safeNum(s.scores.theory.plot); streamer.vis += safeNum(s.scores.theory.visuals);
+                                streamer.mus += safeNum(s.scores.theory.music); streamer.wor += safeNum(s.scores.theory.world);
+                                streamer.atm += safeNum(s.scores.theory.atmosphere); streamer.countTh++;
+                            }
+                        }
+
+                        const sComm = commData[franchiseId] && commData[franchiseId][s.seasonId] ? commData[franchiseId][s.seasonId].ratings : null;
+                        if (sComm) {
+                            for (const [uid, r] of Object.entries(sComm)) {
+                                const isMe = currentUser && uid === currentUser.id;
+                                
+                                if (safeNum(r.overall) > 0) {
+                                    chat.overall += safeNum(r.overall); chat.countOv++;
+                                    if (isMe) { me.overall += safeNum(r.overall); me.countOv++; }
+                                }
+                                
+                                if (r.theory) {
+                                    const thSumChat = safeNum(r.theory.plot) + safeNum(r.theory.visuals) + safeNum(r.theory.music) + safeNum(r.theory.world) + safeNum(r.theory.atmosphere);
+                                    if (thSumChat > 0) {
+                                        chat.plot += safeNum(r.theory.plot); chat.vis += safeNum(r.theory.visuals);
+                                        chat.mus += safeNum(r.theory.music); chat.wor += safeNum(r.theory.world); chat.atm += safeNum(r.theory.atmosphere);
+                                        chat.countTh++;
+                                        
+                                        if (isMe) {
+                                            me.plot += safeNum(r.theory.plot); me.vis += safeNum(r.theory.visuals);
+                                            me.mus += safeNum(r.theory.music); me.wor += safeNum(r.theory.world); me.atm += safeNum(r.theory.atmosphere);
+                                            me.countTh++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    const scoresObj = {
+                        streamer: {
+                            overall: getAvg(streamer.overall, streamer.countOv),
+                            plot: getAvg(streamer.plot, streamer.countTh), visuals: getAvg(streamer.vis, streamer.countTh),
+                            music: getAvg(streamer.mus, streamer.countTh), world: getAvg(streamer.wor, streamer.countTh), atmosphere: getAvg(streamer.atm, streamer.countTh)
+                        },
+                        chat: {
+                            overall: getAvg(chat.overall, chat.countOv),
+                            plot: getAvg(chat.plot, chat.countTh), visuals: getAvg(chat.vis, chat.countTh),
+                            music: getAvg(chat.mus, chat.countTh), world: getAvg(chat.wor, chat.countTh), atmosphere: getAvg(chat.atm, chat.countTh)
+                        },
+                        me: {
+                            overall: getAvg(me.overall, me.countOv),
+                            plot: getAvg(me.plot, me.countTh), visuals: getAvg(me.vis, me.countTh),
+                            music: getAvg(me.mus, me.countTh), world: getAvg(me.wor, me.countTh), atmosphere: getAvg(me.atm, me.countTh)
+                        }
+                    };
+
+                    scoresObj.streamer.avgTheory = getAvg(scoresObj.streamer.plot + scoresObj.streamer.visuals + scoresObj.streamer.music + scoresObj.streamer.world + scoresObj.streamer.atmosphere, 5);
+                    scoresObj.chat.avgTheory = getAvg(scoresObj.chat.plot + scoresObj.chat.visuals + scoresObj.chat.music + scoresObj.chat.world + scoresObj.chat.atmosphere, 5);
+                    scoresObj.me.avgTheory = getAvg(scoresObj.me.plot + scoresObj.me.visuals + scoresObj.me.music + scoresObj.me.world + scoresObj.me.atmosphere, 5);
+
+                    const baseSeason = seasons[0];
+                    
+                    // РџСЂРѕРІРµСЂСЏРµРј Р’РЎР• СЃРµР·РѕРЅС‹ Рё С„РёР»СЊРјС‹ РІРЅСѓС‚СЂРё С„СЂР°РЅС€РёР·С‹ РЅР° РЅР°Р»РёС‡РёРµ СЃСЃС‹Р»РѕРє
+                    const hasAnyVod = seasons.some(s => 
+                        (s.videoUrls && s.videoUrls.length > 0) || 
+                        (typeof s.videoUrl === 'string' && s.videoUrl.trim() !== '')
+                    );
+                    
+                    globalFranchises.push({
+                        id: franchiseId, title: franchiseId.replace(/_/g, ' '), coverUrl: baseSeason.coverUrl,
+                        episodes: totalEp, badgeText: `${seasons.length}S ${totalEp}EP`,
+                        release_year: parseInt(baseSeason.info.year) || 0, date_watched: baseSeason.info.dateWatched ? new Date(baseSeason.info.dateWatched).getTime() : 0,
+                        az: franchiseId.replace(/_/g, ' ').toLowerCase(),
+                        scores: scoresObj,
+                        hasVod: hasAnyVod // РўРµРїРµСЂСЊ РєР°РјРµСЂР° РїРѕСЏРІРёС‚СЃСЏ, РµСЃР»Рё Р·Р°РїРёСЃСЊ РµСЃС‚СЊ С…РѕС‚СЊ РіРґРµ-С‚Рѕ
+                    });
+                }
+
+                document.getElementById('controls-bar').style.display = 'flex';
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('main-layout').style.display = 'flex';
+                
+                initRoleVis();
+                document.getElementById('display-mode-switch').checked = (currentDisplayMode === 'tier'); 
+                toggleDisplayMode();
+
+            } catch (e) { console.error(e); }
+        }
+
+        function applyFiltersAndSort() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const sortVal = document.getElementById('sort-select').value;
+            const roleVal = document.getElementById('role-select').value;
+            const mult = currentSortDir === 'desc' ? 1 : -1;
+            
+            const needsRole = ['overall', 'avgTheory', 'plot', 'visuals', 'music', 'world', 'atmosphere'].includes(sortVal);
+
+            let filtered = globalFranchises.filter(f => f.title.toLowerCase().includes(query));
+
+            filtered.sort((a, b) => {
+                let valA, valB;
+                if (needsRole) {
+                    valA = safeNum(a.scores[roleVal][sortVal]);
+                    valB = safeNum(b.scores[roleVal][sortVal]);
+                } else {
+                    valA = a[sortVal]; 
+                    valB = b[sortVal];
+                }
+
+                if (typeof valA === 'string') return valA.localeCompare(valB) * (mult === 1 ? 1 : -1);
+                return (valB - valA) * mult;
+            });
+
+            renderCards(filtered, sortVal);
+        }
+
+        window.currentRenderedCards = [];
+        let hubRadarChart = null;
+
+        function renderCards(arr, sortVal = 'overall') {
+            window.currentRenderedCards = arr;
+            const room = document.getElementById('trophy-room');
+            room.innerHTML = "";
+            
+            if (arr.length === 0) { 
+                room.innerHTML = "<div class='loading'>РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ...</div>"; 
+                return; 
+            }
+
+            const isStreamer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const validKeys = ['overall', 'avgTheory', 'plot', 'visuals', 'music', 'world', 'atmosphere'];
+            const scoreKey = validKeys.includes(sortVal) ? sortVal : 'overall';
+            const sortNames = { 'avgTheory': 'РЎР Р•Р”РќР•РњРЈ РљР РРўР•Р РР®', 'plot': 'РЎР®Р–Р•РўРЈ', 'visuals': 'Р’РР—РЈРђР›РЈ', 'music': 'РњРЈР—Р«РљР•', 'world': 'РњРР РЈ', 'atmosphere': 'РџР•Р РЎРћРќРђР–РђРњ' };
+            const labelHtml = scoreKey !== 'overall' ? `<div style="text-align: center; color: #829c73; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 1px 1px 2px #000;">РћР¦Р•РќРљРђ РџРћ ${sortNames[scoreKey]}</div>` : '';
+
+            arr.forEach((f, index) => {
+                const safeIdForLink = encodeURIComponent(f.id).replace(/'/g, "%27");
+                const safeDomId = f.id.replace(/[^a-zA-Z0-9_-]/g, "_");
+                const detailsLink = `Anime-Page.html?id=${safeIdForLink}`;
+                const safeCoverUrl = f.coverUrl.replace(/'/g, "\\'");
+                const s = f.scores;
+
+                const valStr = s.streamer[scoreKey] || 0;
+                const valChat = s.chat[scoreKey] || 0;
+                const valMe = s.me[scoreKey] || 0;
+
+                const vodHtml = f.hasVod ? `<div class="vod-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/></svg></div>` : '';
+
+                const getBoxHtml = (roleClass, labelText, val) => {
+                    if (currentDisplayMode === 'tier') {
+                        const tier = getTierData(val);
+                        return `
+                            <div class="score-box" style="background: ${tier.color}15; border: 1px solid ${tier.color}60; box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 15px ${tier.color}15;">
+                                <div class="score-label ${roleClass}" style="color:${tier.color}; border-bottom-color:${tier.color}60; text-shadow:0 0 8px ${tier.color};">${labelText}</div>
+                                <div class="main-score" style="color:${tier.color}; text-shadow:${tier.glow}; font-size: 34px;">${tier.letter}</div>
+                                ${val > 0 ? `<div style="font-size: 11px; color: ${tier.color}; opacity: 0.8; margin-top: -2px; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">${val}</div>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="score-box" style="${getGlassBoxStyle(val)}">
+                                <div class="score-label ${roleClass}" style="color:${getScoreColor(val, 1)}; border-bottom-color:${getScoreColor(val, 0.4)}; text-shadow:0 0 8px ${getScoreColor(val, 0.6)};">${labelText}</div>
+                                <div class="main-score" style="color:#fff; text-shadow:${getScoreShadow(val, true)};">${val}<span> / 10</span></div>
+                            </div>
+                        `;
+                    }
+                };
+
+                const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'РЎС‚СЂРёРјРµСЂ', valStr) : '';
+                const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Р§Р°С‚', valChat) : '';
+                const meBoxHtml = (!isStreamer && visRoles.me) ? getBoxHtml('me', 'РЇ', valMe) : '';
+
+                const cardHtml = `
+                <div class="card-container" id="card-${safeDomId}" data-cover="${safeCoverUrl}" onmouseenter="openHubPreview(${index})" onmouseleave="closeHubPreview()" onclick="window.location.href='${detailsLink}'" style="--card-color: #283325; --card-border: rgba(40, 51, 37, 0.8); --card-shadow: rgba(0,0,0,0.5); --card-shadow-hover: rgba(166, 227, 161, 0.25);">
+                    <div class="card-face" style="background-image: url('${safeCoverUrl}');">
+                        <div class="ep-badge">${f.badgeText}</div>
+                        ${vodHtml}
+                        <div class="front-overlay">
+                            ${labelHtml}
+                            <div class="scores-row">
+                                ${strBoxHtml}
+                                ${meBoxHtml}
+                                ${chatBoxHtml}
+                            </div>
+                            <div class="divider"></div>
+                            <div class="anime-title">${f.title}</div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                room.insertAdjacentHTML('beforeend', cardHtml);
+            });
+            
+            extractHubColors();
+        }
+
+        function extractHubColors() {
+            if (typeof ColorThief === 'undefined') return;
+            const colorThief = new ColorThief();
+            document.querySelectorAll('.card-container').forEach(card => {
+                const imgUrl = card.getAttribute('data-cover');
+                const hiddenImg = new Image();
+                hiddenImg.crossOrigin = 'Anonymous';
+                hiddenImg.onload = function() {
+                    try {
+                        const color = colorThief.getColor(hiddenImg);
+                        let r = color[0], g = color[1], b = color[2];
+                        const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+                        let tr = r, tg = g, tb = b;
+                        if (luminance < 90) { tr = Math.min(255, r + 80); tg = Math.min(255, g + 80); tb = Math.min(255, b + 80); }
+
+                        card.style.setProperty('--card-color', `rgb(${r}, ${g}, ${b})`);
+                        card.style.setProperty('--card-border', `rgba(${r}, ${g}, ${b}, 0.6)`);
+                        card.style.setProperty('--card-shadow', `rgba(${r}, ${g}, ${b}, 0.2)`);
+                        card.style.setProperty('--card-shadow-hover', `rgba(${r}, ${g}, ${b}, 0.8)`);
+                        card.style.setProperty('--theme-light', `rgb(${tr}, ${tg}, ${tb})`); 
+                        card.dataset.rgb = `${tr}, ${tg}, ${tb}`;
+                    } catch(e) {}
+                };
+                hiddenImg.src = imgUrl + '?bypassCache=' + Date.now();
+            });
+        }
+
+        function openHubPreview(index) {
+            window.lastHoveredIndex = index;
+            const f = window.currentRenderedCards[index];
+            if (!f) return;
+
+            const isStreamer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const safeDomId = f.id.replace(/[^a-zA-Z0-9_-]/g, "_");
+            const cardElem = document.getElementById(`card-${safeDomId}`);
+            const s = f.scores;
+
+            const themeLight = cardElem.style.getPropertyValue('--theme-light').trim() || '#a6e3a1';
+            const cardShadow = cardElem.style.getPropertyValue('--card-shadow-hover').trim() || 'rgba(166, 227, 161, 0.3)';
+
+            document.getElementById('hub-preview-placeholder').style.display = 'none';
+            document.getElementById('hub-preview-container').style.display = 'flex';
+
+            const bg = document.getElementById('dynamic-bg');
+            bg.style.backgroundImage = `url('${f.coverUrl}')`;
+            bg.classList.add('active');
+
+            if (cardElem.dataset.rgb) {
+                const rgb = cardElem.dataset.rgb;
+                document.documentElement.style.setProperty('--theme-primary', `rgb(${rgb})`);
+                document.documentElement.style.setProperty('--theme-glow', `rgba(${rgb}, 0.5)`);
+                document.documentElement.style.setProperty('--theme-panel-border', `rgba(${rgb}, 0.4)`);
+            }
+            
+            const panel = document.getElementById('hub-right-panel');
+            panel.style.borderColor = themeLight;
+            panel.style.boxShadow = `0 10px 30px rgba(0,0,0,0.8), 0 0 20px ${cardShadow}`;
+
+            document.getElementById('hub-preview-cover').src = f.coverUrl;
+            document.getElementById('hub-preview-cover').style.borderColor = themeLight;
+            document.getElementById('hub-preview-title').innerText = f.title;
+            document.getElementById('hub-preview-title').style.color = themeLight;
+            document.getElementById('hub-preview-btn').style.borderColor = themeLight;
+            document.getElementById('hub-preview-btn').onclick = () => window.location.href = `Anime-Page.html?id=${encodeURIComponent(f.id).replace(/'/g, "%27")}`;
+
+            if (!window.hubHighlightChart) {
+                window.hubHighlightChart = function(index) {
+                    if (!hubRadarChart) return;
+                    hubRadarChart.data.datasets.forEach((ds, i) => {
+                        if (i !== index) { ds.backgroundColor = 'transparent'; ds.borderColor = 'rgba(255,255,255,0.05)'; ds.borderWidth = 1; }
+                        else { ds.backgroundColor = radarColors[i].border + '40'; ds.borderColor = radarColors[i].border; ds.borderWidth = 4; }
+                    });
+                    hubRadarChart.update();
+                };
+                window.hubResetChart = function() {
+                    if (!hubRadarChart) return;
+                    hubRadarChart.data.datasets.forEach((ds, i) => { ds.backgroundColor = radarColors[i].bg; ds.borderColor = radarColors[i].border; ds.borderWidth = 2; });
+                    hubRadarChart.update();
+                };
+            }
+
+            const createStatCol = (title, chartColor, avgTheory, theory, isMe, chartIndex) => {
+                if (isMe && isStreamer) return '';
+                
+                const numAvg = Number(avgTheory) || 0;
+                const titleColor = numAvg > 0 ? getScoreColor(numAvg, 1) : '#6b7a62';
+                const titleShadow = numAvg > 0 ? getScoreShadow(numAvg, false) : 'none';
+                
+                const row = (name, val) => {
+                    const numVal = Number(val) || 0;
+                    const textColor = numVal > 0 ? getScoreColor(numVal, 1) : '#6b7a62';
+                    const textShadow = numVal > 0 ? getScoreShadow(numVal, false) : 'none';
+                    const numColor = numVal > 0 ? '#fff' : '#555';
+                    
+                    return `
+                    <div style="${getGlassRowStyle(numVal)} display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; border-radius: 0 6px 6px 0; margin-bottom: 4px;">
+                        <span style="color: ${textColor}; font-family: 'Neucha', cursive; font-size: 15px; font-weight: bold; text-shadow: ${textShadow};">${name}</span>
+                        <span style="color: ${numColor}; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; text-shadow: ${textShadow};">${val || '-'}</span>
+                    </div>`;
+                };
+
+                return `
+                <div style="${getGlassBoxStyle(numAvg)} flex: 1; display: flex; flex-direction: column; align-items: center; padding: 12px 6px; border-radius: 8px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.transform='scale(1.02)'; this.style.filter='brightness(1.2)'; window.hubHighlightChart(${chartIndex});" onmouseout="this.style.transform='scale(1)'; this.style.filter='none'; window.hubResetChart();">
+                    <div style="color: ${titleColor}; text-shadow: ${titleShadow}; display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px;">
+                        <div style="width: 10px; height: 10px; border-radius: 50%; background: ${chartColor}; box-shadow: 0 0 5px ${chartColor};"></div>
+                        ${title}
+                    </div>
+                    <div style="color: #fff; font-size: 26px; font-weight: bold; text-shadow: ${numAvg > 0 ? getScoreShadow(numAvg, true) : 'none'}; margin-bottom: 5px; font-family: 'Neucha', cursive;">${numAvg > 0 ? numAvg : '-'}</div>
+                    
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed rgba(74, 92, 65, 0.6); padding-top: 8px; margin-top: 5px;">
+                        ${row('РЎСЋР¶РµС‚', theory.plot)}
+                        ${row('Р’РёР·СѓР°Р»', theory.visuals)}
+                        ${row('РњСѓР·С‹РєР°', theory.music)}
+                        ${row('РњРёСЂ', theory.world)}
+                        ${row('РџРµСЂСЃРѕРЅР°Р¶Рё', theory.atmosphere)}
+                    </div>
+                </div>
+                `;
+            };
+
+            document.getElementById('hub-preview-theory').innerHTML = `
+                <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
+                    ${visRoles.streamer ? createStatCol('РЎС‚СЂРёРјРµСЂ', radarColors[0].border, s.streamer.avgTheory, s.streamer, false, 0) : ''}
+                    ${(!isStreamer && visRoles.me) ? createStatCol('РЇ', radarColors[2].border, s.me.avgTheory, s.me, true, 2) : ''}
+                    ${visRoles.chat ? createStatCol('Р§Р°С‚', radarColors[1].border, s.chat.avgTheory, s.chat, false, 1) : ''}
+                </div>
+            `;
+
+            document.getElementById('hub-preview-legend').innerHTML = '';
+
+            const ctx = document.getElementById('hub-previewChart').getContext('2d');
+            const datasets = [
+                { data: [s.streamer.plot, s.streamer.visuals, s.streamer.music, s.streamer.world, s.streamer.atmosphere], backgroundColor: radarColors[0].bg, borderColor: radarColors[0].border, pointBackgroundColor: radarColors[0].border, borderWidth: 2, pointRadius: 2 },
+                { data: [s.chat.plot, s.chat.visuals, s.chat.music, s.chat.world, s.chat.atmosphere], backgroundColor: radarColors[1].bg, borderColor: radarColors[1].border, pointBackgroundColor: radarColors[1].border, borderWidth: 2, pointRadius: 2 }
+            ];
+            if (!isStreamer) datasets.push({ data: [s.me.plot, s.me.visuals, s.me.music, s.me.world, s.me.atmosphere], backgroundColor: radarColors[2].bg, borderColor: radarColors[2].border, pointBackgroundColor: radarColors[2].border, borderWidth: 2, pointRadius: 2 });
+
+            if (hubRadarChart) {
+                hubRadarChart.data.datasets = datasets;
+                hubRadarChart.update();
+            } else {
+                hubRadarChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: { labels: ['РЎСЋР¶РµС‚', 'Р’РёР·СѓР°Р»', 'РњСѓР·С‹РєР°', 'РњРёСЂ', 'РџРµСЂСЃРѕРЅР°Р¶Рё'], datasets: datasets },
+                    options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' }, pointLabels: { font: { size: 11, weight: 'bold' }, color: '#c4d1b8' } } } }
+                });
+            }
+        }
+
+        function closeHubPreview() {
+            document.getElementById('dynamic-bg').classList.remove('active');
+            document.documentElement.style.removeProperty('--theme-primary');
+            document.documentElement.style.removeProperty('--theme-glow');
+            document.documentElement.style.removeProperty('--theme-panel-border');
+        }
+         
+        initApp();
+        window.SkinwalkerFirebaseStream.subscribe('anime-data', `${FIREBASE_BASE}/anime_db.json`, initApp);
+        window.SkinwalkerFirebaseStream.subscribe('anime-community', `${FIREBASE_BASE}/community_db.json`, initApp);
+    </script>
+</body>
+</html>
+
+

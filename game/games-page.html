@@ -1,0 +1,1261 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Р”РµС‚Р°Р»Рё РРіСЂС‹</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/site-header.css">
+    <script src="../shared/site-header.js" defer></script>
+    <script src="../shared/twitch-auth.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+    <style> 
+    :root {
+        --theme-primary: #a6e3a1; 
+        --theme-glow: rgba(166, 227, 161, 0.2); 
+        --theme-panel-bg-top: #101411;
+        --theme-panel-bg-bottom: #080a08;
+        --theme-panel-header: #0b0d0a;
+        --theme-panel-border: #283325;
+    }
+
+    /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+        .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
+        .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
+        .nav-logo-wrap:hover { filter: brightness(1.2); }
+        .logo-arrow { font-size: 14px; opacity: 0.7; transition: transform 0.3s; }
+        .logo-dropdown:hover .logo-arrow { transform: rotate(180deg); }
+        
+        .logo-dropdown-content { display: none; position: absolute; left: 0; top: 100%; margin-top: -5px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border, #283325); border-radius: 12px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 200px; backdrop-filter: blur(10px); flex-direction: column; gap: 5px; }
+        .logo-dropdown:hover .logo-dropdown-content { display: flex; }
+        
+        .logo-link { color: #a4b09c; text-decoration: none; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; text-transform: uppercase; padding: 10px 15px; border-radius: 8px; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; }
+        .logo-link:hover { background: rgba(0,0,0,0.4); color: var(--site-color); text-shadow: 0 0 10px var(--site-color); border-color: var(--site-color); }
+        .logo-link.active { color: var(--site-color); background: rgba(0,0,0,0.3); border-left: 3px solid var(--site-color); border-radius: 4px 8px 8px 4px; }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0b0d0a; border-left: 1px solid var(--theme-panel-border); }
+    ::-webkit-scrollbar-thumb { background: #4a5c41; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--theme-primary); box-shadow: 0 0 10px var(--theme-glow); }
+
+    body { margin: 0; padding: 0 0 20px 0; font-family: 'Neucha', cursive, sans-serif; background-color: #0b0d0a; color: #a4b09c; min-width: 1350px; overflow-x: hidden; }
+
+    /* РЁРђРџРљРђ */
+    .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: 0.2s; cursor: pointer; }
+    .nav-logo:hover { filter: brightness(1.2); text-shadow: 0 0 15px var(--theme-glow); }
+    
+    .nav-btn { background: transparent; border: none; color: #a4b09c; padding: 5px 0; font-family: inherit; font-size: 18px; font-weight: bold; cursor: pointer; transition: color 0.5s ease, text-shadow 0.5s ease; position: relative; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; outline: none; }
+        .nav-btn::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -6px; left: 50%; background-color: var(--btn-color, #a6e3a1); transition: width 0.3s ease, background-color 0.5s ease, box-shadow 0.5s ease; transform: translateX(-50%); box-shadow: 0 0 8px var(--btn-color, #a6e3a1); }
+        
+        .nav-btn:hover { color: var(--btn-color, #a6e3a1); text-shadow: 0 0 10px var(--btn-color, #a6e3a1); }
+        .nav-btn:hover::after { width: 100%; }
+        
+        /* Р¦РІРµС‚Р° РєРЅРѕРїРѕРє РїСЂРё РЅР°РІРµРґРµРЅРёРё */
+        .btn-tier:hover { --btn-color: #ff4a4a; color: #ff4a4a; text-shadow: 0 0 10px rgba(255, 74, 74, 0.5); }
+        .btn-hub:hover { --btn-color: #ffd700; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .btn-visual:hover { --btn-color: #a6e3a1; color: #a6e3a1; text-shadow: 0 0 10px rgba(166, 227, 161, 0.5); }
+
+    .nav-auth .twitch-btn { background: #6441a5; color: white; padding: 8px 16px; border-radius: 8px; font-family: inherit; font-size: 18px; font-weight: bold; cursor: pointer; border: 1px solid #4a307a; transition: 0.2s; letter-spacing: 1px;}
+    .nav-auth .twitch-btn:hover { background: #7d5bbe; box-shadow: 0 0 15px rgba(100, 65, 165, 0.8); }
+
+    /* РџР РћР¤РР›Р¬ */
+    .user-profile-neon { display: flex; align-items: center; gap: 18px; background: rgba(15, 20, 15, 0.2); backdrop-filter: blur(16px); padding: 10px 25px 10px 10px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: 0.3s ease; }
+    .user-profile-neon:hover { background: rgba(15, 20, 15, 0.3); border-color: rgba(166, 227, 161, 0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 15px rgba(166, 227, 161, 0.1); }
+    .avatar-glow-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
+    .avatar-glow-wrap::before { content: ''; position: absolute; width: 120%; height: 120%; border-radius: 50%; background: var(--user-color, #a6e3a1); filter: blur(10px); opacity: 0.3; transition: 0.3s; }
+    .user-profile-neon:hover .avatar-glow-wrap::before { opacity: 0.6; }
+    .user-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--user-color, #a6e3a1); position: relative; z-index: 2; object-fit: cover; }
+    .profile-info { display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+    .profile-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .profile-bottom { display: flex; align-items: center; gap: 15px; }
+    .role-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 10px; border-radius: 6px; font-size: 13px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+    .role-sub { background: #6441a5; color: #fff; border: 1px solid #4a307a; } 
+    .role-vip { background: #e05e85; color: #fff; border: 1px solid #b83d63; } 
+    .role-f { background: #333333; color: #a4b09c; border: 1px solid #222; } 
+    .wallet-item { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+    .wallet-item img { width: 18px; height: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+    .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-family: inherit; font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px;}
+    .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
+
+    /* РњР•РќР® Р’РР—РЈРђР›Рђ */
+    .visual-dropdown { position: relative; display: inline-block; }
+    .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid #4a5c41; border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
+    .visual-dropdown.show .visual-dropdown-content { display: flex; }
+    .mode-toggle { display: flex; align-items: center; gap: 10px; font-size: 18px; justify-content: center; margin: 0; }
+    .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(14, 17, 13, 0.6); border: 1px solid #283325; transition: .4s; border-radius: 34px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #a4b09c; transition: .4s; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+    input:checked + .slider { background-color: rgba(255, 215, 0, 0.15); border-color: #ffd700; }
+    input:checked + .slider:before { transform: translateX(22px); background-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
+    .mode-label { font-weight: bold; text-shadow: 1px 1px 2px #000; transition: 0.3s; cursor: pointer; }
+    .mode-label.active { color: #fff; text-shadow: 0 0 8px currentColor; }
+    .mode-label.inactive { color: #6b7a62; }
+    .role-toggles { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 0; }
+    .role-toggle-btn { background: transparent; border: none; border-bottom: 2px solid rgba(107, 122, 98, 0.3); color: #6b7a62; padding: 4px 2px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; outline: none; }
+    .role-toggle-btn:hover { color: #c4d1b8; border-bottom-color: rgba(196, 209, 184, 0.5); }
+    .role-toggle-btn.active.streamer { color: #cba6f7; border-bottom-color: #cba6f7; text-shadow: 0 0 8px rgba(203, 166, 247, 0.6); }
+    .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
+    .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
+
+    /* РљРђР РљРђРЎ РџРђРќР•Р›Р•Р™ */
+    .layout { display: flex; gap: 20px; align-items: stretch; padding: 0 20px; }
+    .col-left { width: 320px; display: flex; flex-direction: column; gap: 20px; }
+    .col-center { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+    .col-right { width: 420px; display: flex; flex-direction: column; gap: 20px; }
+    .col-right .widget-base { height: calc(100vh - 100px); min-height: 750px; }
+    .col-right .widget-content { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+    
+    .widget-base { background: linear-gradient(180deg, var(--theme-panel-bg-top) 0%, var(--theme-panel-bg-bottom) 100%); border: 2px solid var(--theme-panel-border); border-radius: 6px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; transition: 0.5s; }
+    .widget-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--theme-panel-header); border-bottom: 2px solid var(--theme-panel-border); flex-shrink: 0; transition: 0.5s; }
+    .widget-title { color: var(--theme-primary); font-weight: bold; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--theme-glow); transition: 0.5s; }
+    .widget-content { padding: 15px; overflow-y: auto; flex: 1; position: relative; scrollbar-width: none; }
+
+    /* РРќР¤РћР РњРђР¦РРЇ Рћ РР“Р Р• */
+    .cover-img { width: 100%; border-radius: 6px; border: 1px solid #4a5c41; margin-bottom: 12px; }
+    .genre-badge { display: inline-block; background: var(--theme-panel-header); color: #fff; text-shadow: 0 0 8px var(--theme-primary); border: 1px solid var(--theme-primary); padding: 4px 10px; border-radius: 6px; font-size: 15px; font-family: inherit; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 5px var(--theme-glow); transition: 0.5s; white-space: nowrap; letter-spacing: 1px; }
+    .info-row { display: flex; gap: 10px; font-size: 15px; margin-bottom: 6px; border-bottom: 1px dashed var(--theme-panel-border); padding-bottom: 3px; }
+    .info-label { color: var(--theme-primary); opacity: 0.8; font-weight: bold; flex: 0 0 115px; }
+    .info-val { color: #c4d1b8; font-weight: bold; flex: 1; text-align: right; }
+    .synopsis-text { font-size: 16px; line-height: 1.5; color: #c4d1b8; text-align: justify; }
+
+    /* РџР›Р•Р•Р  */
+    .season-btn { background: rgba(0,0,0,0.4); border: 1px solid #4a5c41; color: #a4b09c; font-family: inherit; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+    .season-btn:hover { background: #161a15; color: #c4d1b8; border-color: #829c73; }
+    .season-btn.active { background: var(--theme-glow); border-color: var(--theme-primary); color: var(--theme-primary); box-shadow: 0 0 10px var(--theme-glow); }
+
+    /* РЎРўРђРўРРЎРўРРљРђ */
+    .scores-row { display: flex; justify-content: space-between; align-items: stretch; gap: 10px; }
+    .score-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 5px; border-radius: 8px; flex: 1; backdrop-filter: blur(8px); cursor: pointer; transition: 0.3s; }
+    .score-box:hover, .legend-col:hover { transform: translateY(-3px); filter: brightness(1.2); }
+    .score-label { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; text-shadow: 1px 1px 2px #000; text-align: center; }
+    .main-score { font-size: 32px; font-weight: bold; line-height: 1; letter-spacing: 2px; text-align: center; font-family: inherit; }
+    .main-score span { font-size: 14px; text-shadow: none !important; letter-spacing: normal; color: #c4d1b8;}
+    .chart-wrapper { width: 100%; height: 240px; margin-bottom: 10px; }
+    .interactive-legend { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .legend-col { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; padding: 8px 5px; border-radius: 8px; flex: 1; backdrop-filter: blur(8px); }
+    .legend-title { display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; text-shadow: 1px 1px 2px #000;}
+    .legend-score { font-size: 22px; font-weight: bold; margin-bottom: 5px; transition: color 0.3s;}
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .legend-breakdown { width: 100%; display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed rgba(74, 92, 65, 0.6); padding-top: 8px; margin-top: 5px;}
+    .crit-row { display: flex; justify-content: space-between; font-size: 15px; color: #a4b09c; padding: 4px 8px; border-radius: 0 6px 6px 0; margin-bottom: 4px; transition: 0.2s;}
+    .crit-row span:last-child { font-weight: bold; font-family: inherit; }
+    .rate-btn { width: 100%; background: var(--theme-glow); border: 1px solid var(--theme-primary); color: var(--theme-primary); padding: 12px; border-radius: 8px; font-family: inherit; font-size: 20px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.5s; margin-top: auto; box-shadow: 0 0 10px var(--theme-glow); }
+    .rate-btn:hover { background: var(--theme-primary); color: #0b0d0a; box-shadow: 0 0 20px var(--theme-primary); }
+
+    /* РљРћРњРњР•РќРўРђР РР */
+    .comment-input-area { background: var(--theme-panel-bg-top); border: 1px solid var(--theme-panel-border); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+    .comment-textarea { width: 100%; background: #121612; border: 1px solid var(--theme-panel-border); color: #c4d1b8; border-radius: 8px; padding: 15px; font-family: inherit; font-size: 18px; outline: none; transition: 0.2s; resize: vertical; min-height: 100px; box-sizing: border-box; }
+    .comment-textarea:focus { border-color: var(--theme-primary); box-shadow: 0 0 15px var(--theme-glow); }
+    .send-btn { align-self: flex-end; background: #1a2618; border: 1px solid var(--theme-primary); color: var(--theme-primary); padding: 10px 30px; font-family: inherit; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;}
+    .send-btn:hover { background: var(--theme-primary); color: #0b0d0a; box-shadow: 0 0 15px var(--theme-glow); }
+    .comments-list { display: flex; flex-direction: column; gap: 25px; }
+    .comment-wrapper { display: flex; flex-direction: column; gap: 15px; }
+    .comment-item { display: flex; flex-direction: column; background: var(--theme-panel-bg-bottom); border-radius: 12px; border: 1px solid var(--theme-panel-border); overflow: hidden; }
+    .comment-top { display: flex; justify-content: space-between; align-items: center; background: transparent; padding: 15px 25px; border-bottom: 1px dashed var(--theme-panel-border); }
+    .comment-author-block { display: flex; align-items: center; gap: 15px; }
+    .comment-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--theme-primary); box-shadow: 0 0 10px var(--theme-glow); object-fit: cover; background: #0b0d0a; }
+    .author-details { display: flex; flex-direction: column; gap: 6px; }
+    .comment-author { font-family: inherit; font-weight: bold; font-size: 22px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); letter-spacing: 1px;}
+    .comment-rating-block { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
+    .cr-overall { font-size: 40px; font-weight: bold; line-height: 1; letter-spacing: -1px; }
+    .cr-theory { display: flex; gap: 8px; font-size: 16px; font-weight: bold; margin-top: 5px; }
+    .reply-item .comment-top { padding: 12px 20px; border-radius: 12px 12px 0 0; background: var(--theme-panel-bg-top); }
+    .reply-item .comment-avatar { width: 45px; height: 45px; border-width: 1px; }
+    .reply-item .comment-author { font-size: 20px; }
+    .reply-item .cr-overall { font-size: 32px; }
+    .reply-item .cr-theory { font-size: 14px; gap: 6px; }
+    .tooltip-element { position: relative; cursor: help; transition: transform 0.2s; padding: 2px; display: inline-block; }
+    .tooltip-element:hover { transform: scale(1.1); z-index: 50; }
+    .tooltip-element::after { content: attr(data-title); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: #121612; color: #c4d1b8; padding: 6px 10px; border-radius: 6px; font-size: 13px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; border: 1px solid #4a5c41; font-weight: normal; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 100;}
+    .tooltip-element:hover::after { opacity: 1; }
+    .cr-theory span:nth-last-child(1)::after, .cr-theory span:nth-last-child(2)::after, .cr-overall::after { left: auto; right: 0; transform: none; }
+    .comment-content-wrap { padding: 20px 25px; display: flex; flex-direction: column; gap: 15px; }
+    .comment-text { font-size: 18px; color: #c4d1b8; line-height: 1.6; word-break: break-word; white-space: pre-wrap; margin-bottom: 15px; }
+    .reply-item .comment-content-wrap { padding: 15px 20px; gap: 10px; }
+    .reply-item .comment-text { font-size: 16px; margin-bottom: 10px; }
+    .comment-bottom { display: flex; flex-direction: column; gap: 10px; border-top: 1px dashed rgba(74, 92, 65, 0.4); padding-top: 15px; }
+    .reply-item .comment-bottom { padding-top: 10px; }
+    .comment-date { font-size: 13px; color: #6b7a62; font-family: sans-serif; font-style: italic; }
+    .edited-tag { font-size: 11px; opacity: 0.6; margin-left: 5px; font-style: italic; }
+    .comment-actions { display: flex; gap: 20px; align-items: center; }
+    .comment-actions button { background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 15px; text-transform: uppercase; transition: 0.2s; padding: 0; font-weight: bold; letter-spacing: 1px; }
+    .reply-item .comment-actions button { font-size: 14px; }
+    .btn-reply { color: #a4b09c; } .btn-reply:hover { color: var(--theme-primary); }
+    .btn-edit { color: var(--theme-primary); opacity: 0.8; } .btn-edit:hover { opacity: 1; text-shadow: 0 0 8px var(--theme-glow); }
+    .btn-del { color: #ff5555; } .btn-del:hover { text-shadow: 0 0 5px rgba(255,85,85,0.5); }
+    .toggle-replies-btn { background: transparent; border: none; color: #829c73; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; gap: 8px; margin-left: 10px; transition: 0.2s; width: fit-content; }
+    .toggle-replies-btn:hover { color: #a6e3a1; }
+    .replies-list { display: flex; flex-direction: column; gap: 15px; margin-left: 40px; border-left: 2px solid #283325; padding-left: 20px; display: none; }
+    .reply-input-wrapper { display: none; margin-left: 40px; margin-top: 5px; flex-direction: column; gap: 10px; }
+
+    /* РњРћР”РђР›РљР */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+    .modal-box { background: linear-gradient(180deg, var(--theme-panel-bg-top) 0%, var(--theme-panel-bg-bottom) 100%); border: 2px solid var(--theme-primary); border-radius: 12px; padding: 30px; width: 750px; box-shadow: 0 0 30px var(--theme-glow); position: relative; transition: 0.5s; }
+    .modal-title { color: var(--theme-primary); font-size: 24px; text-transform: uppercase; margin: 0 0 20px 0; text-align: center; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 10px var(--theme-glow); }
+    .close-btn { position: absolute; top: 15px; right: 20px; color: var(--theme-primary); font-size: 28px; cursor: pointer; transition: 0.2s; font-family: sans-serif; line-height: 1; opacity: 0.7; }
+    .close-btn:hover { color: #ff5555; transform: scale(1.1); opacity: 1; text-shadow: 0 0 10px rgba(255,85,85,0.8); }
+    .modal-content-wrapper { display: flex; gap: 30px; align-items: center; }
+    .modal-sliders { flex: 1; }
+    .modal-chart-area { width: 260px; height: 260px; display: flex; justify-content: center; align-items: center; }
+    .slider-group { margin-bottom: 15px; }
+    .slider-header { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 5px; color: #c4d1b8; font-weight: bold;}
+    .modal-box input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+    .modal-box input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--theme-panel-header); border-radius: 3px; border: 1px solid var(--theme-panel-border); transition: 0.5s; }
+    .modal-box input[type=range]::-webkit-slider-thumb { height: 18px; width: 18px; border-radius: 50%; background: var(--theme-primary); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 10px var(--theme-glow); transition: 0.5s; }
+    .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column; text-align: center; padding: 20px; }
+    #toast { position: fixed; bottom: 30px; right: 30px; background: #a6e3a1; color: #121612; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 5px 20px rgba(166, 227, 161, 0.4); transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 2000; font-family: sans-serif;}
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { background: #ff5555; color: white; box-shadow: 0 5px 20px rgba(255, 85, 85, 0.4); }
+
+    /* Р—РђР› РЎР›РђР’Р« Р РџРћРРЎРљ */
+        .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
+        .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
+        .leaderboard-list { overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; }
+        .lb-item { display: flex; align-items: center; justify-content: space-between; background: rgba(14, 17, 13, 0.8); border: 1px solid #283325; padding: 12px 20px; border-radius: 8px; transition: 0.3s; text-decoration: none; }
+        .lb-item:hover { transform: scale(1.02); border-color: #a6e3a1; background: rgba(166,227,161,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .lb-rank { font-size: 24px; font-weight: bold; font-family: sans-serif; color: #6b7a62; width: 45px; text-align: center; }
+        .lb-rank.top-1 { color: #ffd700; text-shadow: 0 0 15px rgba(255,215,0,0.8); font-size: 32px; }
+        .lb-rank.top-2 { color: #c0c0c0; text-shadow: 0 0 15px rgba(192,192,192,0.8); font-size: 28px; }
+        .lb-rank.top-3 { color: #cd7f32; text-shadow: 0 0 15px rgba(205,127,50,0.8); font-size: 26px; }
+        .lb-user { display: flex; align-items: center; gap: 15px; flex: 1; margin-left: 15px; }
+        .lb-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .lb-name { font-size: 22px; font-weight: bold; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-stats { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .lb-count { font-size: 26px; font-weight: bold; color: #fff; line-height: 1; font-family: 'Neucha', cursive, sans-serif; }
+        .lb-count-label { font-size: 11px; color: #6b7a62; text-transform: uppercase; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; margin-top: 4px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-online { background: #a6e3a1; box-shadow: 0 0 8px #a6e3a1; }
+        .status-offline { background: #555; }
+
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loading-screen">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
+    <div id="toast">вњ… РћС†РµРЅРєР° СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°!</div>
+
+   <nav class="top-nav">
+        <!-- Р›Р•Р’РђРЇ Р§РђРЎРўР¬ -->
+        <div style="display: flex; align-items: center; gap: 50px;">
+            
+            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <div class="logo-dropdown">
+                <div class="nav-logo-wrap">Skinwalker РРіСЂС‹ <span class="logo-arrow">в–ј</span></div>
+                <div class="logo-dropdown-content">
+                    <a href="../anime/index.html" class="logo-link" style="--site-color: #a6e3a1;">
+                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
+                    </a>
+                    <a href="../game/index.html" class="logo-link active" style="--site-color: #ffd700;">
+                        <span style="font-size: 14px;">в–¶</span> РРіСЂС‹
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Р›РћРљРђР›Р¬РќРћР• РњР•РќР® РР“Р  -->
+            <div style="display: flex; gap: 25px; align-items: center;">
+                <a href="index.html" class="nav-btn btn-hub">РҐР°Р±</a>
+                <a href="games-tierlist.html" class="nav-btn btn-tier">РўРёСЂ-Р»РёСЃС‚</a>
+                
+                <!-- РљРЅРѕРїРєР° Р—СЂРёС‚РµР»РµР№ РґР»СЏ РІС‹Р·РѕРІР° Р—Р°Р»Р° РЎР»Р°РІС‹ -->
+                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                
+                <!-- Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ -->
+                <div class="visual-dropdown" id="visual-dropdown">
+                    <button class="nav-btn btn-visual" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <div class="visual-dropdown-content">
+                        <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Р§Р°С‚</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- РџР РђР’РђРЇ Р§РђРЎРўР¬ (РђР’РўРћР РР—РђР¦РРЇ) -->
+        <div class="nav-auth" id="nav-auth">
+            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+        </div>
+    </nav>
+
+    <div class="layout" style="display: none;" id="main-layout">
+        
+        <!-- Р›Р•Р’РђРЇ РљРћР›РћРќРљРђ РЎ РРќР¤РћР™ -->
+        <div class="col-left">
+            <div class="widget-base" style="height: 100%;">
+                <div class="widget-header"><div class="widget-title">РРЅС„РѕСЂРјР°С†РёСЏ</div></div>
+                <div class="widget-content">
+                    <img id="cover-img" src="" class="cover-img">
+                    <div style="font-size: 24px; color: #c4d1b8; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 10px;" id="title-display">РќР°Р·РІР°РЅРёРµ</div>
+                    
+                    <div class="genre-badges" id="genres-display" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 15px;"></div>
+                    
+                    <div style="background: var(--theme-panel-header); border: 1px solid var(--theme-panel-border); border-radius: 6px; padding: 4px; color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: center; margin: 5px 0 10px 0; letter-spacing: 2px;">РћР± РёРіСЂРµ</div>
+                    
+                    <div class="info-row"><span class="info-label">Р“РѕРґ РІС‹С…РѕРґР°:</span><span class="info-val" id="year-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РџР»Р°С‚С„РѕСЂРјР°:</span><span class="info-val" id="format-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р РµР¶РёРј:</span><span class="info-val" id="mode-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РЎСЋР¶РµС‚ (HLTB):</span><span class="info-val" id="hltb-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РљСЂРёС‚РёРєРё:</span><span class="info-val" id="critic-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р Р°Р·СЂР°Р±:</span><span class="info-val" id="studio-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р”РІРёР¶РѕРє:</span><span class="info-val" id="engine-display">---</span></div>
+                    
+                    <div style="background: var(--theme-panel-header); border: 1px solid var(--theme-panel-border); border-radius: 6px; padding: 4px; color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: center; margin: 15px 0 10px 0; letter-spacing: 2px;">РњРѕС‘ РїСЂРѕС…РѕР¶РґРµРЅРёРµ</div>
+                    
+                    <div class="info-row"><span class="info-label">РЎС‚Р°С‚СѓСЃ:</span><span class="info-val" id="status-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р§Р°СЃС‹:</span><span class="info-val" id="hours-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РђС‡РёРІРєРё:</span><span class="info-val" id="achievements-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РЎР»РѕР¶РЅРѕСЃС‚СЊ:</span><span class="info-val" id="difficulty-display">---</span></div>
+                    <div class="info-row"><span class="info-label">РЎРјРµСЂС‚Рё:</span><span class="info-val" id="deaths-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р’С‹Р±РѕСЂ:</span><span class="info-val" id="source-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Р”Р°С‚Р°:</span><span class="info-val" id="date-display">---</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Р¦Р•РќРўР РђР›Р¬РќРђРЇ РљРћР›РћРќРљРђ (РџР›Р•Р•Р  + РљРћРњРњР•РќРўР«) -->
+        <div class="col-center">
+            <div class="widget-base">
+                <div class="widget-header"><div class="widget-title">РњРµРґРёР°С‚РµРєР°</div></div>
+                <div class="widget-content">
+                    <div class="player-nav">
+                        <div class="episodes-container" id="episodes-container" style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;"></div>
+                    </div>
+                    <div id="player-wrapper" style="display: none; position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 6px; overflow: hidden; border: 1px solid var(--theme-panel-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-base">
+                <div class="widget-header"><div class="widget-title">РћРїРёСЃР°РЅРёРµ</div></div>
+                <div class="widget-content">
+                    <div class="synopsis-text" id="synopsis-display">Р—Р°РіСЂСѓР·РєР°...</div>
+                </div>
+            </div>
+
+            <div class="widget-base" style="flex: 1;">
+                <div class="widget-header"><div class="widget-title">РљРѕРјРјРµРЅС‚Р°СЂРёРё</div></div>
+                <div class="widget-content" style="padding: 25px;">
+                    <div class="comment-input-area" id="main-comment-area">
+                        <textarea id="comment-text" class="comment-textarea" placeholder="РќР°РїРёС€Рё СЃРІРѕСЋ СЂРµС†РµРЅР·РёСЋ РЅР° СЌС‚Сѓ РёРіСЂСѓ..."></textarea>
+                        <button class="send-btn" id="send-comment-btn" onclick="postComment()">РћС‚РїСЂР°РІРёС‚СЊ</button>
+                    </div>
+                    <div class="comments-list" id="comments-list">
+                        <div style="color: #6b7a62; text-align: center; padding: 20px;">Р—Р°РіСЂСѓР·РєР° РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- РџР РђР’РђРЇ РљРћР›РћРќРљРђ (РЎРўРђРўРРЎРўРРљРђ Р РћР¦Р•РќРљРђ) -->
+        <div class="col-right">
+            <div class="widget-base">
+                <div class="widget-header"><div class="widget-title">РЎС‚Р°С‚РёСЃС‚РёРєР°</div></div>
+                <div class="widget-content">
+                    
+                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 5px; text-align: center; font-weight: bold; letter-spacing: 1px;">РС‚РѕРіРѕРІС‹Р№ Р Р°РЅРі</div>
+                    <div class="scores-row">
+                        <div class="score-box streamer-element" id="box-streamer" onmouseover="highlightChart(0)" onmouseout="resetChart()">
+                            <div class="score-label streamer" id="label-streamer">РЎС‚СЂРёРјРµСЂ</div>
+                            <div class="main-score" id="streamer-score-val">0<span> / 10</span></div>
+                        </div>
+                        <div class="score-box me-element" id="box-me" onmouseover="highlightChart(2)" onmouseout="resetChart()">
+                            <div class="score-label me" id="label-me">РњРѕСЏ</div>
+                            <div class="main-score" id="my-score-display">0<span> / 10</span></div>
+                        </div>
+                        <div class="score-box chat-element" id="box-chat" onmouseover="highlightChart(1)" onmouseout="resetChart()">
+                            <div class="score-label chat" id="label-chat">Р§Р°С‚</div>
+                            <div class="main-score" id="chat-score-val">0<span> / 10</span></div>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
+
+                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 5px; text-align: center; font-weight: bold; letter-spacing: 1px;">РђРЅР°Р»РёР· РєСЂРёС‚РµСЂРёРµРІ</div>
+                    <div class="chart-wrapper"><canvas id="detailsChart"></canvas></div>
+                    
+                    <!-- Р’РћРў Р­РўР 3 РљРћР›РћРќРљР, РљРћРўРћР Р«Р• РџР РћРџРђР”РђР›Р -->
+                    <div class="interactive-legend">
+                        <div class="legend-col streamer-element" id="legend-box-streamer" onmouseover="highlightChart(0)" onmouseout="resetChart()">
+                            <div class="legend-title" id="legend-label-streamer"><div class="dot" id="dot-streamer"></div>РЎС‚СЂРёРјРµСЂ</div>
+                            <div class="legend-score" id="avg-streamer-score">0</div>
+                            <div class="legend-breakdown" id="breakdown-streamer"></div>
+                        </div>
+                        <div class="legend-col me-element" id="legend-box-me" onmouseover="highlightChart(2)" onmouseout="resetChart()">
+                            <div class="legend-title" id="legend-label-me"><div class="dot" id="dot-me"></div>РЇ</div>
+                            <div class="legend-score" id="avg-viewer-score">0</div>
+                            <div class="legend-breakdown" id="breakdown-viewer"></div>
+                        </div>
+                        <div class="legend-col chat-element" id="legend-box-chat" onmouseover="highlightChart(1)" onmouseout="resetChart()">
+                            <div class="legend-title" id="legend-label-chat"><div class="dot" id="dot-chat"></div>Р§Р°С‚</div>
+                            <div class="legend-score" id="avg-chat-score">0</div>
+                            <div class="legend-breakdown" id="breakdown-chat"></div>
+                        </div>
+                    </div>
+
+                    <button class="rate-btn" id="rate-title-btn" onclick="openRatingModal()">РћС†РµРЅРёС‚СЊ РёРіСЂСѓ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- РњРћР”РђР›Р¬РќРћР• РћРљРќРћ -->
+    <div id="rating-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <div class="close-btn" onclick="closeRatingModal()">Г—</div>
+            <h2 class="modal-title">Р’С‹СЃС‚Р°РІРёС‚СЊ РѕС†РµРЅРєСѓ</h2>
+            <div class="modal-content-wrapper">
+                <div class="modal-sliders">
+                    <div class="slider-group" style="margin-bottom: 25px;">
+                        <div class="slider-header" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--theme-primary); font-size: 18px; text-transform: uppercase;">РС‚РѕРіРѕРІР°СЏ РѕС†РµРЅРєР°</span>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span id="m-overall-tier" style="font-size: 32px; font-weight: bold; font-family: 'Neucha', cursive; text-shadow: none; color: #6b7a62;">вЂ”</span>
+                                <span id="m-overall" style="color: #fff; font-size: 26px; font-weight: bold;">0.0</span>
+                            </div>
+                        </div>
+                        <input type="range" id="modal-overall" min="0" max="10" step="0.1" value="0" oninput="updateOverallSlider(this.value)">
+                    </div>
+
+                    <label style="margin-top: 15px; border-top: 1px dashed #283325; padding-top: 15px;">РћС†РµРЅРєР° РїРѕ РєСЂРёС‚РµСЂРёСЏРј:</label>
+                    <div class="slider-group"><div class="slider-header"><span>Р’РёР·СѓР°Р»</span><span id="m-vis">5.0</span></div><input type="range" id="msl-vis" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-vis').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>Р“РµР№РјРїР»РµР№</span><span id="m-game">5.0</span></div><input type="range" id="msl-game" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-game').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>Р—РІСѓРє Рё РњСѓР·С‹РєР°</span><span id="m-snd">5.0</span></div><input type="range" id="msl-snd" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-snd').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>РўРµС…. СЃРѕСЃС‚РѕСЏРЅРёРµ</span><span id="m-tech">5.0</span></div><input type="range" id="msl-tech" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-tech').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>РђС‚РјРѕСЃС„РµСЂР°</span><span id="m-atm">5.0</span></div><input type="range" id="msl-atm" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-atm').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                </div>
+                <div class="modal-chart-area"><canvas id="modalChart"></canvas></div>
+            </div>
+            <button class="rate-btn" id="save-rate-btn" onclick="saveUserRating()">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+        </div>
+    </div>
+
+    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р«) -->
+    <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
+        <div class="leaderboard-box" style="height: 700px;">
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="filterLeaderboard()">
+            </div>
+            <div class="leaderboard-list" id="leaderboard-list"></div>
+        </div>
+    </div>
+
+    <!-- РЎРљР РРџРўР« -->
+    <script>
+        const TWITCH_CLIENT_ID = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
+        const REDIRECT_URI = '../anime/';
+        const ADMIN_USERNAME = 'skinwalker_nozxc'; 
+        const FIREBASE_BASE = 'https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app';
+
+        let currentUser = null, currentFranchiseId = null, gameData = {}, currentCommunityRatings = {}, currentComments = {};
+        let radarChart = null, modalRadarChart = null, editingTarget = { type: null, id: null, parentId: null }; 
+        let currentDisplayMode = localStorage.getItem('skinwalker_display_mode') || 'score';
+        let visRoles = JSON.parse(localStorage.getItem('skinwalker_vis_roles')) || { streamer: true, me: true, chat: true };
+
+        const radarColors = [
+            { bg: 'rgba(203, 166, 247, 0.2)', border: '#cba6f7' }, 
+            { bg: 'rgba(184, 168, 123, 0.2)', border: '#b8a87b' }, 
+            { bg: 'rgba(166, 227, 161, 0.2)', border: '#a6e3a1' }  
+        ];
+
+        function toggleVisualMenu() { document.getElementById('visual-dropdown').classList.toggle('show'); }
+        window.addEventListener('click', function(e) { if (!document.getElementById('visual-dropdown').contains(e.target)) document.getElementById('visual-dropdown').classList.remove('show'); });
+
+        function toggleRoleVis(role) {
+            visRoles[role] = !visRoles[role];
+            localStorage.setItem('skinwalker_vis_roles', JSON.stringify(visRoles));
+            document.getElementById(`toggle-${role}`).classList.toggle('active', visRoles[role]);
+            applyPageVisuals(); 
+        }
+        
+        function applyPageVisuals() {
+            if (!window.pageScores) return; 
+            const isStreamer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const showMe = !isStreamer && visRoles.me;
+
+            const renderBox = (boxId, labelId, valId, score, labelName, forceTierDisplay = false, forceTierValue = null) => {
+                const box = document.getElementById(boxId), label = document.getElementById(labelId), val = document.getElementById(valId);
+                
+                // РџРµСЂРµРІРѕРґРёРј Р»СЋР±СѓСЋ С†РёС„СЂСѓ РІ Р‘СѓРєРІСѓ
+                let tier;
+                if (forceTierDisplay && forceTierValue) {
+                    tier = { letter: forceTierValue, color: getTierDataByLetter(forceTierValue).color, glow: getTierDataByLetter(forceTierValue).glow };
+                } else { 
+                    tier = getTierData(score); 
+                }
+                
+                // Р–РµСЃС‚РєРѕ РїСЂРёРјРµРЅСЏРµРј РЅРµРѕРЅРѕРІС‹Р№ СЃС‚РёР»СЊ С‚РёСЂРѕРІ РєРѕ РІСЃРµРј РїР»Р°С€РєР°Рј
+                box.style.cssText = `background: ${tier.color}15; border: 1px solid ${tier.color}60; box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 15px ${tier.color}15; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 5px; border-radius: 8px; flex: 1; cursor: pointer; transition: 0.3s;`;
+                label.style.cssText = `color: ${tier.color}; border-bottom: 1px solid ${tier.color}60; text-shadow: 0 0 8px ${tier.color}; width: 100%; padding-bottom: 4px; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; text-align: center;`;
+                label.innerText = labelName;
+                val.innerHTML = tier.letter;
+                val.style.cssText = `color: ${tier.color}; font-size: 44px; font-weight: bold; line-height: 1; text-shadow: ${tier.glow}; font-family: 'Neucha', cursive; text-align: center;`;
+            };
+
+            // РЎРќРђР§РђР›Рђ СЂРµРЅРґРµСЂРёРј СЃС‚РёР»Рё Рё С†РІРµС‚Р°
+            const streamerTier = window.pageScores.streamerTier;
+            renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamerAvg, 'РЎС‚СЂРёРјРµСЂ', streamerTier && streamerTier !== 'UNRANKED', streamerTier);
+            renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Р§Р°С‚');
+            renderBox('box-me', 'label-me', 'my-score-display', window.pageScores.me, 'РњРѕСЏ');
+
+            // Рђ РўР•РџР•Р Р¬ СЃРєСЂС‹РІР°РµРј Р±Р»РѕРєРё, РµСЃР»Рё РѕРЅРё РІС‹РєР»СЋС‡РµРЅС‹ РІ РјРµРЅСЋ
+            document.getElementById('box-streamer').style.display = visRoles.streamer ? 'flex' : 'none';
+            document.getElementById('legend-box-streamer').style.display = visRoles.streamer ? 'flex' : 'none';
+            document.getElementById('box-chat').style.display = visRoles.chat ? 'flex' : 'none';
+            document.getElementById('legend-box-chat').style.display = visRoles.chat ? 'flex' : 'none';
+            document.getElementById('box-me').style.display = showMe ? 'flex' : 'none';
+            document.getElementById('legend-box-me').style.display = showMe ? 'flex' : 'none';
+
+            if (radarChart && radarChart.data.datasets.length >= 3) {
+                radarChart.data.datasets[0].hidden = !visRoles.streamer;
+                radarChart.data.datasets[1].hidden = !visRoles.chat;
+                radarChart.data.datasets[2].hidden = !showMe;
+                radarChart.update();
+            }
+        }
+
+        setTimeout(() => {
+            currentDisplayMode = 'score'; // Р–РµСЃС‚РєРѕ РІРєР»СЋС‡Р°РµРј СЂРµР¶РёРј С†РёС„СЂ РґР»СЏ Р§Р°С‚Р°/РњРµРЅСЏ
+            Object.keys(visRoles).forEach(r => document.getElementById(`toggle-${r}`).classList.toggle('active', visRoles[r]));
+            applyPageVisuals();
+        }, 500);
+
+        window.globalUsersDB = {};
+
+        function getUserInfo(username, fallbackTwitchColor) {
+            const lowerName = username.toLowerCase();
+            const dbUser = window.globalUsersDB ? window.globalUsersDB[lowerName] : null;
+            let r = "F"; let g = 0; let t = 0; let c = fallbackTwitchColor || '#a4b09c';
+            if (dbUser) {
+                if (dbUser.role) r = dbUser.role.toUpperCase();
+                if (dbUser.wallet_gold) g = dbUser.wallet_gold;
+                if (dbUser.wallet_tickets) t = dbUser.wallet_tickets;
+                if (dbUser.color && dbUser.color.trim() !== "") c = dbUser.color;
+            }
+            let badgeHtml = `<span class="role-badge role-f">FOLLOW</span>`;
+            if (r === 'SUB' || r === 'SUBSCRIBER') badgeHtml = `<span class="role-badge role-sub">SUB</span>`;
+            else if (r === 'VIP') badgeHtml = `<span class="role-badge role-vip">VIP</span>`;
+            return { role: r, gold: g, tickets: t, color: c, badge: badgeHtml };
+        }
+
+        async function checkTwitchAuth() {
+            try {
+                // Р“СЂСѓР·РёРј Р±Р°Р·Сѓ СЋР·РµСЂРѕРІ РїР°СЂР°Р»Р»РµР»СЊРЅРѕ РІ С„РѕРЅРµ, С‡С‚РѕР±С‹ РЅРµ С‚РѕСЂРјРѕР·РёС‚СЊ РїСЂРѕС„РёР»СЊ
+                fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' })
+                    .then(res => res.json())
+                    .then(data => { window.globalUsersDB = data || {}; renderProfileUI(); })
+                    .catch(e => console.log(e));
+
+                const hash = window.location.hash;
+                let token = null;
+                try { token = localStorage.getItem('twitch_token'); } catch(e){}
+
+                if (hash && hash.includes('access_token')) {
+                    token = new URLSearchParams(hash.substring(1)).get('access_token');
+                    try { localStorage.setItem('twitch_token', token); } catch(e){}
+                    window.history.replaceState(null, null, window.location.pathname + window.location.search);
+                }
+
+                if (token) {
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
+                    currentUser = (await res.json()).data[0];
+
+                    try {
+                        const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const colorData = await colorRes.json();
+                        currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null;
+                    } catch(e) {}
+                    
+                    renderProfileUI(); // РћС‚СЂРёСЃРѕРІС‹РІР°РµРј СЃР°Рј РїСЂРѕС„РёР»СЊ
+                }
+            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+        }
+
+        function renderProfileUI() {
+            if (!currentUser) return;
+            const uInfo = getUserInfo(currentUser.login, currentUser.color);
+            const authDiv = document.getElementById('nav-auth');
+            if (authDiv) {
+                authDiv.innerHTML = `
+                    <div class="user-profile-neon">
+                        <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                            <img src="${currentUser.profile_image_url}" class="user-avatar">
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-top">
+                                <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer;" onclick="window.location.href='profile.html?user=${currentUser.id}'">${currentUser.display_name}</span>
+                                <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                            </div>
+                            <div class="profile-bottom">
+                                ${uInfo.badge}
+                                <div class="wallet-item" style="color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);">
+                                    <img src="../icons/BILET_GOLD.png" onerror="this.style.display='none'"> <span>${uInfo.gold}</span>
+                                </div>
+                                <div class="wallet-item" style="color: #a6e3a1; text-shadow: 0 0 10px rgba(166, 227, 161, 0.3);">
+                                    <img src="../icons/BILET.png" onerror="this.style.display='none'"> <span>${uInfo.tickets}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function getScoreColor(score, alpha = 1) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `rgba(164, 176, 156, ${alpha})`; 
+            let r, g, b;
+            if (numScore <= 5.5) { let p = Math.max(0, (numScore - 1) / 4.5); r = Math.round(205 + p * 5); g = Math.round(115 + p * 100); b = Math.round(50 + p * 170); } 
+            else { let p = Math.min(1, (numScore - 5.5) / 4.5); r = Math.round(210 + p * 45); g = Math.round(215 + p * 20); b = Math.round(220 + p * -200); }
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function getScoreShadow(score, isLarge) {
+            const numScore = Number(score);
+            const base = isLarge ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 2px 2px 4px #000' : '1px 1px 2px #000';
+            if (numScore === 0 || isNaN(numScore)) return base;
+            const color = getScoreColor(score, 1);
+            let glow = `${base}, 0 0 ${Math.round(1 + (numScore / 10) * 5)}px ${color}`;
+            if (numScore >= 8) glow += `, 0 0 ${Math.round((1 + (numScore / 10) * 5) * 1.5)}px ${color}`;
+            if (numScore === 10) glow += `, 0 0 15px rgba(255,255,255,0.3)`;
+            return glow;
+        }
+
+        function getGlassBoxStyle(score) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `background: rgba(164,176,156,0.05); border: 1px solid rgba(164,176,156,0.25); box-shadow: 0 4px 10px rgba(0,0,0,0.3);`;
+            const bg = getScoreColor(score, 0.1), border = getScoreColor(score, 0.5), glow = getScoreColor(score, 0.15), blur = Math.round(4 + (numScore / 10) * 8);
+            return `background: ${bg}; border: 1px solid ${border}; box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 ${blur}px ${glow} inset, 0 0 ${blur}px ${glow};`;
+        }
+
+        function getGlassRowStyle(score) {
+            const numScore = Number(score);
+            if (numScore === 0 || isNaN(numScore)) return `background: rgba(255,255,255,0.02); border-left: 2px solid rgba(164,176,156,0.5);`;
+            return `background: linear-gradient(90deg, ${getScoreColor(score, 0.1)} 0%, transparent 100%); border-left: 2px solid ${getScoreColor(score, 0.8)};`;
+        }
+
+        const safeNum = (v) => Number(v) || 0;
+        const calcTheoryAvg = (t) => {
+            if (!t) return 0;
+            const sum = safeNum(t.visuals) + safeNum(t.gameplay) + safeNum(t.sound) + safeNum(t.tech) + safeNum(t.atmosphere);
+            return sum > 0 ? parseFloat((sum / 5).toFixed(1)) : 0;
+        };
+
+        window.addEventListener('pageshow', (event) => { if (event.persisted) loadGameData(); });
+
+        function getTierDataByLetter(letter) {
+            const dict = { 'S': { color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)' }, 'A': { color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)' }, 'B': { color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)' }, 'C': { color: '#89b4fa', glow: '0 0 15px rgba(137, 180, 250, 0.8)' }, 'D': { color: '#a6e3a1', glow: '0 0 15px rgba(166, 227, 161, 0.8)' } };
+            return dict[letter] || { color: '#888888', glow: '0 0 15px rgba(136, 136, 136, 0.8)' };
+        }
+
+        function getTierData(score) {
+            const num = Number(score) || 0;
+            if (num === 0) return { letter: 'вЂ”', color: '#6b7a62', glow: 'none', label: 'Р‘РµР· РѕС†РµРЅРєРё' };
+            if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)' };
+            if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)' };
+            if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)' };
+            if (num >= 5.0) return { letter: 'C', color: '#89b4fa', glow: '0 0 15px rgba(137, 180, 250, 0.8)' };
+            if (num >= 3.0) return { letter: 'D', color: '#a6e3a1', glow: '0 0 15px rgba(166, 227, 161, 0.8)' };
+            return { letter: 'F', color: '#888888', glow: '0 0 15px rgba(136, 136, 136, 0.8)' };
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.toggle('error', isError);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function loginTwitch() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=user:read:follows`; }
+        function logoutTwitch() { try { localStorage.removeItem('twitch_token'); } catch(e){} location.reload(); }
+
+        function getUserInfo(username, fallbackTwitchColor) {
+            if (!username) return { role: "F", gold: 0, tickets: 0, color: '#a4b09c', badge: `<span class="role-badge role-f">VIEWER</span>` };
+            const dbUser = window.globalUsersDB[username.toLowerCase()]; 
+            let r = "F", g = 0, t = 0, c = fallbackTwitchColor || '#a4b09c';
+            if (dbUser) { if (dbUser.role) r = dbUser.role.toUpperCase(); if (dbUser.wallet_gold) g = dbUser.wallet_gold; if (dbUser.wallet_tickets) t = dbUser.wallet_tickets; if (dbUser.color && dbUser.color.trim() !== "") c = dbUser.color; }
+            let badgeHtml = r === 'SUB' || r === 'SUBSCRIBER' ? `<span class="role-badge role-sub">SUB</span>` : r === 'VIP' ? `<span class="role-badge role-vip">VIP</span>` : `<span class="role-badge role-f">FOLLOW</span>`;
+            return { role: r, gold: g, tickets: t, color: c, badge: badgeHtml };
+        }
+
+        async function checkTwitchAuth() {
+            try {
+                const hash = window.location.hash; let token = null;
+                try { token = localStorage.getItem('twitch_token'); } catch(e){}
+                if (hash && hash.includes('access_token')) { token = new URLSearchParams(hash.substring(1)).get('access_token'); try { localStorage.setItem('twitch_token', token); } catch(e){} window.history.replaceState(null, null, window.location.pathname + window.location.search); }
+
+                if (token) {
+                    const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                    if (res.status === 401) { try { localStorage.removeItem('twitch_token'); } catch(e){} return; }
+                    currentUser = (await res.json()).data[0];
+                    try { const colorRes = await fetch(`https://api.twitch.tv/helix/chat/color?user_id=${currentUser.id}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } }); const colorData = await colorRes.json(); currentUser.color = (colorData.data && colorData.data[0] && colorData.data[0].color) ? colorData.data[0].color : null; } catch(e) {}
+                    
+                    const uInfo = getUserInfo(currentUser.login, currentUser.color);
+                    let isFollower = false;
+                    try {
+                        const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+                        const broadcasterId = (await bRes.json()).data[0].id;
+                        if (currentUser.id === broadcasterId) isFollower = true; 
+                        else { const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } }); if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; } const fData = await fRes.json(); if (fData.data && fData.data.length > 0) isFollower = true; }
+                    } catch(e) {}
+                    window.isUserFollower = isFollower;
+
+                    if (!isFollower) {
+                        setTimeout(() => {
+                            const rateBtn = document.querySelector('button[onclick*="openRatingModal"]'); if (rateBtn) { rateBtn.innerText = "Р¤РћР›Р›РћР’Р•Р Р« (РћР‘РќРћР’Р РЎРўР РђРќРР¦РЈ)"; rateBtn.style.opacity = "0.5"; rateBtn.style.pointerEvents = "none"; }
+                            const commInput = document.getElementById('comment-text'); const commSubmit = document.querySelector('button[onclick*="postComment"]'); if (commInput) { commInput.placeholder = "РџРѕРґРїРёС€РёСЃСЊ РЅР° РєР°РЅР°Р» Рё РѕР±РЅРѕРІРё СЃС‚СЂР°РЅРёС†Сѓ (F5), С‡С‚РѕР±С‹ РїРёСЃР°С‚СЊ..."; commInput.disabled = true; } if (commSubmit) commSubmit.style.display = "none";
+                        }, 800);
+                    }
+                    
+                    document.getElementById('nav-auth').innerHTML = `<div class="user-profile-neon"><div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ"><img src="${currentUser.profile_image_url}" class="user-avatar"></div><div class="profile-info"><div class="profile-top"><span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span><button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button></div><div class="profile-bottom">${uInfo.badge}<div class="wallet-item" style="color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);"><img src="../icons/BILET_GOLD.png"> <span>${uInfo.gold}</span></div><div class="wallet-item" style="color: #a6e3a1; text-shadow: 0 0 10px rgba(166, 227, 161, 0.3);"><img src="../icons/BILET.png"> <span>${uInfo.tickets}</span></div></div></div></div>`;
+                    if (currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase()) document.body.classList.add('is-admin');
+                }
+            } catch (e) {}
+        }
+
+        function initCharts() {
+            if (typeof Chart === 'undefined') return;
+            const ctx = document.getElementById('detailsChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: { labels: ['Р’РёР·СѓР°Р»', 'Р“РµР№РјРїР»РµР№', 'Р—РІСѓРє', 'РўРµС…РЅРёРєР°', 'РђС‚РјРѕСЃС„РµСЂР°'], datasets: [ { label: 'РЎС‚СЂРёРјРµСЂ', data: [0,0,0,0,0], backgroundColor: radarColors[0].bg, borderColor: radarColors[0].border, pointBackgroundColor: radarColors[0].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, { label: 'Р§Р°С‚', data: [0,0,0,0,0], backgroundColor: radarColors[1].bg, borderColor: radarColors[1].border, pointBackgroundColor: radarColors[1].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, { label: 'РЇ', data: [0,0,0,0,0], backgroundColor: radarColors[2].bg, borderColor: radarColors[2].border, pointBackgroundColor: radarColors[2].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 } ] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { filter: function(item) { return item.raw > 0; } } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: '#283325' }, angleLines: { color: '#283325' }, pointLabels: { font: { size: 13, weight: 'bold' }, color: '#c4d1b8' } } } }
+            });
+        }
+
+        function syncModalChart() {
+            if (typeof Chart === 'undefined') return;
+            const isStreamer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const color = isStreamer ? radarColors[0].border : radarColors[2].border, bg = isStreamer ? radarColors[0].bg : radarColors[2].bg;
+            if (!modalRadarChart) {
+                const ctxModal = document.getElementById('modalChart').getContext('2d');
+                modalRadarChart = new Chart(ctxModal, { type: 'radar', data: { labels: ['Р’РёР·СѓР°Р»', 'Р“РµР№РјРїР»РµР№', 'Р—РІСѓРє', 'РўРµС…РЅРёРєР°', 'РђС‚РјРѕСЃС„РµСЂР°'], datasets: [{ label: 'РћС†РµРЅРєР°', data: [5,5,5,5,5], backgroundColor: bg, borderColor: color, pointBackgroundColor: color, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: '#283325' }, angleLines: { color: '#283325' }, pointLabels: { font: { size: 10, weight: 'bold' }, color: '#c4d1b8' } } } } });
+            }
+            modalRadarChart.data.datasets[0].data = [ document.getElementById('msl-vis').value, document.getElementById('msl-game').value, document.getElementById('msl-snd').value, document.getElementById('msl-tech').value, document.getElementById('msl-atm').value ];
+            modalRadarChart.update();
+        }
+
+        function updateOverallSlider(val) {
+            document.getElementById('m-overall').innerText = parseFloat(val).toFixed(1);
+            const tier = getTierData(val); const tierEl = document.getElementById('m-overall-tier');
+            tierEl.innerText = tier.letter; tierEl.style.color = tier.color; tierEl.style.textShadow = tier.glow;
+        }
+
+        function openRatingModal() {
+            let existingData = null;
+            if (currentUser) { const isStreamer = currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase(); if (isStreamer) { const strScores = gameData?.scores; if (strScores) existingData = { overall: 0, theory: strScores.theory }; } else { existingData = currentCommunityRatings[currentUser.id]; } }
+            if (existingData) {
+                const ovrVal = existingData.overall || 0; document.getElementById('modal-overall').value = ovrVal; updateOverallSlider(ovrVal);
+                if (existingData.theory) { ['vis','game','snd','tech','atm'].forEach(id => { const val = existingData.theory[id==='vis'?'visuals':id==='game'?'gameplay':id==='snd'?'sound':id==='tech'?'tech':'atmosphere'] || 5; document.getElementById('msl-'+id).value = val; document.getElementById('m-'+id).innerText = parseFloat(val).toFixed(1); }); }
+            } else {
+                document.getElementById('modal-overall').value = 0; updateOverallSlider(0); ['vis','game','snd','tech','atm'].forEach(id => { document.getElementById('msl-'+id).value = 5; document.getElementById('m-'+id).innerText = '5.0'; });
+            }
+            syncModalChart(); document.getElementById('rating-modal').style.display = 'flex';
+        }
+
+        function closeRatingModal() { document.getElementById('rating-modal').style.display = 'none'; }
+
+        async function saveUserRating() {
+            if (!currentUser) return;
+            const btn = document.getElementById('save-rate-btn'); btn.innerText = "РЎРћРҐР РђРќР•РќРР•..."; btn.style.pointerEvents = "none";
+            const overall = parseFloat(document.getElementById('modal-overall').value) || 0;
+            const theory = { visuals: parseFloat(document.getElementById('msl-vis').value), gameplay: parseFloat(document.getElementById('msl-game').value), sound: parseFloat(document.getElementById('msl-snd').value), tech: parseFloat(document.getElementById('msl-tech').value), atmosphere: parseFloat(document.getElementById('msl-atm').value) };
+            const isStreamer = currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            try {
+                let res;
+                if (isStreamer) res = await fetch(`${FIREBASE_BASE}/games_db/${encodeURIComponent(currentFranchiseId)}/scores/theory.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(theory) });
+                else res = await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/ratings/${currentUser.id}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ displayName: currentUser.display_name, profileImage: currentUser.profile_image_url, overall, theory, timestamp: Date.now() }) });
+                if (!res.ok) throw new Error("Server error");
+                closeRatingModal(); showToast("вњ… РћС†РµРЅРєР° СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°!"); await loadGameData(); 
+            } catch (e) { showToast("вќЊ РћС€РёР±РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ!", true); }
+            btn.innerText = "РЎРћРҐР РђРќРРўР¬"; btn.style.pointerEvents = "auto";
+        }
+
+        function highlightChart(index) {
+            if (!radarChart) return;
+            radarChart.data.datasets.forEach((ds, i) => { if (i !== index) { ds.backgroundColor = 'transparent'; ds.borderColor = 'rgba(255,255,255,0.05)'; ds.borderWidth = 1; } else { ds.backgroundColor = radarColors[i].border + '40'; ds.borderColor = radarColors[i].border; ds.borderWidth = 4; } });
+            radarChart.update();
+        }
+
+        function resetChart() {
+            if (!radarChart) return;
+            radarChart.data.datasets.forEach((ds, i) => { ds.backgroundColor = radarColors[i].bg; ds.borderColor = radarColors[i].border; ds.borderWidth = 2; });
+            radarChart.update();
+        }
+
+        function generateBreakdownHtml(theoryObj) {
+            if (!theoryObj) theoryObj = {visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0};
+            const createRow = (name, val) => `<div class="crit-row" style="${getGlassRowStyle(val)}"><span style="color:${getScoreColor(val, 1)}; text-shadow: ${getScoreShadow(val, false)};">${name}</span><span style="color:#fff; text-shadow: ${getScoreShadow(val, false)};">${val > 0 ? val : '-'}</span></div>`;
+            return createRow('Р’РёР·СѓР°Р»', theoryObj.visuals) + createRow('Р“РµР№РјРїР»РµР№', theoryObj.gameplay) + createRow('Р—РІСѓРє', theoryObj.sound) + createRow('РўРµС…РЅРёРєР°', theoryObj.tech) + createRow('РђС‚РјРѕСЃС„РµСЂР°', theoryObj.atmosphere);
+        }
+
+        function applyDynamicTheme(imageUrl) {
+            return new Promise((resolve) => {
+                if (!imageUrl || imageUrl.trim() === '') { resolve(); return; }
+                const colorThief = new ColorThief();
+                const processColor = (imgEl) => {
+                    try {
+                        const color = colorThief.getColor(imgEl);
+                        let r = color[0], g = color[1], b = color[2];
+                        if ((0.299 * r + 0.587 * g + 0.114 * b) < 90) { r = Math.min(255, r + 80); g = Math.min(255, g + 80); b = Math.min(255, b + 80); }
+                        document.documentElement.style.setProperty('--theme-primary', `rgb(${r}, ${g}, ${b})`); document.documentElement.style.setProperty('--theme-glow', `rgba(${r}, ${g}, ${b}, 0.5)`); document.documentElement.style.setProperty('--theme-panel-bg-top', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.08)`); document.documentElement.style.setProperty('--theme-panel-bg-bottom', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.02)`); document.documentElement.style.setProperty('--theme-panel-header', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.15)`); document.documentElement.style.setProperty('--theme-panel-border', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.4)`);
+                    } catch (e) { console.warn("РЎРєСЂРёРїС‚ РЅРµ СЃРјРѕРі РїСЂРѕС‡РёС‚Р°С‚СЊ С†РІРµС‚:", e); }
+                    resolve(); 
+                };
+
+                const hiddenImg = new Image(); hiddenImg.crossOrigin = 'Anonymous';
+                const safeTimeout = setTimeout(() => { resolve(); }, 5000);
+                hiddenImg.onload = function() { clearTimeout(safeTimeout); processColor(hiddenImg); };
+                hiddenImg.onerror = function() {
+                    const proxyImg = new Image(); proxyImg.crossOrigin = 'Anonymous';
+                    proxyImg.onload = function() { clearTimeout(safeTimeout); processColor(proxyImg); };
+                    proxyImg.onerror = function() {
+                        const proxyImg2 = new Image(); proxyImg2.crossOrigin = 'Anonymous';
+                        proxyImg2.onload = function() { clearTimeout(safeTimeout); processColor(proxyImg2); };
+                        proxyImg2.onerror = () => { clearTimeout(safeTimeout); resolve(); };
+                        proxyImg2.src = 'https://wsrv.nl/?url=' + encodeURIComponent(imageUrl);
+                    };
+                    proxyImg.src = 'https://corsproxy.io/?' + encodeURIComponent(imageUrl);
+                };
+                hiddenImg.src = imageUrl; 
+            });
+        }
+
+        function createCommentCard(c, isReply = false, parentId = null) {
+            const authorId = c.userId || c.id, isMe = currentUser && authorId === currentUser.id, isAdminViewer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const d = new Date(c.timestamp), dateStr = `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')} РІ ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+            const editedHtml = c.isEdited ? `<span class="edited-tag">(РёР·РјРµРЅРµРЅРѕ)</span>` : '', uInfo = getUserInfo(c.displayName, c.userColor);
+
+            let actions = `<div class="comment-actions"><button class="btn-reply" onclick="toggleReplyBox('${parentId || c.id}', '${isReply ? c.displayName : ''}')">РћС‚РІРµС‚РёС‚СЊ</button>${isMe ? `<button class="btn-edit" onclick="${isReply ? `editReply('${parentId}', '${c.rid}')` : `editComment('${c.id}')`}">РР·РјРµРЅРёС‚СЊ</button>` : ''}${isMe || isAdminViewer ? `<button class="btn-del" onclick="${isReply ? `deleteReply('${parentId}', '${c.rid}')` : `deleteComment('${c.id}')`}">РЈРґР°Р»РёС‚СЊ</button>` : ''}</div>`;
+            let ratingHtml = ''; const isAuthorAdmin = c.displayName.toLowerCase() === ADMIN_USERNAME.toLowerCase();
+            const userRating = currentCommunityRatings[authorId] || (isAuthorAdmin ? gameData.scores : null);
+
+            if (userRating && (userRating.overall > 0 || userRating.tier)) {
+                let ovrDisp = userRating.overall || userRating.tier; if (isAuthorAdmin) ovrDisp = userRating.tier || 'UNRANKED';
+                const t = userRating.theory || {visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0}; const ovrNum = Number(ovrDisp) || calcTheoryAvg(t) || 5; 
+                ratingHtml = `<div class="comment-rating-block"><div class="cr-overall tooltip-element" data-title="РС‚РѕРіРѕРІР°СЏ РѕС†РµРЅРєР°" style="color:${getScoreColor(ovrNum, 1)}; text-shadow:${getScoreShadow(ovrNum, true)};">${ovrDisp}</div><div class="cr-theory"><span class="tooltip-element" style="color:${getScoreColor(t.visuals, 1)}; text-shadow:${getScoreShadow(t.visuals, false)};" data-title="Р’РёР·СѓР°Р»: ${t.visuals}">${t.visuals}</span><span class="tooltip-element" style="color:${getScoreColor(t.gameplay, 1)}; text-shadow:${getScoreShadow(t.gameplay, false)};" data-title="Р“РµР№РјРїР»РµР№: ${t.gameplay}">${t.gameplay}</span><span class="tooltip-element" style="color:${getScoreColor(t.sound, 1)}; text-shadow:${getScoreShadow(t.sound, false)};" data-title="Р—РІСѓРє: ${t.sound}">${t.sound}</span><span class="tooltip-element" style="color:${getScoreColor(t.tech, 1)}; text-shadow:${getScoreShadow(t.tech, false)};" data-title="РўРµС…. СЃРѕСЃС‚РѕСЏРЅРёРµ: ${t.tech}">${t.tech}</span><span class="tooltip-element" style="color:${getScoreColor(t.atmosphere, 1)}; text-shadow:${getScoreShadow(t.atmosphere, false)};" data-title="РђС‚РјРѕСЃС„РµСЂР°: ${t.atmosphere}">${t.atmosphere}</span></div></div>`;
+            }
+
+            return `<div class="comment-item ${isReply ? 'reply-item' : ''}"><div class="comment-top"><div class="comment-author-block"><a href="profile.html?user=${authorId}" style="text-decoration: none;"><img src="${c.profileImage}" class="comment-avatar" style="cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a><div class="author-details"><a href="profile.html?user=${authorId}" class="comment-author" style="color: ${uInfo.color}; text-decoration: none; cursor: pointer;">${c.displayName}</a><div>${uInfo.badge}</div></div></div>${ratingHtml}</div><div class="comment-content-wrap"><div class="comment-text">${c.text}</div><div class="comment-bottom"><span class="comment-date">${dateStr} ${editedHtml}</span>${actions}</div></div></div>`;
+        }
+
+        async function loadComments() { try { const res = await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments.json`, { cache: 'no-store' }); currentComments = (await res.json()) || {}; renderComments(); } catch(e) {} }
+
+        function toggleRepliesList(commentId) { const list = document.getElementById(`replies-list-${commentId}`), btn = document.getElementById(`toggle-btn-${commentId}`); if (list.style.display === 'none' || list.style.display === '') { list.style.display = 'flex'; btn.innerHTML = `в–І РЎРєСЂС‹С‚СЊ РѕС‚РІРµС‚С‹`; } else { list.style.display = 'none'; btn.innerHTML = `в–ј РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹ (${btn.getAttribute('data-count')})`; } }
+
+        function toggleReplyBox(commentId, mentionName = '') { const box = document.getElementById(`reply-box-${commentId}`), textarea = document.getElementById(`reply-text-${commentId}`); box.style.display = 'flex'; if (mentionName) { const regex = /^@.*?, /; if (regex.test(textarea.value)) { textarea.value = textarea.value.replace(regex, `@${mentionName}, `); } else { textarea.value = `@${mentionName}, ` + textarea.value; } } textarea.focus(); }
+
+        function renderComments() {
+            const list = document.getElementById('comments-list'); list.innerHTML = '';
+            const arr = Object.entries(currentComments).map(([id, data]) => ({id, ...data})).sort((a,b) => b.timestamp - a.timestamp);
+            if (arr.length === 0) { list.innerHTML = '<div style="color: #6b7a62; text-align: center; padding: 20px; font-size: 18px;">РџРѕРєР° РЅРµС‚ СЂРµС†РµРЅР·РёР№. Р‘СѓРґСЊ РїРµСЂРІС‹Рј!</div>'; return; }
+
+            arr.forEach(c => {
+                const mainCommentHtml = createCommentCard(c); let repliesHtml = '', toggleRepliesBtn = '';
+                if (c.replies) {
+                    const replArr = Object.entries(c.replies).map(([rid, rdata]) => ({rid: rid, ...rdata})).sort((a,b)=>a.timestamp - b.timestamp);
+                    toggleRepliesBtn = `<button class="toggle-replies-btn" id="toggle-btn-${c.id}" data-count="${replArr.length}" onclick="toggleRepliesList('${c.id}')">в–ј РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹ (${replArr.length})</button>`;
+                    repliesHtml = `<div class="replies-list" id="replies-list-${c.id}">` + replArr.map(rep => createCommentCard(rep, true, c.id)).join('') + `</div>`;
+                }
+                list.innerHTML += `<div class="comment-wrapper">${mainCommentHtml}${toggleRepliesBtn}${repliesHtml}<div class="reply-input-wrapper" id="reply-box-${c.id}"><textarea id="reply-text-${c.id}" class="comment-textarea" style="min-height: 50px;" placeholder="РќР°РїРёСЃР°С‚СЊ РѕС‚РІРµС‚..."></textarea><button class="send-btn" id="send-reply-btn-${c.id}" style="padding: 8px 20px; font-size: 15px;" onclick="postReply('${c.id}')">РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚</button></div></div>`;
+            });
+
+            if (!editingTarget.type) { document.getElementById('comment-text').value = ''; document.getElementById('send-comment-btn').innerText = "РћС‚РїСЂР°РІРёС‚СЊ"; }
+        }
+
+        async function postComment() {
+            if (!currentUser) { showToast("РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё С‡РµСЂРµР· Twitch!", true); return; }
+            const text = document.getElementById('comment-text').value.trim(); if (!text) return;
+            const btn = document.getElementById('send-comment-btn'); btn.innerText = "РћРўРџР РђР’РљРђ..."; btn.style.pointerEvents = "none";
+            const commentId = editingTarget.type === 'comment' ? editingTarget.id : (Date.now() + '_' + currentUser.id);
+
+            try {
+                if (editingTarget.type === 'comment') { await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text, isEdited: true }) }); } 
+                else { const commentData = { userId: currentUser.id, displayName: currentUser.display_name, profileImage: currentUser.profile_image_url, userColor: currentUser.color, text: text, timestamp: Date.now() }; await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(commentData) }); }
+                showToast(editingTarget.type === 'comment' ? "рџ’¬ Р РµС†РµРЅР·РёСЏ РёР·РјРµРЅРµРЅР°!" : "рџ’¬ Р РµС†РµРЅР·РёСЏ РґРѕР±Р°РІР»РµРЅР°!"); document.getElementById('comment-text').value = ''; editingTarget = { type: null, id: null, parentId: null }; btn.innerText = "РћС‚РїСЂР°РІРёС‚СЊ"; await loadComments();
+            } catch(e) { showToast("вќЊ РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ!", true); btn.innerText = editingTarget.type === 'comment' ? "РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" : "РћС‚РїСЂР°РІРёС‚СЊ"; }
+            btn.style.pointerEvents = "auto";
+        }
+
+        async function postReply(commentId) {
+            if (!currentUser) { showToast("РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё С‡РµСЂРµР· Twitch!", true); return; }
+            const inputEl = document.getElementById(`reply-text-${commentId}`); const text = inputEl.value.trim(); if (!text) return;
+            const btn = document.getElementById(`send-reply-btn-${commentId}`); btn.innerText = "РћРўРџР РђР’РљРђ..."; btn.style.pointerEvents = "none";
+
+            try {
+                if (editingTarget.type === 'reply' && editingTarget.parentId === commentId) { await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}/replies/${editingTarget.id}.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text, isEdited: true }) }); editingTarget = { type: null, id: null, parentId: null }; showToast("рџ’¬ РћС‚РІРµС‚ РёР·РјРµРЅРµРЅ!"); } 
+                else { const replyId = Date.now() + '_' + currentUser.id; const replyData = { userId: currentUser.id, displayName: currentUser.display_name, profileImage: currentUser.profile_image_url, userColor: currentUser.color, text: text, timestamp: Date.now() }; await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}/replies/${replyId}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(replyData) }); showToast("рџ’¬ РћС‚РІРµС‚ РґРѕР±Р°РІР»РµРЅ!"); }
+                inputEl.value = ''; toggleReplyBox(commentId); btn.innerText = "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚"; await loadComments();
+            } catch(e) { showToast("вќЊ РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ РѕС‚РІРµС‚Р°!", true); btn.innerText = editingTarget.type === 'reply' ? "РЎРѕС…СЂР°РЅРёС‚СЊ" : "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚"; }
+            btn.style.pointerEvents = "auto";
+        }
+
+        async function deleteComment(commentId) {
+            if (!confirm("РўРѕС‡РЅРѕ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РєРѕРјРјРµРЅС‚Р°СЂРёР№ СЃРѕ РІСЃРµРјРё РѕС‚РІРµС‚Р°РјРё?")) return;
+            try { await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}.json`, { method: 'DELETE' }); if (editingTarget.id === commentId) { document.getElementById('comment-text').value = ''; editingTarget = { type: null, id: null, parentId: null }; document.getElementById('send-comment-btn').innerText = "РћС‚РїСЂР°РІРёС‚СЊ"; } showToast("рџ—‘пёЏ РљРѕРјРјРµРЅС‚Р°СЂРёР№ СѓРґР°Р»РµРЅ."); await loadComments(); } catch(e) {}
+        }
+
+        async function deleteReply(commentId, replyId) {
+            if (!confirm("РўРѕС‡РЅРѕ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РѕС‚РІРµС‚?")) return;
+            try { await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}/replies/${replyId}.json`, { method: 'DELETE' }); if (editingTarget.id === replyId) { document.getElementById(`reply-text-${commentId}`).value = ''; editingTarget = { type: null, id: null, parentId: null }; document.getElementById(`send-reply-btn-${commentId}`).innerText = "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚"; } showToast("рџ—‘пёЏ РћС‚РІРµС‚ СѓРґР°Р»РµРЅ."); await loadComments(); } catch(e) {}
+        }
+
+        function editComment(commentId) { if (currentComments[commentId]) { document.getElementById('comment-text').value = currentComments[commentId].text; document.getElementById('comment-text').focus(); document.getElementById('main-comment-area').scrollIntoView({ behavior: 'smooth', block: 'center' }); editingTarget = { type: 'comment', id: commentId, parentId: null }; document.getElementById('send-comment-btn').innerText = "РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ"; } }
+
+        function editReply(commentId, replyId) { if (currentComments[commentId] && currentComments[commentId].replies && currentComments[commentId].replies[replyId]) { const textarea = document.getElementById(`reply-text-${commentId}`); textarea.value = currentComments[commentId].replies[replyId].text; document.getElementById(`reply-box-${commentId}`).style.display = 'flex'; textarea.focus(); editingTarget = { type: 'reply', id: replyId, parentId: commentId }; document.getElementById(`send-reply-btn-${commentId}`).innerText = "РЎРѕС…СЂР°РЅРёС‚СЊ"; } }
+
+        // --- Р›РћР“РРљРђ Р—РђР›Рђ РЎР›РђР’Р« (Р—Р РРўР•Р›Р) ---
+        let lbAllUsers = [];
+
+        async function openLeaderboard() {
+            const btn = document.querySelector('button[onclick="openLeaderboard()"]');
+            const oldText = btn ? btn.innerText : 'Р—СЂРёС‚РµР»Рё';
+            if (btn) btn.innerText = "Р—Р°РіСЂСѓР·РєР°...";
+            
+            try {
+                // Р•СЃР»Рё РјС‹ РµС‰Рµ РЅРµ РіСЂСѓР·РёР»Рё РІСЃСЋ Р±Р°Р·Сѓ РєРѕРјСЊСЋРЅРёС‚Рё - РіСЂСѓР·РёРј СЃРµР№С‡Р°СЃ
+                if (!window.globalCommData) {
+                    const res = await fetch(`${FIREBASE_BASE}/games_community_db.json`);
+                    window.globalCommData = await res.json() || {};
+                }
+
+                const userStats = {};
+                
+                if (window.globalCommData && typeof window.globalCommData === 'object') {
+                    for (const [gameId, gameData] of Object.entries(window.globalCommData)) {
+                        if (gameData && gameData.ratings && typeof gameData.ratings === 'object') { 
+                            for (const [userId, rating] of Object.entries(gameData.ratings)) {
+                                if (!rating) continue; 
+                                
+                                const ov = Number(rating.overall) || 0;
+                                let hasTheory = false;
+                                if (rating.theory && typeof rating.theory === 'object') {
+                                    hasTheory = Object.values(rating.theory).some(v => Number(v) > 0);
+                                }
+                                
+                                if (ov > 0 || hasTheory || rating.tier) {
+                                    if (!userStats[userId]) { 
+                                        userStats[userId] = { id: userId, name: rating.displayName || userId, avatar: rating.profileImage || 'https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png', count: 0 }; 
+                                    }
+                                    userStats[userId].count++;
+                                    if (rating.displayName) userStats[userId].name = rating.displayName;
+                                    if (rating.profileImage) userStats[userId].avatar = rating.profileImage;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                lbAllUsers = Object.values(userStats).sort((a, b) => b.count - a.count);
+                
+                const searchInput = document.getElementById('lb-search');
+                if (searchInput) searchInput.value = '';
+                
+                renderLeaderboard(lbAllUsers);
+                
+                const modal = document.getElementById('leaderboard-modal');
+                if (modal) modal.style.display = 'flex';
+                
+            } catch(e) {
+                console.error("РћС€РёР±РєР° РїСЂРё СЃР±РѕСЂРєРµ Р—Р°Р»Р° РЎР»Р°РІС‹:", e);
+            } finally {
+                if (btn) btn.innerText = oldText;
+            }
+        }
+
+        function renderLeaderboard(usersArray) {
+            const listEl = document.getElementById('leaderboard-list');
+            if (!listEl) return;
+            
+            listEl.innerHTML = '';
+            if (usersArray.length === 0) {
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>'; 
+                return;
+            }
+            
+            usersArray.forEach((u) => {
+                const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
+                const rank = originalIndex + 1;
+                
+                let rankClass = ''; let crown = rank;
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+
+                const safeName = (u.name || '').toString().toLowerCase();
+                const dbUser = window.globalUsersDB ? window.globalUsersDB[safeName] : null;
+                
+                const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
+                const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
+                const statusDot = isOnline 
+                    ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' 
+                    : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+
+                const html = `
+                <a href="profile.html?user=${u.id}" class="lb-item">
+                    <div class="lb-rank ${rankClass}">${crown}</div>
+                    <div class="lb-user">
+                        <img src="${u.avatar}" class="lb-avatar" style="border-color: ${color};">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div class="lb-name" style="color: ${color}; text-shadow: 0 0 8px ${color}80; line-height: 1;">${u.name}</div>
+                            <div style="display: flex; align-items: center;">${statusDot}</div>
+                        </div>
+                    </div>
+                    <div class="lb-stats">
+                        <div class="lb-count">${u.count}</div>
+                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                    </div>
+                </a>`;
+                listEl.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function filterLeaderboard() {
+            const searchInput = document.getElementById('lb-search');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase().trim();
+            if (!query) { renderLeaderboard(lbAllUsers); return; }
+            const filtered = lbAllUsers.filter(u => (u.name || '').toString().toLowerCase().includes(query));
+            renderLeaderboard(filtered);
+        }
+
+         function getSmartYouTubeUrl(url) {
+            if (!url) return null;
+            let str = url.trim();
+            
+            if (!str.startsWith('http')) { str = 'https://' + str; }
+            
+            if (str.includes('/embed/')) {
+                if (str.endsWith('/embed/') || str.endsWith('videoseries?list=')) return null;
+                return str.replace('youtube.com', 'youtube-nocookie.com');
+            }
+
+            const listMatch = str.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+            if (listMatch && listMatch[1]) {
+                return `https://www.youtube-nocookie.com/embed/videoseries?list=${listMatch[1]}`;
+            }
+
+            const videoMatch = str.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|v\/|shorts\/|live\/))([a-zA-Z0-9_-]{11})/);
+            if (videoMatch && videoMatch[1]) {
+                return `https://www.youtube-nocookie.com/embed/${videoMatch[1]}`;
+            }
+
+            return null; 
+        }
+
+        async function loadGameData() {
+            try {
+                const loadingScreen = document.getElementById('loading-screen');
+                try { const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' }); if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; } } catch(e) {}
+                loadingScreen.innerText = "РђРІС‚РѕСЂРёР·Р°С†РёСЏ Twitch..."; await checkTwitchAuth();
+                loadingScreen.innerText = "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіСЂР°С„РёРєРѕРІ..."; initCharts();
+                const urlParams = new URLSearchParams(window.location.search); currentFranchiseId = urlParams.get('id');
+                if(!currentFranchiseId) throw new Error("РРіСЂР° РЅРµ РІС‹Р±СЂР°РЅР° РІ СЃСЃС‹Р»РєРµ!");
+
+                loadingScreen.innerText = "Р—Р°РіСЂСѓР·РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…...";
+                const res = await fetch(`${FIREBASE_BASE}/games_db/${encodeURIComponent(currentFranchiseId)}.json`, { cache: 'no-store' });
+                if (!res.ok) throw new Error(`РћС€РёР±РєР° СЃРµСЂРІРµСЂР°: HTTP ${res.status}`);
+                gameData = await res.json();
+                if (!gameData) throw new Error("РРіСЂР° РЅРµ РЅР°Р№РґРµРЅР° РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…!");
+
+                loadingScreen.innerText = "Р РµРЅРґРµСЂРёРЅРі РёРіСЂС‹...";
+                const epContainer = document.getElementById('episodes-container'); if (epContainer) epContainer.innerHTML = '';
+                
+                // 1. РЈРњРќРђРЇ Р”РћРЎРўРђР’РђР›РљРђ Р”РђРќРќР«РҐ
+                let rawUrls = [];
+                if (gameData.videoUrls) {
+                    rawUrls = Array.isArray(gameData.videoUrls) ? gameData.videoUrls : Object.values(gameData.videoUrls);
+                } else if (gameData.videoUrl) {
+                    rawUrls = [gameData.videoUrl];
+                }
+                
+                // 2. РџРђР РЎРРќР“ РЎРЎР«Р›РћРљ (РЎРѕС…СЂР°РЅСЏРµРј РѕСЂРёРіРёРЅР°Р»СЊРЅСѓСЋ СЃСЃС‹Р»РєСѓ РґР»СЏ РєРЅРѕРїРєРё)
+                const validUrls = [];
+                rawUrls.forEach(u => {
+                    if (!u) return;
+                    const isObj = typeof u === 'object';
+                    const originalStr = isObj ? (u.url || u.link) : u;
+                    if (!originalStr || originalStr.trim() === '') return;
+                    
+                    const safeUrl = getSmartYouTubeUrl(originalStr);
+                    if (safeUrl) {
+                        validUrls.push({ 
+                            label: (isObj && u.label) ? u.label : 'Р§Р°СЃС‚СЊ', 
+                            url: safeUrl,
+                            original: originalStr // <--- РЎРѕС…СЂР°РЅРёР»Рё С‡РёСЃС‚С‹Р№ Р»РёРЅРє
+                        });
+                    }
+                });
+
+                const playerWrapper = document.getElementById('player-wrapper');
+
+                // 3. РћРўР РРЎРћР’РљРђ РџР›Р•Р•Р Рђ Р РќРђР’РР“РђР¦РР
+                if (validUrls.length > 0) {
+                    playerWrapper.style.display = 'block';
+                    const firstSafeUrl = validUrls[0].url;
+                    
+                    // Р§РёСЃС‚С‹Р№ РїР»РµРµСЂ Р‘Р•Р— РєРЅРѕРїРѕРє РїРѕРІРµСЂС… РЅРµРіРѕ
+                    playerWrapper.innerHTML = `<iframe id="main-player" src="${firstSafeUrl}" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>`;
+                    
+                    if (epContainer) {
+                        // РћС„РѕСЂРјР»СЏРµРј РїР°РЅРµР»СЊ РЅР°Рґ РїР»РµРµСЂРѕРј
+                        epContainer.style.cssText = "display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; background: rgba(14, 17, 13, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--theme-panel-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); align-items: center;";
+                        
+                        if (validUrls.length > 1) {
+                            validUrls.forEach((item, index) => {
+                                const btn = document.createElement('button'); 
+                                btn.className = `season-btn ${index === 0 ? 'active' : ''}`; 
+                                btn.innerText = item.label === 'Р§Р°СЃС‚СЊ' ? `Р§Р°СЃС‚СЊ ${index + 1}` : item.label; 
+                                btn.style.cssText = "font-size: 14px; padding: 6px 16px; flex: 1; min-width: 100px; text-align: center;";
+                                
+                                btn.onclick = () => { 
+                                    document.querySelectorAll('#episodes-container .season-btn').forEach(b => b.classList.remove('active')); 
+                                    btn.classList.add('active'); 
+                                    document.getElementById('main-player').src = item.url; 
+                                    document.getElementById('youtube-direct-link').href = item.original; // РЎСЃС‹Р»РєР° РѕР±РЅРѕРІР»СЏРµС‚СЃСЏ
+                                };
+                                epContainer.appendChild(btn);
+                            });
+                        } else {
+                            // Р•СЃР»Рё С‡Р°СЃС‚СЊ РІСЃРµРіРѕ РѕРґРЅР°, РґРѕР±Р°РІР»СЏРµРј Р°РєРєСѓСЂР°С‚РЅС‹Р№ С‚РµРєСЃС‚, С‡С‚РѕР±С‹ РїР°РЅРµР»СЊ РЅРµ РїСѓСЃС‚РѕРІР°Р»Р°
+                            const label = document.createElement('span');
+                            label.innerText = 'Р—РђРџРРЎР¬ РџР РћРҐРћР–Р”Р•РќРРЇ';
+                            label.style.cssText = 'color: #829c73; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 15px; margin-left: 5px;';
+                            epContainer.appendChild(label);
+                        }
+
+                        // РљРЅРѕРїРєР°-СЃСЃС‹Р»РєР° РЅР° Р®С‚СѓР± (СѓРµР·Р¶Р°РµС‚ РІ СЃР°РјС‹Р№ РїСЂР°РІС‹Р№ РєСЂР°Р№)
+                        const extBtn = document.createElement('a');
+                        extBtn.id = 'youtube-direct-link';
+                        extBtn.href = validUrls[0].original;
+                        extBtn.target = '_blank';
+                        extBtn.innerHTML = 'в–¶ РЎРјРѕС‚СЂРµС‚СЊ РЅР° YouTube';
+                        extBtn.title = 'РћС‚РєСЂРѕРµС‚ РІРёРґРµРѕ РІ РЅРѕРІРѕР№ РІРєР»Р°РґРєРµ, РµСЃР»Рё РїР»РµРµСЂ Р®С‚СѓР±Р° РІС‹РґР°РµС‚ РѕС€РёР±РєСѓ';
+                        extBtn.style.cssText = "background: rgba(255, 85, 85, 0.1); color: #ff5555; text-decoration: none; padding: 6px 14px; border-radius: 6px; font-family: 'Neucha', cursive, sans-serif; font-size: 14px; font-weight: bold; border: 1px solid #ff5555; transition: 0.3s; margin-left: auto; white-space: nowrap;";
+                        
+                        // РђРЅРёРјР°С†РёСЏ РїСЂРё РЅР°РІРµРґРµРЅРёРё
+                        extBtn.onmouseover = function() { this.style.background = '#ff5555'; this.style.color = '#fff'; this.style.boxShadow = '0 0 10px rgba(255, 85, 85, 0.5)'; };
+                        extBtn.onmouseout = function() { this.style.background = 'rgba(255, 85, 85, 0.1)'; this.style.color = '#ff5555'; this.style.boxShadow = 'none'; };
+                        
+                        epContainer.appendChild(extBtn);
+                    }
+                } else {
+                    playerWrapper.style.display = 'flex'; playerWrapper.style.alignItems = 'center'; playerWrapper.style.justifyContent = 'center'; playerWrapper.style.background = '#050605'; 
+                    playerWrapper.innerHTML = `<span style="color: rgba(166, 227, 161, 0.3); font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Р—Р°РїРёСЃСЊ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚</span>`; 
+                }
+
+                await applyDynamicTheme(gameData.coverUrl);
+                document.getElementById('cover-img').src = gameData.coverUrl || ''; 
+                document.getElementById('title-display').innerText = gameData.title || currentFranchiseId.replace(/_/g, ' ');
+                
+                const info = gameData.info || {};
+                const scoresInfo = gameData.scores || {};
+                const getVal = (val) => (val && String(val).trim() !== "") ? val : "---";
+                
+                document.getElementById('year-display').innerText = getVal(info.year);
+                document.getElementById('format-display').innerText = getVal(info.format || info.platform);
+                document.getElementById('mode-display').innerText = getVal(info.mode);
+                document.getElementById('hltb-display').innerText = getVal(info.hltb || info.playtime);
+                document.getElementById('critic-display').innerText = getVal(info.rating || info.criticScore || info.critic || info.metacritic || info.score || info.critics || scoresInfo.metacritic || scoresInfo.critic);
+                document.getElementById('studio-display').innerText = getVal(info.studio || info.developer);
+                document.getElementById('engine-display').innerText = getVal(info.engine);
+                
+                document.getElementById('status-display').innerText = getVal(info.status);
+                document.getElementById('hours-display').innerText = getVal(info.episodesTotal || info.hours);
+                document.getElementById('achievements-display').innerText = getVal(info.achievements);
+                document.getElementById('difficulty-display').innerText = getVal(info.difficulty);
+                document.getElementById('deaths-display').innerText = getVal(info.episodesWatched || info.deaths);
+                document.getElementById('source-display').innerText = getVal(info.source || info.pickedBy);
+                
+                if(info.dateWatched && String(info.dateWatched).trim() !== "") {
+                    const [y, m, d] = info.dateWatched.split('-'); document.getElementById('date-display').innerText = `${d}.${m}.${y}`;
+                } else { 
+                    document.getElementById('date-display').innerText = "---"; 
+                }
+                
+                document.getElementById('synopsis-display').innerText = getVal(info.description) !== "---" ? info.description : "РћРїРёСЃР°РЅРёРµ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚.";
+                
+                const genreDict = { 'action': 'Р­РєС€РµРЅ', 'adventure': 'РџСЂРёРєР»СЋС‡РµРЅРёСЏ', 'indie': 'РРЅРґРё', 'rpg': 'Р РџР“', 'simulation': 'РЎРёРјСѓР»СЏС‚РѕСЂ', 'strategy': 'РЎС‚СЂР°С‚РµРіРёСЏ', 'platformer': 'РџР»Р°С‚С„РѕСЂРјРµСЂ', 'shooter': 'РЁСѓС‚РµСЂ', 'puzzle': 'Р“РѕР»РѕРІРѕР»РѕРјРєР°', 'horror': 'РҐРѕСЂСЂРѕСЂ', 'survival': 'Р’С‹Р¶РёРІР°РЅРёРµ', 'open world': 'РћС‚РєСЂС‹С‚С‹Р№ РјРёСЂ', 'fighting': 'Р¤Р°Р№С‚РёРЅРі', 'racing': 'Р“РѕРЅРєРё', 'sports': 'РЎРїРѕСЂС‚', 'casual': 'РљР°Р·СѓР°Р»СЊРЅР°СЏ', 'multiplayer': 'РњСѓР»СЊС‚РёРїР»РµРµСЂ', 'co-op': 'РљРѕРѕРї', 'stealth': 'РЎС‚РµР»СЃ', 'metroidvania': 'РњРµС‚СЂРѕРёРґРІР°РЅРёСЏ', 'rogue-like': 'Р РѕРіР°Р»РёРє', 'rogue-lite': 'Р РѕРіР°Р»РёРє', 'hack and slash': 'РЎР»СЌС€РµСЂ', 'visual novel': 'РќРѕРІРµР»Р»Р°', 'sandbox': 'РџРµСЃРѕС‡РЅРёС†Р°' };
+                if(info.genres) { document.getElementById('genres-display').innerHTML = info.genres.map(g => { const cleanG = g.trim().toLowerCase(); const translated = genreDict[cleanG] || g; return `<span class="genre-badge">${translated}</span>`; }).join(''); } else { document.getElementById('genres-display').innerHTML = ''; }
+
+                const commRes = await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/ratings.json`, { cache: 'no-store' });
+                if (!commRes.ok) throw new Error(`РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РѕС†РµРЅРѕРє: HTTP ${commRes.status}`);
+                currentCommunityRatings = (await commRes.json()) || {};
+
+                let chatTotalOvr = 0, chatVis = 0, chatGame = 0, chatSnd = 0, chatTech = 0, chatAtm = 0, chatCount = 0, meData = null;
+                for (const [userId, r] of Object.entries(currentCommunityRatings)) {
+                    chatTotalOvr += safeNum(r.overall);
+                    if (r.theory) { chatVis += safeNum(r.theory.visuals); chatGame += safeNum(r.theory.gameplay); chatSnd += safeNum(r.theory.sound); chatTech += safeNum(r.theory.tech); chatAtm += safeNum(r.theory.atmosphere); }
+                    chatCount++; if (currentUser && userId === currentUser.id) { meData = r; }
+                }
+
+                const chatOvr = chatCount > 0 ? parseFloat((chatTotalOvr / chatCount).toFixed(1)) : 0;
+                const tChat = { visuals: chatCount > 0 ? parseFloat((chatVis/chatCount).toFixed(1)) : 0, gameplay: chatCount > 0 ? parseFloat((chatGame/chatCount).toFixed(1)) : 0, sound: chatCount > 0 ? parseFloat((chatSnd/chatCount).toFixed(1)) : 0, tech: chatCount > 0 ? parseFloat((chatTech/chatCount).toFixed(1)) : 0, atmosphere: chatCount > 0 ? parseFloat((chatAtm/chatCount).toFixed(1)) : 0 };
+                const chatTheoryAvg = calcTheoryAvg(tChat);
+
+                const meOvr = meData ? safeNum(meData.overall) : 0;
+                const tMe = meData && meData.theory ? meData.theory : {visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0};
+                const meTheoryAvg = calcTheoryAvg(tMe);
+
+                const strScores = gameData.scores || {}; const strTier = strScores.tier || 'UNRANKED';
+                const tStr = strScores.theory || {visuals:0, gameplay:0, sound:0, tech:0, atmosphere:0};
+                const strTheoryAvg = calcTheoryAvg(tStr);
+
+                window.pageScores = { streamerAvg: strTheoryAvg, streamerTier: strTier, chat: chatOvr, me: meOvr };
+                
+                const renderLegendBox = (boxId, labelId, dotId, scoreId, scoreVal, colorObj) => {
+                    document.getElementById(boxId).style.cssText = getGlassBoxStyle(scoreVal) + ' display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; padding: 8px 5px; border-radius: 8px; flex: 1; backdrop-filter: blur(8px);';
+                    document.getElementById(labelId).style.color = getScoreColor(scoreVal, 1);
+                    document.getElementById(labelId).style.textShadow = getScoreShadow(scoreVal, false);
+                    document.getElementById(dotId).style.background = colorObj.border;
+                    document.getElementById(dotId).style.boxShadow = `0 0 5px ${colorObj.border}`;
+                    document.getElementById(scoreId).innerText = scoreVal > 0 ? scoreVal : '-';
+                    document.getElementById(scoreId).style.cssText = `color: #fff; font-size: 22px; font-weight: bold; margin-bottom: 5px; text-shadow: ${getScoreShadow(scoreVal, false)};`;
+                };
+
+                renderLegendBox('legend-box-streamer', 'legend-label-streamer', 'dot-streamer', 'avg-streamer-score', strTheoryAvg, radarColors[0]);
+                renderLegendBox('legend-box-chat', 'legend-label-chat', 'dot-chat', 'avg-chat-score', chatTheoryAvg, radarColors[1]);
+                renderLegendBox('legend-box-me', 'legend-label-me', 'dot-me', 'avg-viewer-score', meTheoryAvg, radarColors[2]);
+
+                document.getElementById('breakdown-streamer').innerHTML = generateBreakdownHtml(tStr);
+                document.getElementById('breakdown-chat').innerHTML = generateBreakdownHtml(tChat);
+                document.getElementById('breakdown-viewer').innerHTML = generateBreakdownHtml(tMe);
+                
+                if (radarChart) {
+                    radarChart.data.datasets[0].data = [safeNum(tStr.visuals), safeNum(tStr.gameplay), safeNum(tStr.sound), safeNum(tStr.tech), safeNum(tStr.atmosphere)]; 
+                    radarChart.data.datasets[1].data = [safeNum(tChat.visuals), safeNum(tChat.gameplay), safeNum(tChat.sound), safeNum(tChat.tech), safeNum(tChat.atmosphere)]; 
+                    radarChart.data.datasets[2].data = [safeNum(tMe.visuals), safeNum(tMe.gameplay), safeNum(tMe.sound), safeNum(tMe.tech), safeNum(tMe.atmosphere)]; 
+                    const themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+                    radarChart.options.scales.r.pointLabels.color = themeColor || '#c4d1b8'; radarChart.update();
+                }
+
+                applyPageVisuals();
+
+                const rateBtn = document.getElementById('rate-title-btn');
+                if (currentUser) {
+                    const isStreamer = currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase(); let hasRated = false;
+                    if (isStreamer && strTheoryAvg > 0) hasRated = true;
+                    if (!isStreamer && currentCommunityRatings[currentUser.id] && safeNum(currentCommunityRatings[currentUser.id].overall) > 0) hasRated = true;
+                    rateBtn.innerText = hasRated ? "РР·РјРµРЅРёС‚СЊ РѕС†РµРЅРєСѓ" : "РћС†РµРЅРёС‚СЊ РёРіСЂСѓ"; rateBtn.style.opacity = "1"; rateBtn.style.pointerEvents = "auto";
+                } else { rateBtn.innerText = "РћС†РµРЅРёС‚СЊ РёРіСЂСѓ"; rateBtn.style.opacity = "0.5"; rateBtn.style.pointerEvents = "none"; }
+
+                await loadComments(); 
+                loadingScreen.style.display = 'none'; document.getElementById('main-layout').style.display = 'flex';
+            } catch(e) { console.error(e); document.getElementById('loading-screen').innerHTML = `<span style="color:#ff5555;">РћРЁРР‘РљРђ: ${e.message}</span><br><br><span style="font-size:16px; color:#a4b09c;">РќР°Р¶РјРё <b>Ctrl + F5</b>, С‡С‚РѕР±С‹ СЃР±СЂРѕСЃРёС‚СЊ РєРµС€.</span>`; }
+        }
+
+        window.onload = loadGameData;
+    </script>
+</body>
+</html>
+
+
