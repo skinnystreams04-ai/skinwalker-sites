@@ -657,7 +657,8 @@
                     let me = { overall:0, plot:0, vis:0, mus:0, wor:0, atm:0, countOv:0, countTh:0 };
 
                     seasons.forEach(s => {
-                        totalEp += parseInt(s.info.episodesTotal) || 0;
+                        const info = s.info && typeof s.info === 'object' ? s.info : {};
+                        totalEp += parseInt(info.episodesTotal) || 0;
                         
                         if (s.scores && safeNum(s.scores.overall) > 0) { streamer.overall += safeNum(s.scores.overall); streamer.countOv++; }
                         if (s.scores && s.scores.theory) {
@@ -672,6 +673,7 @@
                         const sComm = (commData || {})[franchiseId] && (commData || {})[franchiseId][s.seasonId] ? (commData || {})[franchiseId][s.seasonId].ratings : null;
                         if (sComm) {
                             for (const [uid, r] of Object.entries(sComm)) {
+                                if (!r || typeof r !== 'object') continue;
                                 const isMe = currentUser && uid === currentUser.id;
                                 
                                 if (safeNum(r.overall) > 0) {
@@ -730,7 +732,7 @@
                     globalFranchises.push({
                         id: franchiseId, title: franchiseId.replace(/_/g, ' '), coverUrl: baseSeason.coverUrl,
                         episodes: totalEp, badgeText: `${seasons.length}S ${totalEp}EP`,
-                        release_year: parseInt(baseSeason.info.year) || 0, date_watched: baseSeason.info.dateWatched ? new Date(baseSeason.info.dateWatched).getTime() : 0,
+                        release_year: parseInt(baseSeason.info && baseSeason.info.year) || 0, date_watched: baseSeason.info && baseSeason.info.dateWatched ? new Date(baseSeason.info.dateWatched).getTime() : 0,
                         az: franchiseId.replace(/_/g, ' ').toLowerCase(),
                         scores: scoresObj,
                         hasVod: hasAnyVod // Теперь камера появится, если запись есть хоть где-то
