@@ -36,7 +36,7 @@
             transition: color 0.5s ease, text-shadow 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
         }
 
-        /* РЁРђРџРљРђ */
+        /* ШАПКА */
         .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); width: 100%; box-sizing: border-box; flex-shrink: 0; z-index: 1000; position: relative; }
         .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: 0.5s; cursor: pointer; text-shadow: 0 0 10px var(--theme-glow); }
         .nav-logo:hover { filter: brightness(1.2); }
@@ -192,9 +192,9 @@
     <nav class="top-nav">
         <div style="display: flex; align-items: center; gap: 50px;">
             <div class="logo-dropdown">
-                <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
+                <div class="nav-logo-wrap">Skinwalker Аниме <span class="logo-arrow">▼</span></div>
                 <div class="logo-dropdown-content">
-                    <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;"><span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ</a>
+                    <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;"><span style="font-size: 14px;">▶</span> Аниме</a>
                     <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;"><span style="font-size: 14px;">▶</span> Игры</a>
                 </div>
             </div>
@@ -245,7 +245,7 @@
             <div class="widget-base" style="flex: 1;">
                 <div class="widget-header">
                     <div class="tabs-container">
-                        <button class="tab-btn active" id="tab-btn-anime" onclick="switchTab('anime')">РђРЅРёРјРµ</button>
+                        <button class="tab-btn active" id="tab-btn-anime" onclick="switchTab('anime')">Аниме</button>
                         <button class="tab-btn" id="tab-btn-games" onclick="switchTab('games')">Игры</button>
                     </div>
                     <div style="position: relative; display: inline-flex; align-items: center;">
@@ -254,7 +254,7 @@
                             <option value="low" style="background: #0b0d0a;">Сначала низкие</option>
                             <option value="new" style="background: #0b0d0a;">Сначала новые</option>
                         </select>
-                        <span style="color: #6b7a62; font-size: 10px; position: absolute; right: 0; pointer-events: none;">в–ј</span>
+                        <span style="color: #6b7a62; font-size: 10px; position: absolute; right: 0; pointer-events: none;">▼</span>
                     </div>
                 </div>
                 
@@ -290,7 +290,7 @@
     <!-- ЗАЛ СЛАВЫ -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
-            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">×</div>
             <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
                 <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="window.filterLeaderboard()">
@@ -922,7 +922,7 @@
                 const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
                 const rank = originalIndex + 1;
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                if (rank === 1) { rankClass = 'top-1'; crown = '👑'; }
                 else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
                 else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
@@ -965,5 +965,3 @@
     </script>
 </body>
 </html>
-
-

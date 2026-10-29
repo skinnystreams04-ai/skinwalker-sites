@@ -42,7 +42,7 @@
 
     body { margin: 0; padding: 0 0 20px 0; font-family: 'Neucha', cursive, sans-serif; background-color: #0b0d0a; color: #a4b09c; min-width: 1350px; overflow-x: hidden; }
 
-    /* РЁРђРџРљРђ */
+    /* ШАПКА */
     .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
     .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: 0.2s; cursor: pointer; }
     .nav-logo:hover { filter: brightness(1.2); text-shadow: 0 0 15px var(--theme-glow); }
@@ -247,7 +247,7 @@
                 <div class="nav-logo-wrap">Skinwalker Игры <span class="logo-arrow">▼</span></div>
                 <div class="logo-dropdown-content">
                     <a href="../anime/index.html" class="logo-link" style="--site-color: #a6e3a1;">
-                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
+                        <span style="font-size: 14px;">▶</span> Аниме
                     </a>
                     <a href="../game/index.html" class="logo-link active" style="--site-color: #ffd700;">
                         <span style="font-size: 14px;">▶</span> Игры
@@ -269,7 +269,7 @@
                     <div class="visual-dropdown-content">
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
                             <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
-                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">Я</button>
                             <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
                         </div>
                     </div>
@@ -295,7 +295,7 @@
                     
                     <div class="genre-badges" id="genres-display" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 15px;"></div>
                     
-                    <div style="background: var(--theme-panel-header); border: 1px solid var(--theme-panel-border); border-radius: 6px; padding: 4px; color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: center; margin: 5px 0 10px 0; letter-spacing: 2px;">РћР± РёРіСЂРµ</div>
+                    <div style="background: var(--theme-panel-header); border: 1px solid var(--theme-panel-border); border-radius: 6px; padding: 4px; color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; font-weight: bold; text-align: center; margin: 5px 0 10px 0; letter-spacing: 2px;">Об игре</div>
                     
                     <div class="info-row"><span class="info-label">Год выхода:</span><span class="info-val" id="year-display">---</span></div>
                     <div class="info-row"><span class="info-label">Платформа:</span><span class="info-val" id="format-display">---</span></div>
@@ -365,7 +365,7 @@
                             <div class="main-score" id="streamer-score-val">0<span> / 10</span></div>
                         </div>
                         <div class="score-box me-element" id="box-me" onmouseover="highlightChart(2)" onmouseout="resetChart()">
-                            <div class="score-label me" id="label-me">РњРѕСЏ</div>
+                            <div class="score-label me" id="label-me">Моя</div>
                             <div class="main-score" id="my-score-display">0<span> / 10</span></div>
                         </div>
                         <div class="score-box chat-element" id="box-chat" onmouseover="highlightChart(1)" onmouseout="resetChart()">
@@ -387,7 +387,7 @@
                             <div class="legend-breakdown" id="breakdown-streamer"></div>
                         </div>
                         <div class="legend-col me-element" id="legend-box-me" onmouseover="highlightChart(2)" onmouseout="resetChart()">
-                            <div class="legend-title" id="legend-label-me"><div class="dot" id="dot-me"></div>РЇ</div>
+                            <div class="legend-title" id="legend-label-me"><div class="dot" id="dot-me"></div>Я</div>
                             <div class="legend-score" id="avg-viewer-score">0</div>
                             <div class="legend-breakdown" id="breakdown-viewer"></div>
                         </div>
@@ -407,7 +407,7 @@
     <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="rating-modal" class="modal-overlay" style="display: none;">
         <div class="modal-box">
-            <div class="close-btn" onclick="closeRatingModal()">Г—</div>
+            <div class="close-btn" onclick="closeRatingModal()">×</div>
             <h2 class="modal-title">Выставить оценку</h2>
             <div class="modal-content-wrapper">
                 <div class="modal-sliders">
@@ -438,7 +438,7 @@
     <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
-            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">×</div>
             <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
                 <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="filterLeaderboard()">
@@ -503,7 +503,7 @@
             const streamerTier = window.pageScores.streamerTier;
             renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamerAvg, 'Стример', streamerTier && streamerTier !== 'UNRANKED', streamerTier);
             renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Чат');
-            renderBox('box-me', 'label-me', 'my-score-display', window.pageScores.me, 'РњРѕСЏ');
+            renderBox('box-me', 'label-me', 'my-score-display', window.pageScores.me, 'Моя');
 
             // А ТЕПЕРЬ скрываем блоки, если они выключены в меню
             document.getElementById('box-streamer').style.display = visRoles.streamer ? 'flex' : 'none';
@@ -832,7 +832,7 @@
 
         function createCommentCard(c, isReply = false, parentId = null) {
             const authorId = c.userId || c.id, isMe = currentUser && authorId === currentUser.id, isAdminViewer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
-            const d = new Date(c.timestamp), dateStr = `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')} РІ ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+            const d = new Date(c.timestamp), dateStr = `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')} в ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             const editedHtml = c.isEdited ? `<span class="edited-tag">(изменено)</span>` : '', uInfo = getUserInfo(c.displayName, c.userColor);
 
             let actions = `<div class="comment-actions"><button class="btn-reply" onclick="toggleReplyBox('${parentId || c.id}', '${isReply ? c.displayName : ''}')">Ответить</button>${isMe ? `<button class="btn-edit" onclick="${isReply ? `editReply('${parentId}', '${c.rid}')` : `editComment('${c.id}')`}">Изменить</button>` : ''}${isMe || isAdminViewer ? `<button class="btn-del" onclick="${isReply ? `deleteReply('${parentId}', '${c.rid}')` : `deleteComment('${c.id}')`}">Удалить</button>` : ''}</div>`;
@@ -875,7 +875,7 @@
         async function postComment() {
             if (!currentUser) { showToast("Сначала войди через Twitch!", true); return; }
             const text = document.getElementById('comment-text').value.trim(); if (!text) return;
-            const btn = document.getElementById('send-comment-btn'); btn.innerText = "РћРўРџР РђР'РљРђ..."; btn.style.pointerEvents = "none";
+            const btn = document.getElementById('send-comment-btn'); btn.innerText = "ОТПРАВКА..."; btn.style.pointerEvents = "none";
             const commentId = editingTarget.type === 'comment' ? editingTarget.id : (Date.now() + '_' + currentUser.id);
 
             try {
@@ -889,7 +889,7 @@
         async function postReply(commentId) {
             if (!currentUser) { showToast("Сначала войди через Twitch!", true); return; }
             const inputEl = document.getElementById(`reply-text-${commentId}`); const text = inputEl.value.trim(); if (!text) return;
-            const btn = document.getElementById(`send-reply-btn-${commentId}`); btn.innerText = "РћРўРџР РђР'РљРђ..."; btn.style.pointerEvents = "none";
+            const btn = document.getElementById(`send-reply-btn-${commentId}`); btn.innerText = "ОТПРАВКА..."; btn.style.pointerEvents = "none";
 
             try {
                 if (editingTarget.type === 'reply' && editingTarget.parentId === commentId) { await fetch(`${FIREBASE_BASE}/games_community_db/${encodeURIComponent(currentFranchiseId)}/comments/${commentId}/replies/${editingTarget.id}.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text, isEdited: true }) }); editingTarget = { type: null, id: null, parentId: null }; showToast("💬 Ответ изменен!"); } 
@@ -987,7 +987,7 @@
                 const rank = originalIndex + 1;
                 
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                if (rank === 1) { rankClass = 'top-1'; crown = '👑'; }
                 else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
                 else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
@@ -1257,5 +1257,3 @@
     </script>
 </body>
 </html>
-
-

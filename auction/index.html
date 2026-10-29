@@ -7,9 +7,9 @@
     <link rel="icon" type="image/png" href="../icons/BILET_GOLD.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../shared/site-header.css">
-    <script src="../shared/site-header.js" defer></script>
-    <script src="../shared/twitch-auth.js" defer></script>
+    <link rel="stylesheet" href="shared/site-header.css">
+    <script src="shared/site-header.js" defer></script>
+    <script src="shared/twitch-auth.js" defer></script>
 
     <style>
         /* ГЛОБАЛЬНЫЙ СТИЛЬ */
@@ -276,13 +276,13 @@
     <!-- МОДАЛЬНОЕ ОКНО ПРАВИЛ -->
     <div class="rules-modal" id="rules-modal">
         <div class="rules-content">
-            <button class="rules-close-btn" onclick="closeRulesModal()">вњ–</button>
+            <button class="rules-close-btn" onclick="closeRulesModal()">✖</button>
             <div class="modal-nav">
                 <button class="modal-nav-btn active" onclick="switchModalView('rules', this)">Правила</button>
             </div>
             <div id="modal-view-rules" class="modal-view active">
                 <div class="rules-text">
-                    <div class="rules-section-title">рџЋ¬ РљРђРљ РЈР§РђРЎРўР'РћР'РђРўР¬</div>
+                    <div class="rules-section-title">🎬 КАК УЧАСТВОВАТЬ</div>
                     <ul>
                         <li><b>Добавление лотов:</b> В наградах канала можно добавить до <span id="rule-max-games" class="eff-badge">3</span> игр (указываются через запятую в одном сообщении).</li>
                         <li><b><img src="../icons/BILET.png" class="custom-icon rule-ticket-icon"> Обычные билеты:</b> Чтобы получить, купи награду <b>«Пополнить баланс»</b> за баллы канала на Твиче. После этого они появятся в твоем профиле на сайте. Лимиты зависят от роли (см. ниже).</li>
@@ -328,7 +328,7 @@
                 <div class="left-panel" id="players-grid"></div>
             </div>
             
-            <!-- РџР РђР'РђРЇ Р§РђРЎРўР¬ -->
+            <!-- ПРАВАЯ ЧАСТЬ -->
             <div class="right-interactive">
                 
                 <div class="col-main">
@@ -405,7 +405,7 @@
                         </div>
                     </div>
 
-                    <!-- Р§РђРў -->
+                    <!-- ЧАТ -->
                     <div class="widget-base static-widget" id="widget-chat" style="flex: 1; min-height: 0;" data-zoom="1">
                         <div class="widget-header">
                             <div class="widget-title">💬 Чат Твича</div>
@@ -566,7 +566,7 @@
             showToast('🔄 Отправляю запрос боту. Ожидайте обновления...');
             sendTwitchCommand('!роль');
             const btn = document.getElementById('btn-sync-role');
-            btn.innerText = 'вЏі'; btn.style.pointerEvents = 'none';
+            btn.innerText = '⏳'; btn.style.pointerEvents = 'none';
             setTimeout(() => { btn.innerText = '🔄 ПРОВЕРИТЬ РОЛЬ'; btn.style.pointerEvents = 'auto'; }, 5000);
         }
 
@@ -729,10 +729,10 @@
                 if (player.active_mech) {
                     const activeName = typeof player.active_name === 'string' ? player.active_name : '';
                     const activeValue = Number(player.active_value) || 0;
-                    const readableName = activeName && !/[пїЅ]{1,}|\?{2,}/.test(activeName)
+                    const readableName = activeName && !/[�]{1,}|\?{2,}/.test(activeName)
                         ? activeName
                         : (activeValue > 0 ? `+${activeValue} билетов` : 'Билетный предмет');
-                    loadedSpell = { mech: 'add_tickets', name: readableName, icon: player.active_icon || 'рџЋџ', target: 'self' };
+                    loadedSpell = { mech: 'add_tickets', name: readableName, icon: player.active_icon || '🎟', target: 'self' };
                     let hintText = 'Нажми сюда, чтобы применить!';
                     if (targetingMode && targetingState !== 'gold' && targetingState !== 'ticket') {
                         hintText = 'Выбери СВОЙ лот';
@@ -1048,7 +1048,7 @@
                 // 🔥 ВЫСЧИТЫВАЕМ И КРАСИМ РЕДКОСТЬ 🔥
                 let itemColor = neonColor; 
                 if (probability <= rarity.legendary) itemColor = "#f9e2af"; // Лега
-                else if (probability <= rarity.epic) itemColor = "#cba6f7"; // Р­РїРёРє
+                else if (probability <= rarity.epic) itemColor = "#cba6f7"; // Эпик
                 else if (probability <= rarity.rare) itemColor = "#89b4fa"; // Рарочка
 
                 ctx.fillStyle = itemColor; 
@@ -1087,6 +1087,3 @@
     </script>
 </body>
 </html>
-
-
-

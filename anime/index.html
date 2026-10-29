@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skinwalker РђРЅРёРјРµ</title>
+    <title>Skinwalker Аниме</title>
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/site-header.css">
     <script src="../shared/site-header.js" defer></script>
@@ -46,7 +46,7 @@
         #dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: blur(40px) brightness(0.2); opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.5s ease, background-image 0.5s ease; }
         #dynamic-bg.active { opacity: 1; }
 
-        /* РЁРђРџРљРђ */
+        /* ШАПКА */
         .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; z-index: 1000; }
         .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; text-shadow: 0 0 10px var(--theme-glow); cursor: pointer; }
         .nav-logo:hover { filter: brightness(1.2); }
@@ -197,11 +197,11 @@
             
             <!-- ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ -->
             <div class="logo-dropdown">
-                <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
+                <div class="nav-logo-wrap">Skinwalker Аниме <span class="logo-arrow">▼</span></div>
                 <div class="logo-dropdown-content">
                     <!-- Относительная ссылка на текущую папку Аниме -->
                     <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;">
-                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
+                        <span style="font-size: 14px;">▶</span> Аниме
                     </a>
                     <!-- Относительная ссылка: выйти назад (../) и зайти в папку Game -->
                     <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;">
@@ -232,7 +232,7 @@
                         <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
                             <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
-                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">Я</button>
                             <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
             <option value="plot">По Сюжету</option>
             <option value="visuals">По Визуалу</option>
             <option value="music">По Музыке</option>
-            <option value="world">РџРѕ РњРёСЂСѓ</option>
+            <option value="world">По Миру</option>
             <option value="atmosphere">По Персонажам</option>
             <option value="az">По алфавиту (A-Z)</option>
             <option value="date_watched">По дате просмотра</option>
@@ -264,7 +264,7 @@
         <div class="controls-divider" id="role-divider"></div>
         <select id="role-select" class="sort-select" onchange="applyFiltersAndSort()">
             <option value="streamer">Стример</option>
-            <option value="me" class="me-element">РЇ</option>
+            <option value="me" class="me-element">Я</option>
             <option value="chat">Чат</option>
         </select>
         <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="Изменить направление">↓</button>
@@ -292,7 +292,7 @@
     <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
-            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">×</div>
             <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
                 <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="filterLeaderboard()">
@@ -359,7 +359,7 @@
                 const rank = originalIndex + 1;
                 
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                if (rank === 1) { rankClass = 'top-1'; crown = '👑'; }
                 else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
                 else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
@@ -818,7 +818,7 @@
 
                 const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'Стример', valStr) : '';
                 const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Чат', valChat) : '';
-                const meBoxHtml = (!isStreamer && visRoles.me) ? getBoxHtml('me', 'РЇ', valMe) : '';
+                const meBoxHtml = (!isStreamer && visRoles.me) ? getBoxHtml('me', 'Я', valMe) : '';
 
                 const cardHtml = `
                 <div class="card-container" id="card-${safeDomId}" data-cover="${safeCoverUrl}" onmouseenter="openHubPreview(${index})" onmouseleave="closeHubPreview()" onclick="window.location.href='${detailsLink}'" style="--card-color: #283325; --card-border: rgba(40, 51, 37, 0.8); --card-shadow: rgba(0,0,0,0.5); --card-shadow-hover: rgba(166, 227, 161, 0.25);">
@@ -957,7 +957,7 @@
                         ${row('Сюжет', theory.plot)}
                         ${row('Визуал', theory.visuals)}
                         ${row('Музыка', theory.music)}
-                        ${row('РњРёСЂ', theory.world)}
+                        ${row('Мир', theory.world)}
                         ${row('Персонажи', theory.atmosphere)}
                     </div>
                 </div>
@@ -967,7 +967,7 @@
             document.getElementById('hub-preview-theory').innerHTML = `
                 <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
                     ${visRoles.streamer ? createStatCol('Стример', radarColors[0].border, s.streamer.avgTheory, s.streamer, false, 0) : ''}
-                    ${(!isStreamer && visRoles.me) ? createStatCol('РЇ', radarColors[2].border, s.me.avgTheory, s.me, true, 2) : ''}
+                    ${(!isStreamer && visRoles.me) ? createStatCol('Я', radarColors[2].border, s.me.avgTheory, s.me, true, 2) : ''}
                     ${visRoles.chat ? createStatCol('Чат', radarColors[1].border, s.chat.avgTheory, s.chat, false, 1) : ''}
                 </div>
             `;
@@ -1006,5 +1006,3 @@
     </script>
 </body>
 </html>
-
-

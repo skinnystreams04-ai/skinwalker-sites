@@ -290,7 +290,7 @@
     <!-- МОДАЛЬНОЕ ОКНО ПРАВИЛ И ЭФФЕКТОВ -->
     <div class="rules-modal" id="rules-modal">
         <div class="rules-content">
-            <button class="rules-close-btn" onclick="closeRulesModal()">вњ–</button>
+            <button class="rules-close-btn" onclick="closeRulesModal()">✖</button>
             <div class="modal-nav">
                 <button class="modal-nav-btn active" onclick="switchModalView('rules', this)">📖 Правила</button>
                 <button class="modal-nav-btn" onclick="switchModalView('effects', this)">🔮 Словарь Эффектов</button>
@@ -303,7 +303,7 @@
                         <li><b>🌑 ФАЗА 2 «Солнечное затмение»:</b> Судная Ночь. <b>ДОБАВЛЕНИЕ НОВЫХ ИГР ЗАКРЫТО.</b> Открывается <i>Колесо Дебаффов</i>. Начинается жесткая война: воровство, яды, налоги и убийства. Выживает сильнейший!</li>
                     </ul>
 
-                    <div class="rules-section-title">рџЋ® РљРђРљ РЈР§РђРЎРўР'РћР'РђРўР¬</div>
+                    <div class="rules-section-title">🎮 КАК УЧАСТВОВАТЬ</div>
                     <ul>
                         <li><b>Добавление лотов:</b> В наградах канала можно добавить до <span id="rule-max-games" class="eff-badge">3</span> игр (укажи их через запятую в одном сообщении).</li>
                         <li><b>Бесплатные билеты:</b> Покупай за баллы канала (1 билет = 100 баллов). Не дает магических эффектов, но имеет жесткие лимиты по ролям (смотри ниже).</li>
@@ -433,7 +433,7 @@
                         </div>
                     </div>
 
-                    <!-- Р§РђРў -->
+                    <!-- ЧАТ -->
                     <div class="widget-base static-widget" id="widget-chat" style="flex: 1; min-height: 0;" data-zoom="1">
                         <div class="widget-header">
                             <div class="widget-title">💬 Чат Твича</div>
@@ -594,7 +594,7 @@
 
         // 🔥 TWITCH АВТОРИЗАЦИЯ & ИНТЕРАКТИВ 🔥
         const TWITCH_CLIENT_ID = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
-        const REDIRECT_URI = 'https://skinnystreams04-ai.github.io/auction-table/';
+        const REDIRECT_URI = 'https://skinnystreams04-ai.github.io/skinwalker-sites/auction/';
         const STREAMER_LOGIN = 'skinwalker_nozxc'; 
         
         window.currentUserLogin = null;
@@ -796,7 +796,7 @@
                     loadedSpell = {
                         mech: player.active_mech,
                         name: player.active_name || 'Магия',
-                        icon: player.active_icon || 'вњЁ',
+                        icon: player.active_icon || '✨',
                         target: player.active_target || 'self'
                     };
                     
@@ -958,9 +958,9 @@
                             if (dictionaryMap[type]) { iconText = `${dictionaryMap[type].icon}`; titleText = dictionaryMap[type].name; } 
                             else {
                                 if(type === 'shield') iconText = "🛡️"; else if(type === 'fire') iconText = "🔥";
-                                else if(type === 'freeze') iconText = "вќ"пёЏ"; else if(type === 'kill') iconText = "рџ'Ђ";
+                                else if(type === 'freeze') iconText = "❄️"; else if(type === 'kill') iconText = "💀";
                                 else if(type === 'poison') iconText = "☠️"; else if(type === 'acid') iconText = "🧪";
-                                else { iconText = `вњЁ`; titleText = type; }
+                                else { iconText = `✨`; titleText = type; }
                             }
                             let imgUrl = `${baseUrl}${type}.png`; let imgTag = "";
                             if(window.failedImages[imgUrl]) { imgTag = iconText; } else { imgTag = `<img src="${imgUrl}" class="custom-icon" onerror="window.failedImages['${imgUrl}']=true; this.outerHTML='${iconText}'">`; }
@@ -1044,6 +1044,3 @@
     </script>
 </body>
 </html>
-
-
-

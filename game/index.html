@@ -160,7 +160,7 @@
                 <div class="nav-logo-wrap">Skinwalker Игры <span class="logo-arrow">▼</span></div>
                 <div class="logo-dropdown-content">
                     <a href="../anime/index.html" class="logo-link" style="--site-color: #a6e3a1;">
-                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
+                        <span style="font-size: 14px;">▶</span> Аниме
                     </a>
                     <a href="index.html" class="logo-link active" style="--site-color: #ffd700;">
                         <span style="font-size: 14px;">▶</span> Игры
@@ -180,7 +180,7 @@
                     <div class="visual-dropdown-content">
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
                             <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
-                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">Я</button>
                             <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
             <option value="avgTheory">По среднему Критериев</option>
             <option value="visuals">По Визуалу</option>
             <option value="gameplay">По Геймплею</option>
-            <option value="sound">РџРѕ Р—РІСѓРєСѓ</option>
+            <option value="sound">По Звуку</option>
             <option value="tech">По Технике</option>
             <option value="atmosphere">По Атмосфере</option>
             <option value="az">По алфавиту (A-Z)</option>
@@ -213,7 +213,7 @@
         <div class="controls-divider" id="role-divider"></div>
         <select id="role-select" class="sort-select" onchange="applyFiltersAndSort()">
             <option value="streamer">Стример</option>
-            <option value="me">РЇ</option>
+            <option value="me">Я</option>
             <option value="chat">Чат</option>
         </select>
         <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="Изменить направление">↓</button>
@@ -241,7 +241,7 @@
     <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
-            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">×</div>
             <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
                 <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="window.filterLeaderboard()">
@@ -717,7 +717,7 @@
 
                 const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'Стример', valStr) : '';
                 const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Чат', valChat) : '';
-                const meBoxHtml = visRoles.me ? getBoxHtml('me', 'РЇ', valMe) : '';
+                const meBoxHtml = visRoles.me ? getBoxHtml('me', 'Я', valMe) : '';
 
                 const cardHtml = `
                 <div class="card-container" id="card-${safeDomId}" data-cover="${safeCoverUrl}" onmouseenter="openHubPreview(${index})" onmouseleave="closeHubPreview()" onclick="window.location.href='${detailsLink}'" style="--card-color: #283325; --card-border: rgba(40, 51, 37, 0.8); --card-shadow: rgba(0,0,0,0.5); --card-shadow-hover: rgba(166, 227, 161, 0.25);">
@@ -851,7 +851,7 @@
                     <div style="width: 100%; display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed rgba(74, 92, 65, 0.6); padding-top: 8px; margin-top: 5px;">
                         ${row('Визуал', theory.visuals)}
                         ${row('Геймплей', theory.gameplay)}
-                        ${row('Р—РІСѓРє', theory.sound)}
+                        ${row('Звук', theory.sound)}
                         ${row('Техника', theory.tech)}
                         ${row('Атмосфера', theory.atmosphere)}
                     </div>
@@ -862,7 +862,7 @@
             document.getElementById('hub-preview-theory').innerHTML = `
                 <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
                     ${visRoles.streamer ? createStatCol('Стример', radarColors[0].border, s.streamer.avgTheory, s.streamer) : ''}
-                    ${visRoles.me ? createStatCol('РЇ', radarColors[2].border, s.me.avgTheory, s.me) : ''}
+                    ${visRoles.me ? createStatCol('Я', radarColors[2].border, s.me.avgTheory, s.me) : ''}
                     ${visRoles.chat ? createStatCol('Чат', radarColors[1].border, s.chat.avgTheory, s.chat) : ''}
                 </div>
             `;
@@ -970,7 +970,7 @@
                 const rank = originalIndex + 1;
                 
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                if (rank === 1) { rankClass = 'top-1'; crown = '👑'; }
                 else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
                 else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
@@ -1013,5 +1013,3 @@
     </script>
 </body>
 </html>
-
-
