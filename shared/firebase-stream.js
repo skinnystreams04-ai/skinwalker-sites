@@ -9,19 +9,36 @@
         let refreshTimer = null;
         let fallbackTimer = null;
         let source = null;
+        let callbackRunning = false;
+        let callbackPending = false;
+
+        function runCallback() {
+            if (callbackRunning) {
+                callbackPending = true;
+                return;
+            }
+            callbackRunning = true;
+            Promise.resolve(callback()).finally(function () {
+                callbackRunning = false;
+                if (callbackPending) {
+                    callbackPending = false;
+                    runCallback();
+                }
+            });
+        }
 
         function scheduleRefresh() {
             if (refreshTimer) return;
             refreshTimer = setTimeout(function () {
                 refreshTimer = null;
-                callback();
+                runCallback();
             }, settings.debounceMs);
         }
 
         function scheduleFallback() {
             if (fallbackTimer) clearTimeout(fallbackTimer);
             fallbackTimer = setTimeout(function () {
-                callback();
+                runCallback();
                 scheduleFallback();
             }, settings.fallbackMs);
         }
@@ -40,8 +57,22 @@
         }
 
         scheduleFallback();
-        subscriptions.set(name, { source: source });
+        subscriptions.set(name, {
+            source: source,
+            close: function () {
+                if (refreshTimer) clearTimeout(refreshTimer);
+                if (fallbackTimer) clearTimeout(fallbackTimer);
+                if (source) source.close();
+            }
+        });
     }
+
+    window.addEventListener('pagehide', function () {
+        subscriptions.forEach(function (subscription) {
+            subscription.close();
+        });
+        subscriptions.clear();
+    });
 
     window.SkinwalkerFirebaseStream = { subscribe: subscribe };
 })();
