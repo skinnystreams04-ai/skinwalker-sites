@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>РђСѓРєС†РёРѕРЅ - РћРІРµСЂР»РµР№ V48.0 (Labels Fixed)</title>
+    <title>Аукцион - Оверлей V48.0 (Labels Fixed)</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
 
     <style>
-        /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РЎРўРР›Р¬: Р–РµСЃС‚РєР°СЏ СЃРµС‚РєР° РґР»СЏ РџРљ */
+        /* ГЛОБАЛЬНЫЙ СТИЛЬ: Жесткая сетка для ПК */
         body { margin: 0; padding: 0; font-family: 'Neucha', cursive, sans-serif; overflow: auto; background-color: #0b0d0a; color: #a4b09c; letter-spacing: 0.5px; min-width: 1350px; min-height: 800px; transition: background 0.3s;}
         
-        /* рџ”Ґ РЈРњРќР«Р™ РўРђР Р“Р•РўРРќР“ (РџРѕРґСЃРІРµС‚РєР° Р»РѕС‚РѕРІ) рџ”Ґ */
+        /* 🔥 УМНЫЙ ТАРГЕТИНГ (Подсветка лотов) 🔥 */
         body.targeting-any { background-color: #1a1212; }
         body.targeting-any .pr-game-pill { border: 2px dashed #c45c5c; cursor: crosshair; box-shadow: 0 0 10px rgba(196, 92, 92, 0.2); }
         body.targeting-any .pr-game-pill:hover { border-color: #eba0a0; box-shadow: 0 0 20px rgba(235, 160, 160, 0.6); transform: scale(1.02); z-index: 10; background: #2a1818; }
@@ -31,14 +31,14 @@
         .custom-icon { width: 20px; height: 20px; vertical-align: text-bottom; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.9)); }
         .c-tickets .custom-icon { width: 24px; height: 24px; }
 
-        /* РўРћРЎРўР« РЈР’Р•Р”РћРњР›Р•РќРР™ */
+        /* ТОСТЫ УВЕДОМЛЕНИЙ */
         #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10001; pointer-events: none; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: rgba(18, 22, 18, 0.95); border: 2px solid #8abf86; color: #c4d1b8; padding: 10px 25px; border-radius: 8px; font-weight: bold; font-family: 'Neucha', cursive; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards; white-space: nowrap;}
         .toast.error { border-color: #c45c5c; color: #eba0a0; }
         @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* РњРћР”РђР›Р¬РќРћР• РћРљРќРћ РџР РђР’РР› Р Р­Р¤Р¤Р•РљРўРћР’ */
+        /* МОДАЛЬНОЕ ОКНО ПРАВИЛ И ЭФФЕКТОВ */
         .rules-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
         .rules-modal.show { display: flex; opacity: 1; }
         .rules-content { background: linear-gradient(180deg, #121612 0%, #0a0d0a 100%); border: 2px solid #4a5c41; border-radius: 12px; width: 90%; max-width: 950px; max-height: 85vh; overflow-y: auto; padding: 35px; position: relative; box-shadow: 0 15px 50px rgba(0,0,0,0.95); }
@@ -71,7 +71,7 @@
         .dict-info h4 { margin: 0 0 5px 0; color: #c4d1b8; font-size: 22px; text-transform: uppercase; letter-spacing: 1px;}
         .dict-info p { margin: 0; color: #829c73; font-size: 16px; line-height: 1.3;}
 
-        /* Р›Р•Р’РђРЇ РџРђРќР•Р›Р¬ Р Р’Р•Р РҐРќРР™ Р‘РђР  */
+        /* ЛЕВАЯ ПАНЕЛЬ И ВЕРХНИЙ БАР */
         .left-container { flex: 1; display: flex; flex-direction: column; height: 100%; position: relative; min-width: 580px;}
         
         .phase-bar { position: relative; display: flex; align-items: center; justify-content: center; padding-bottom: 12px; background: #0b0d0a; z-index: 20; width: 100%; flex-shrink: 0; border-bottom: 2px solid #283325;}
@@ -130,7 +130,7 @@
         .pr-game-pill.absolute-slot .pr-g-name { color: #b8a87b; text-shadow: 0 0 5px rgba(184, 168, 123, 0.4); }
         .badge.absolute { background: #2b2518; color: #b8a87b; border: 1px solid #8c7b52; }
 
-        /* РџР РђР’РђРЇ Р§РђРЎРўР¬ (Р–Р•РЎРўРљРђРЇ РЎР•РўРљРђ) */
+        /* ПРАВАЯ ЧАСТЬ (ЖЕСТКАЯ СЕТКА) */
         .right-interactive { display: flex; gap: 20px; flex: 0 0 auto; height: 100%; min-width: 710px; }
         .col-main { display: flex; flex-direction: column; gap: 20px; width: 380px; height: 100%; padding-bottom: 5px; overflow-x: hidden; padding-right: 5px; }
         .col-side { display: flex; flex-direction: column; width: 320px; height: 100%; padding-bottom: 5px; overflow-x: hidden; padding-right: 5px; }
@@ -140,7 +140,7 @@
         .widget-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #0b0d0a; border-bottom: 2px solid #283325; flex-shrink: 0; box-sizing: border-box; width: 100%;}
         .widget-title { color: #829c73; font-weight: bold; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         
-        /* РњРРќРРђРўР®Р РќР«Р• РљРќРћРџРљР Р—РЈРњРђ Р‘Р•Р— Р РђРњРћРљ */
+        /* МИНИАТЮРНЫЕ КНОПКИ ЗУМА БЕЗ РАМОК */
         .widget-controls { display: flex; gap: 2px; align-items: center; padding: 1px 4px; flex-shrink: 0;}
         .ctrl-btn { background: transparent; border: none; color: #a4b09c; cursor: pointer; padding: 2px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: 0.2s; }
         .ctrl-btn:hover { background: rgba(138, 191, 134, 0.15); color: #c4d1b8; }
@@ -156,7 +156,7 @@
         .widget-base.collapsed { height: auto !important; flex: 0 0 auto; resize: none; }
         .widget-base.collapsed .widget-content { display: none; }
 
-        /* РўРђР‘Р« (РђР›РўРђР Р¬ / Р–РЈР РќРђР›) */
+        /* ТАБЫ (АЛТАРЬ / ЖУРНАЛ) */
         .multi-widget-header { padding: 0 8px 0 0 !important; }
         .tabs-header { display: flex; align-items: stretch; height: 100%; flex: 1; min-width: 0; }
         .tab-btn { background: transparent; border: none; color: #4a5c41; font-family: 'Neucha', cursive; font-size: 14px; font-weight: bold; padding: 5px 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; border-bottom: 2px solid transparent; border-right: 1px solid #283325; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1; flex: 1; }
@@ -173,7 +173,7 @@
         .log-entry .icon { font-size: 18px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* рџ”Ґ РџР РћР¤РР›Р¬ РЎ РРќР’Р•РќРўРђР Р•Рњ рџ”Ґ */
+        /* 🔥 ПРОФИЛЬ С ИНВЕНТАРЕМ 🔥 */
         .profile-placeholder { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; color: #a4b09c; }
         
         .prof-header { background: #121612; border: 1px solid #283325; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
@@ -190,7 +190,7 @@
         .limit-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 2px; color: #c4d1b8; }
         .limit-val { font-weight: bold; color: #a6e3a1; }
         
-        /* РРќР’Р•РќРўРђР Р¬ */
+        /* ИНВЕНТАРЬ */
         .inv-section { margin-bottom: 8px; border: 1px dashed #4a5c41; border-radius: 8px; padding: 8px; background: rgba(138, 191, 134, 0.05); width: 100%; box-sizing: border-box;}
         .inv-header { color: #a4b09c; font-size: 13px; text-transform: uppercase; font-weight: bold; margin-bottom: 6px; display: flex; justify-content: space-between;}
         .inv-spell { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #161a15; padding: 6px 10px; border-radius: 6px; border: 1px solid #283325; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.5);}
@@ -206,7 +206,7 @@
         .spin-btn.debuff { background: #663b3b; color: #eba0a0; border: 1px solid #c45c5c; }
         .spin-btn:hover { filter: brightness(1.2); }
 
-        /* Р’РЎРџР›Р«Р’РђР®Р©Р•Р• РљРћР›Р•РЎРћ */
+        /* ВСПЛЫВАЮЩЕЕ КОЛЕСО */
         .wheel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .wheel-overlay.active { opacity: 1; pointer-events: auto; }
         
@@ -224,7 +224,7 @@
         .res-user { color: #b8a87b; font-size: 28px; margin-bottom: 5px; text-shadow: 2px 2px 5px #000; text-transform: uppercase; }
         .res-text { font-size: 42px; text-shadow: 3px 3px 5px #000; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* РђР›РўРђР Р¬ */
+        /* АЛТАРЬ */
         #cauldron-list { padding: 10px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; box-sizing: border-box; flex: 1; width: 100%; }
         .cauldron-item { background: rgba(14, 17, 13, 0.8); border: 1px solid #21291f; border-radius: 4px; padding: 10px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; flex-shrink: 0; }
         .c-top-row { display: flex; justify-content: space-between; align-items: center; }
@@ -242,7 +242,7 @@
 
         .iframe-container { width: 100%; height: 100%; border: none; flex: 1; }
 
-        /* рџ”Ґ РњРћР‘РР›Р¬РќРђРЇ РђР”РђРџРўРђР¦РРЇ рџ”Ґ */
+        /* 🔥 МОБИЛЬНАЯ АДАПТАЦИЯ 🔥 */
         @media (max-width: 1024px) {
             body { overflow-y: auto !important; min-width: 100% !important; min-height: 100vh !important;}
             .app-wrapper { height: auto !important; padding: 10px; overflow: visible !important; min-width: 100% !important; }
@@ -272,67 +272,67 @@
 </head>
 <body>
 
-    <!-- РўРћРЎРўР« РЈР’Р•Р”РћРњР›Р•РќРР™ -->
+    <!-- ТОСТЫ УВЕДОМЛЕНИЙ -->
     <div id="toast-container"></div>
 
-    <!-- Р’РЎРџР›Р«Р’РђР®Р©РђРЇ Р РЈР›Р•РўРљРђ -->
+    <!-- ВСПЛЫВАЮЩАЯ РУЛЕТКА -->
     <div class="wheel-overlay" id="wheel-modal">
         <div class="wheel-scale-box">
             <canvas id="wheel-canvas" width="800" height="800"></canvas>
             <div id="wheel-frame"></div>
         </div>
         <div class="wheel-result" id="wheel-result">
-            <div class="res-user" id="res-user">РљР РЈРўРРў: Р—Р РРўР•Р›Р¬</div>
-            <div class="res-text" id="res-text">РќР°РіСЂР°РґР°!</div>
+            <div class="res-user" id="res-user">КРУТИТ: ЗРИТЕЛЬ</div>
+            <div class="res-text" id="res-text">Награда!</div>
         </div>
     </div>
 
-    <!-- РњРћР”РђР›Р¬РќРћР• РћРљРќРћ РџР РђР’РР› Р Р­Р¤Р¤Р•РљРўРћР’ -->
+    <!-- МОДАЛЬНОЕ ОКНО ПРАВИЛ И ЭФФЕКТОВ -->
     <div class="rules-modal" id="rules-modal">
         <div class="rules-content">
             <button class="rules-close-btn" onclick="closeRulesModal()">вњ–</button>
             <div class="modal-nav">
-                <button class="modal-nav-btn active" onclick="switchModalView('rules', this)">рџ“– РџСЂР°РІРёР»Р°</button>
-                <button class="modal-nav-btn" onclick="switchModalView('effects', this)">рџ”® РЎР»РѕРІР°СЂСЊ Р­С„С„РµРєС‚РѕРІ</button>
+                <button class="modal-nav-btn active" onclick="switchModalView('rules', this)">📖 Правила</button>
+                <button class="modal-nav-btn" onclick="switchModalView('effects', this)">🔮 Словарь Эффектов</button>
             </div>
             <div id="modal-view-rules" class="modal-view active">
                 <div class="rules-text">
-                    <div class="rules-section-title">рџЋ¬ Р”Р’Р• Р¤РђР—Р« РђРЈРљР¦РРћРќРђ</div>
+                    <div class="rules-section-title">🎬 ДВЕ ФАЗЫ АУКЦИОНА</div>
                     <ul>
-                        <li><b>рџџЎ Р¤РђР—Рђ 1 В«РЇСЃРЅС‹Р№ РґРµРЅСЊВ»:</b> Р’СЂРµРјСЏ Р—Р°СЂРѕР¶РґРµРЅРёСЏ. РћС‚РєСЂС‹С‚Рѕ РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІС‹С… РёРіСЂ Рё <i>РљРѕР»РµСЃР° Р‘Р°С„С„РѕРІ</i>. Р’СЂРµРјСЏ Р·Р°РєРёРґС‹РІР°С‚СЊ СЃРІРѕРё Р»РѕС‚С‹, Р±Р°С„С„Р°С‚СЊ РёС… Рё РєРѕРїРёС‚СЊ СЃРёР»С‹.</li>
-                        <li><b>рџЊ‘ Р¤РђР—Рђ 2 В«РЎРѕР»РЅРµС‡РЅРѕРµ Р·Р°С‚РјРµРЅРёРµВ»:</b> РЎСѓРґРЅР°СЏ РќРѕС‡СЊ. <b>Р”РћР‘РђР’Р›Р•РќРР• РќРћР’Р«РҐ РР“Р  Р—РђРљР Р«РўРћ.</b> РћС‚РєСЂС‹РІР°РµС‚СЃСЏ <i>РљРѕР»РµСЃРѕ Р”РµР±Р°С„С„РѕРІ</i>. РќР°С‡РёРЅР°РµС‚СЃСЏ Р¶РµСЃС‚РєР°СЏ РІРѕР№РЅР°: РІРѕСЂРѕРІСЃС‚РІРѕ, СЏРґС‹, РЅР°Р»РѕРіРё Рё СѓР±РёР№СЃС‚РІР°. Р’С‹Р¶РёРІР°РµС‚ СЃРёР»СЊРЅРµР№С€РёР№!</li>
+                        <li><b>🟡 ФАЗА 1 «Ясный день»:</b> Время Зарождения. Открыто добавление новых игр и <i>Колеса Баффов</i>. Время закидывать свои лоты, баффать их и копить силы.</li>
+                        <li><b>🌑 ФАЗА 2 «Солнечное затмение»:</b> Судная Ночь. <b>ДОБАВЛЕНИЕ НОВЫХ ИГР ЗАКРЫТО.</b> Открывается <i>Колесо Дебаффов</i>. Начинается жесткая война: воровство, яды, налоги и убийства. Выживает сильнейший!</li>
                     </ul>
 
-                    <div class="rules-section-title">рџЋ® РљРђРљ РЈР§РђРЎРўР’РћР’РђРўР¬</div>
+                    <div class="rules-section-title">рџЋ® РљРђРљ РЈР§РђРЎРўР'РћР'РђРўР¬</div>
                     <ul>
-                        <li><b>Р”РѕР±Р°РІР»РµРЅРёРµ Р»РѕС‚РѕРІ:</b> Р’ РЅР°РіСЂР°РґР°С… РєР°РЅР°Р»Р° РјРѕР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ РґРѕ <span id="rule-max-games" class="eff-badge">3</span> РёРіСЂ (СѓРєР°Р¶Рё РёС… С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ РІ РѕРґРЅРѕРј СЃРѕРѕР±С‰РµРЅРёРё).</li>
-                        <li><b>Р‘РµСЃРїР»Р°С‚РЅС‹Рµ Р±РёР»РµС‚С‹:</b> РџРѕРєСѓРїР°Р№ Р·Р° Р±Р°Р»Р»С‹ РєР°РЅР°Р»Р° (1 Р±РёР»РµС‚ = 100 Р±Р°Р»Р»РѕРІ). РќРµ РґР°РµС‚ РјР°РіРёС‡РµСЃРєРёС… СЌС„С„РµРєС‚РѕРІ, РЅРѕ РёРјРµРµС‚ Р¶РµСЃС‚РєРёРµ Р»РёРјРёС‚С‹ РїРѕ СЂРѕР»СЏРј (СЃРјРѕС‚СЂРё РЅРёР¶Рµ).</li>
-                        <li><b>РџР»Р°С‚РЅС‹Р№ Р·Р°РєР°Р· (Р”РѕРЅР°С‚):</b> <b>Р›РРњРРўРћР’ РќР•Рў!</b> 2 РіСЂРЅ = 1 Р—РѕР»РѕС‚РѕР№ Р±РёР»РµС‚. Р§РµРј Р±РѕР»СЊС€Рµ РґРѕРЅР°С‚, С‚РµРј РјРѕС‰РЅРµРµ СЌС„С„РµРєС‚С‹ (СѓС‚РѕС‡РЅСЏР№ СЂР°СЃС†РµРЅРєРё РЅР° СЃС‚СЂРёРјРµ).</li>
-                        <li><b>РњР°РіРёСЏ Рё Р·Р°С‰РёС‚Р°:</b> Р’СЃРµ РєР°СЃС‚С‹ СЂР°Р±РѕС‚Р°СЋС‚ РўРћР›Р¬РљРћ РџРћ Р¦РР¤Р РђРњ Р»РѕС‚РѕРІ (РЅР°РїСЂРёРјРµСЂ: <code>!РєР°СЃС‚ 1</code>). РќРё РѕРґРёРЅ РґРµР±Р°С„С„ (РєСЂРѕРјРµ РЎРјРµСЂС‚Рё) РЅРµ РѕРїСѓСЃРєР°РµС‚ Р±РёР»РµС‚С‹ РЅРёР¶Рµ 1. Р’ РјР°РіР°Р·РёРЅРµ Р·Р° Р±Р°Р»Р»С‹ РјРѕР¶РЅРѕ РєСѓРїРёС‚СЊ <span class="eff-badge shield">рџ›ЎпёЏ Р©РёС‚</span> РёР»Рё рџ§ґ РћС‡РёС‰РµРЅРёРµ РѕС‚ СЏРґР°.</li>
+                        <li><b>Добавление лотов:</b> В наградах канала можно добавить до <span id="rule-max-games" class="eff-badge">3</span> игр (укажи их через запятую в одном сообщении).</li>
+                        <li><b>Бесплатные билеты:</b> Покупай за баллы канала (1 билет = 100 баллов). Не дает магических эффектов, но имеет жесткие лимиты по ролям (смотри ниже).</li>
+                        <li><b>Платный заказ (Донат):</b> <b>ЛИМИТОВ НЕТ!</b> 2 грн = 1 Золотой билет. Чем больше донат, тем мощнее эффекты (уточняй расценки на стриме).</li>
+                        <li><b>Магия и защита:</b> Все касты работают ТОЛЬКО ПО ЦИФРАМ лотов (например: <code>!каст 1</code>). Ни один дебафф (кроме Смерти) не опускает билеты ниже 1. В магазине за баллы можно купить <span class="eff-badge shield">🛡️ Щит</span> или 🧴 Очищение от яда.</li>
                     </ul>
 
-                    <div class="rules-section-title">рџ‘‘ РџР РР’РР›Р•Р“РР Р Р›РРњРРўР«</div>
+                    <div class="rules-section-title">👑 ПРИВИЛЕГИИ И ЛИМИТЫ</div>
                     <ul id="dynamic-limits-list">
-                        <li>Р—Р°РіСЂСѓР·РєР° Р°РєС‚СѓР°Р»СЊРЅС‹С… Р»РёРјРёС‚РѕРІ РёР· Р±Р°Р·С‹...</li>
+                        <li>Загрузка актуальных лимитов из базы...</li>
                     </ul>
 
-                    <div class="rules-section-title"><img src="../icons/BILET_GOLD.png" class="custom-icon" style="width:28px; height:28px; vertical-align: bottom;"> Р—РћР›РћРўР«Р• Р‘РР›Р•РўР« (Р—Рђ Р”РћРќРђРў Р РЎРђР‘РљР)</div>
+                    <div class="rules-section-title"><img src="../icons/BILET_GOLD.png" class="custom-icon" style="width:28px; height:28px; vertical-align: bottom;"> ЗОЛОТЫЕ БИЛЕТЫ (ЗА ДОНАТ И САБКИ)</div>
                     <ul>
-                        <li>Р—РѕР»РѕС‚С‹Рµ Р±РёР»РµС‚С‹ вЂ” СЌС‚Рѕ РїСЂРµРјРёСѓРј РІР°Р»СЋС‚Р°. РљСѓСЂСЃ: <b>2 РіСЂРёРІРЅС‹ = 1 Р—РѕР»РѕС‚РѕР№ Р±РёР»РµС‚</b>.</li>
-                        <li><b>Twitch РЎР°Р±РєРё:</b> РЈС‡РёС‚С‹РІР°СЋС‚СЃСЏ РїРѕ РєСѓСЂСЃСѓ: 1 СЃР°Р±РєР° = 43 РіСЂРЅ = <b>22 Р—РѕР»РѕС‚С‹С… Р±РёР»РµС‚Р°</b>.</li>
-                        <li><b>50 Р—РѕР»РѕС‚С‹С… Р±РёР»РµС‚РѕРІ (100 РіСЂРЅ) = Р‘Р•РЎРЎРњР•Р РўРР•:</b> РРіСЂСѓ РЅРµРІРѕР·РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ РёР»Рё СѓРЅРёС‡С‚РѕР¶РёС‚СЊ РґРµР±Р°С„С„РѕРј "РљРёР»Р»".</li>
-                        <li><b>100 Р—РѕР»РѕС‚С‹С… Р±РёР»РµС‚РѕРІ (200 РіСЂРЅ) = РќР•РЈРЇР—Р’РРњРћРЎРўР¬:</b> РРіСЂР° СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РёРјРјСѓРЅРЅРѕР№ Рє Р›Р®Р‘Р«Рњ РЅРµРіР°С‚РёРІРЅС‹Рј СЌС„С„РµРєС‚Р°Рј Рё РЅР°Р»РѕРіР°Рј РёР· РєРѕР»РµСЃР°. РћС‡РёС‰Р°РµС‚ РІСЃРµ РїСЂРѕРєР»СЏС‚РёСЏ.</li>
-                        <li><b>Р“Р°СЂР°РЅС‚РёСЏ РёРіСЂС‹:</b> Р•СЃР»Рё РЅР° РїРѕР±РµРґРёРІС€РёР№ Р»РѕС‚ Р·Р°РґРѕРЅР°С‡РµРЅР° Р»СЋР±Р°СЏ СЃСѓРјРјР° (РµСЃС‚СЊ С…РѕС‚СЏ Р±С‹ 1 Р—РѕР»РѕС‚РѕР№ Р±РёР»РµС‚), СЏ РѕР±СЏР·Р°РЅ РёРіСЂР°С‚СЊ РІ СЌС‚Сѓ РёРіСЂСѓ <b>РјРёРЅРёРјСѓРј 1 Р°СѓРєС†РёРѕРЅРЅС‹Р№ РґРµРЅСЊ</b>.</li>
+                        <li>Золотые билеты — это премиум валюта. Курс: <b>2 гривны = 1 Золотой билет</b>.</li>
+                        <li><b>Twitch Сабки:</b> Учитываются по курсу: 1 сабка = 43 грн = <b>22 Золотых билета</b>.</li>
+                        <li><b>50 Золотых билетов (100 грн) = БЕССМЕРТИЕ:</b> Игру невозможно удалить или уничтожить дебаффом "Килл".</li>
+                        <li><b>100 Золотых билетов (200 грн) = НЕУЯЗВИМОСТЬ:</b> Игра становится иммунной к ЛЮБЫМ негативным эффектам и налогам из колеса. Очищает все проклятия.</li>
+                        <li><b>Гарантия игры:</b> Если на победивший лот задоначена любая сумма (есть хотя бы 1 Золотой билет), я обязан играть в эту игру <b>минимум 1 аукционный день</b>.</li>
                     </ul>
                 </div>
             </div>
             <div id="modal-view-effects" class="modal-view">
                 <div class="rules-text">
-                    <p style="text-align: center; color: #8abf86; margin-bottom: 0;">Р—РґРµСЃСЊ СЃРѕР±СЂР°РЅС‹ РІСЃРµ Р°РєС‚СѓР°Р»СЊРЅС‹Рµ СЌС„С„РµРєС‚С‹, РєРѕС‚РѕСЂС‹Рµ РјРѕРіСѓС‚ РІС‹РїР°СЃС‚СЊ РЅР° СЂСѓР»РµС‚РєРµ.</p>
-                    <div class="rules-section-title" style="color: #8abf86;">рџџў Р‘РђР¤Р¤Р«</div>
-                    <div class="dict-grid" id="dict-render-buffs">Р—Р°РіСЂСѓР·РєР°...</div>
-                    <div class="rules-section-title" style="color: #c45c5c; margin-top: 30px;">рџ”ґ Р”Р•Р‘РђР¤Р¤Р«</div>
-                    <div class="dict-grid" id="dict-render-debuffs">Р—Р°РіСЂСѓР·РєР°...</div>
+                    <p style="text-align: center; color: #8abf86; margin-bottom: 0;">Здесь собраны все актуальные эффекты, которые могут выпасть на рулетке.</p>
+                    <div class="rules-section-title" style="color: #8abf86;">🟢 БАФФЫ</div>
+                    <div class="dict-grid" id="dict-render-buffs">Загрузка...</div>
+                    <div class="rules-section-title" style="color: #c45c5c; margin-top: 30px;">🔴 ДЕБАФФЫ</div>
+                    <div class="dict-grid" id="dict-render-debuffs">Загрузка...</div>
                 </div>
             </div>
         </div>
@@ -341,46 +341,46 @@
     <div id="app-wrapper" class="app-wrapper">
         <div class="layout">
             
-            <!-- Р›Р•Р’РђРЇ Р§РђРЎРўР¬ -->
+            <!-- ЛЕВАЯ ЧАСТЬ -->
             <div class="left-container">
                 <div class="phase-bar">
                     <button class="top-nav-btn left-btn" onclick="openModalTab('rules')" style="color: #b8a87b; border-color: #8c7b52; display: flex; align-items: center; gap: 5px; justify-content: center;">
-                        <img src="../icons/BILET_GOLD.png" class="custom-icon" style="width: 18px; height: 18px;"> РџСЂР°РІРёР»Р° / Р­С„С„РµРєС‚С‹
+                        <img src="../icons/BILET_GOLD.png" class="custom-icon" style="width: 18px; height: 18px;"> Правила / Эффекты
                     </button>
                     
-                    <div id="phase-indicator" class="phase-indicator p2">рџџЎ Р¤РђР—Рђ 1: РЇРЎРќР«Р™ Р”Р•РќР¬</div>
+                    <div id="phase-indicator" class="phase-indicator p2">🟡 ФАЗА 1: ЯСНЫЙ ДЕНЬ</div>
                 </div>
                 <div class="left-panel" id="players-grid"></div>
             </div>
             
-            <!-- РџР РђР’РђРЇ Р§РђРЎРўР¬ (Р–Р•РЎРўРљРђРЇ РЎР•РўРљРђ) -->
+            <!-- ПРАВАЯ ЧАСТЬ (ЖЕСТКАЯ СЕТКА) -->
             <div class="right-interactive">
                 
-                <!-- РљРћР›РћРќРљРђ 1: РџР РћР¤РР›Р¬ Рё Р§РђРў -->
+                <!-- КОЛОНКА 1: ПРОФИЛЬ и ЧАТ -->
                 <div class="col-main">
                     
-                    <!-- РџР РћР¤РР›Р¬ -->
+                    <!-- ПРОФИЛЬ -->
                     <div class="widget-base static-widget" id="widget-profile" style="flex: 0 0 auto;" data-zoom="1">
                         <div class="widget-header">
-                            <div class="widget-title">рџ‘¤ РџСЂРѕС„РёР»СЊ</div>
+                            <div class="widget-title">👤 Профиль</div>
                             <div class="widget-controls">
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="РЈРјРµРЅСЊС€РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="Уменьшить"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
                                 <span class="zoom-level">100%</span>
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="РЈРІРµР»РёС‡РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="Увеличить"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
                                 <div class="ctrl-divider"></div>
-                                <button class="ctrl-btn collapse-btn" title="РЎРІРµСЂРЅСѓС‚СЊ"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
+                                <button class="ctrl-btn collapse-btn" title="Свернуть"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
                             </div>
                         </div>
                         <div class="widget-content" style="overflow-y: visible;">
                             <div class="zoom-target" style="padding: 12px; position: relative !important; height: auto !important; width: 100% !important; transform: none !important; box-sizing: border-box;">
-                                <!-- РќР• РђР’РўРћР РР—РћР’РђРќ -->
+                                <!-- НЕ АВТОРИЗОВАН -->
                                 <div class="profile-placeholder" id="profile-unauth">
-                                    <h3>РўРІРѕР№ РљРѕС€РµР»РµРє</h3>
-                                    <p>Р’РѕР№РґРё С‡РµСЂРµР· Twitch, С‡С‚РѕР±С‹ СѓРІРёРґРµС‚СЊ Р±Р°Р»Р°РЅСЃ, Р»РёРјРёС‚С‹ Рё РєСЂСѓС‚РёС‚СЊ РєРѕР»РµСЃРѕ.</p>
-                                    <button onclick="loginTwitch()" style="background: #6441a5; color: #fff; border: 2px solid #4a307a; padding: 10px 20px; font-size: 18px; font-family: 'Neucha', cursive; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;">рџ’њ Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+                                    <h3>Твой Кошелек</h3>
+                                    <p>Войди через Twitch, чтобы увидеть баланс, лимиты и крутить колесо.</p>
+                                    <button onclick="loginTwitch()" style="background: #6441a5; color: #fff; border: 2px solid #4a307a; padding: 10px 20px; font-size: 18px; font-family: 'Neucha', cursive; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;">💜 Войти через Twitch</button>
                                 </div>
                                 
-                                <!-- РђР’РўРћР РР—РћР’РђРќ -->
+                                <!-- АВТОРИЗОВАН -->
                                 <div class="profile-placeholder" id="profile-auth" style="display: none; align-items: stretch; justify-content: flex-start; padding: 0;">
                                     <div class="prof-header">
                                         <img id="tw-avatar" class="prof-avatar" src="" alt="Avatar">
@@ -388,20 +388,20 @@
                                             <div id="tw-username" style="font-size: 20px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; line-height: 1;">...</div>
                                             <div id="tw-role" class="role-badge f">F</div>
                                         </div>
-                                        <button class="logout-btn" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                        <button class="logout-btn" onclick="logoutTwitch()">Выйти</button>
                                     </div>
 
-                                    <!-- Р“РћР РР—РћРќРўРђР›Р¬РќР«Р• Р‘РђР›РђРќРЎР« -->
+                                    <!-- ГОРИЗОНТАЛЬНЫЕ БАЛАНСЫ -->
                                     <div class="prof-balances">
                                         <div class="bal-card">
-                                            <div style="width: 100%; font-size: 13px; color: #a4b09c; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px;">РћР±С‹С‡РЅС‹Рµ</div>
+                                            <div style="width: 100%; font-size: 13px; color: #a4b09c; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px;">Обычные</div>
                                             <div style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;">
                                                 <img src="../icons/BILET.png" style="width: 32px; filter: drop-shadow(0 0 10px rgba(138,191,134,0.5));">
                                                 <div id="tw-tickets" class="bal-val" style="color: #8abf86; font-size: 34px;">0</div>
                                             </div>
                                         </div>
                                         <div class="bal-card gold">
-                                            <div style="width: 100%; font-size: 13px; color: #b8a87b; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px;">Р—РѕР»РѕС‚С‹Рµ</div>
+                                            <div style="width: 100%; font-size: 13px; color: #b8a87b; text-transform: uppercase; text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px;">Золотые</div>
                                             <div style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;">
                                                 <img src="../icons/BILET_GOLD.png" style="width: 32px; filter: drop-shadow(0 0 10px rgba(184,168,123,0.5));">
                                                 <div id="tw-gold" class="bal-val" style="color: #b8a87b; font-size: 34px;">0</div>
@@ -409,40 +409,40 @@
                                         </div>
                                     </div>
 
-                                    <!-- РРќР’Р•РќРўРђР Р¬ -->
+                                    <!-- ИНВЕНТАРЬ -->
                                     <div id="inv-container" class="inv-section">
-                                        <div class="inv-header"><span>рџЋ’ РРЅРІРµРЅС‚Р°СЂСЊ</span> <span style="color: #6c7086;" id="inv-count">0 / 1</span></div>
-                                        <div id="inv-content" style="color: #6c7086; text-align: center; padding: 4px; font-size: 14px;">РџСѓСЃС‚Рѕ. РљСЂСѓС‚Рё РєРѕР»РµСЃРѕ!</div>
+                                        <div class="inv-header"><span>🎒 Инвентарь</span> <span style="color: #6c7086;" id="inv-count">0 / 1</span></div>
+                                        <div id="inv-content" style="color: #6c7086; text-align: center; padding: 4px; font-size: 14px;">Пусто. Крути колесо!</div>
                                     </div>
 
                                     <div class="prof-limits">
-                                        <div style="color: #8abf86; font-weight: bold; margin-bottom: 3px; border-bottom: 1px solid #283325; padding-bottom: 4px;">Р›РёРјРёС‚С‹ РЅР° СЃС‚СЂРёРј:</div>
-                                        <div class="limit-row"><span>РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ Р±РёР»РµС‚РѕРІ:</span> <span class="limit-val" id="lim-tix">0 / 0</span></div>
-                                        <div class="limit-row"><span>РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ Р±РµСЃРїР». РєРѕР»РµСЃ:</span> <span class="limit-val" style="color: #b0b8a8;" id="lim-free">0 / 0</span></div>
-                                        <div class="limit-row"><span>РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ Р±Р°С„С„РѕРІ:</span> <span class="limit-val" id="lim-buff">0 / 0</span></div>
-                                        <div class="limit-row"><span>РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РґРµР±Р°С„С„РѕРІ:</span> <span class="limit-val" style="color: #c45c5c;" id="lim-debuff">0 / 0</span></div>
+                                        <div style="color: #8abf86; font-weight: bold; margin-bottom: 3px; border-bottom: 1px solid #283325; padding-bottom: 4px;">Лимиты на стрим:</div>
+                                        <div class="limit-row"><span>Использовано билетов:</span> <span class="limit-val" id="lim-tix">0 / 0</span></div>
+                                        <div class="limit-row"><span>Использовано беспл. колес:</span> <span class="limit-val" style="color: #b0b8a8;" id="lim-free">0 / 0</span></div>
+                                        <div class="limit-row"><span>Использовано баффов:</span> <span class="limit-val" id="lim-buff">0 / 0</span></div>
+                                        <div class="limit-row"><span>Использовано дебаффов:</span> <span class="limit-val" style="color: #c45c5c;" id="lim-debuff">0 / 0</span></div>
                                     </div>
 
                                     <div class="spin-actions">
-                                        <button class="spin-btn free" onclick="sendTwitchCommand('!РєРѕР»РµСЃРѕ С„СЂРё')">вљЄ РљР РЈРўРРўР¬ Р‘Р•РЎРџР›РђРўРќРћР•</button>
-                                        <button class="spin-btn buff" onclick="sendTwitchCommand('!РєРѕР»РµСЃРѕ Р±Р°С„С„')">рџџў РљР РЈРўРРўР¬ Р‘РђР¤Р¤</button>
-                                        <button class="spin-btn debuff" onclick="sendTwitchCommand('!РєРѕР»РµСЃРѕ РґРµР±Р°С„С„')">рџ”ґ РљР РЈРўРРўР¬ Р”Р•Р‘РђР¤Р¤</button>
+                                        <button class="spin-btn free" onclick="sendTwitchCommand('!колесо фри')">⚪ КРУТИТЬ БЕСПЛАТНОЕ</button>
+                                        <button class="spin-btn buff" onclick="sendTwitchCommand('!колесо бафф')">🟢 КРУТИТЬ БАФФ</button>
+                                        <button class="spin-btn debuff" onclick="sendTwitchCommand('!колесо дебафф')">🔴 КРУТИТЬ ДЕБАФФ</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Р§РђРў -->
+                    <!-- ЧАТ -->
                     <div class="widget-base static-widget" id="widget-chat" style="flex: 1; min-height: 0;" data-zoom="1">
                         <div class="widget-header">
-                            <div class="widget-title">рџ’¬ Р§Р°С‚ РўРІРёС‡Р°</div>
+                            <div class="widget-title">💬 Чат Твича</div>
                             <div class="widget-controls">
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="РЈРјРµРЅСЊС€РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="Уменьшить"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
                                 <span class="zoom-level">100%</span>
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="РЈРІРµР»РёС‡РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="Увеличить"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
                                 <div class="ctrl-divider"></div>
-                                <button class="ctrl-btn collapse-btn" title="РЎРІРµСЂРЅСѓС‚СЊ"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
+                                <button class="ctrl-btn collapse-btn" title="Свернуть"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
                             </div>
                         </div>
                         <div class="widget-content">
@@ -454,30 +454,30 @@
 
                 </div>
 
-                <!-- РљРћР›РћРќРљРђ 2: РђР›РўРђР Р¬ / Р–РЈР РќРђР› -->
+                <!-- КОЛОНКА 2: АЛТАРЬ / ЖУРНАЛ -->
                 <div class="col-side">
                     <div class="widget-base static-widget" id="widget-altar-log" style="height: 100%; flex: 1;" data-zoom="1">
                         <div class="widget-header multi-widget-header">
                             <div class="tabs-header">
-                                <button class="tab-btn active" onclick="switchTab('altar', this)">рџ©ё РђР»С‚Р°СЂСЊ</button>
-                                <button class="tab-btn" onclick="switchTab('log', this)">рџ“њ Р–СѓСЂРЅР°Р»</button>
+                                <button class="tab-btn active" onclick="switchTab('altar', this)">🩸 Алтарь</button>
+                                <button class="tab-btn" onclick="switchTab('log', this)">📜 Журнал</button>
                             </div>
                             <div class="widget-controls" style="margin-left: 8px; flex-shrink: 0;">
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="РЈРјРµРЅСЊС€РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, -0.1)" title="Уменьшить"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg></button>
                                 <span class="zoom-level">100%</span>
-                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="РЈРІРµР»РёС‡РёС‚СЊ"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
+                                <button class="ctrl-btn" onclick="changeWidgetZoom(this, 0.1)" title="Увеличить"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
                                 <div class="ctrl-divider"></div>
-                                <button class="ctrl-btn collapse-btn" title="РЎРІРµСЂРЅСѓС‚СЊ"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
+                                <button class="ctrl-btn collapse-btn" title="Свернуть"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></button>
                             </div>
                         </div>
                         <div class="widget-content">
                             <div class="zoom-target">
-                                <!-- Р’РљР›РђР”РљРђ РђР›РўРђР РЇ -->
+                                <!-- ВКЛАДКА АЛТАРЯ -->
                                 <div id="tab-altar" class="tab-pane active">
                                     <div id="cauldron-list"></div>
                                 </div>
                                 
-                                <!-- Р’РљР›РђР”РљРђ Р–РЈР РќРђР›Рђ -->
+                                <!-- ВКЛАДКА ЖУРНАЛА -->
                                 <div id="tab-log" class="tab-pane">
                                     <div id="action-log-list"></div>
                                 </div>
@@ -491,7 +491,7 @@
     </div>
 
     <script>
-        // РЎРРЎРўР•РњРђ РЈР’Р•Р”РћРњР›Р•РќРР™
+        // СИСТЕМА УВЕДОМЛЕНИЙ
         function showToast(msg, isError = false) {
             const c = document.getElementById('toast-container');
             const el = document.createElement('div');
@@ -501,7 +501,7 @@
             setTimeout(() => { if(c.contains(el)) c.removeChild(el); }, 5000);
         }
 
-        // Р›РћР“РРљРђ Р’РљР›РђР”РћРљ Р Р—РЈРњРђ
+        // ЛОГИКА ВКЛАДОК И ЗУМА
         function switchTab(tabId, btnElement) {
             const widget = btnElement.closest('.widget-base');
             widget.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -529,7 +529,7 @@
         
         document.querySelectorAll('.collapse-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.target.closest('.widget-base').classList.toggle('collapsed'); }); });
 
-        // Р›РћР“РРљРђ РџР РђР’РР› Р РЎР›РћР’РђР Р•Р™
+        // ЛОГИКА ПРАВИЛ И СЛОВАРЕЙ
         function openModalTab(tabId) {
             document.getElementById('rules-modal').classList.add('show');
             renderDictionaryUI(); renderRulesUI(); 
@@ -547,19 +547,19 @@
         document.getElementById('rules-modal').addEventListener('click', function(e) { if (e.target === this) closeRulesModal(); });
 
         const mechDescriptions = {
-            'add_tickets': 'РњРѕРјРµРЅС‚Р°Р»СЊРЅРѕ РґРѕР±Р°РІР»СЏРµС‚ СѓРєР°Р·Р°РЅРЅРѕРµ С‡РёСЃР»Рѕ Р±РёР»РµС‚РѕРІ.',
-            'add_all': 'Р”РѕР±Р°РІР»СЏРµС‚ Р±РёР»РµС‚С‹ СЃСЂР°Р·Сѓ РІСЃРµРј С‚РІРѕРёРј Р¶РёРІС‹Рј Р»РѕС‚Р°Рј.',
-            'multiply': 'РЈРјРЅРѕР¶Р°РµС‚ С‚РµРєСѓС‰РёРµ Р±РёР»РµС‚С‹ Р»РѕС‚Р°.',
-            'cleanse': 'РЎРЅРёРјР°РµС‚ 1 Р»СЋР±РѕР№ РЅРµРіР°С‚РёРІРЅС‹Р№ СЃС‚Р°С‚СѓСЃ (РЇРґ, РљРёСЃР»РѕС‚Р° Рё С‚.Рґ.).',
-            'sub_tickets': 'РЎСЂРµР·Р°РµС‚ Р±РёР»РµС‚С‹ Сѓ РІСЂР°РіР° (РЅРѕ РЅРµ РЅРёР¶Рµ 1). Р‘СЊРµС‚СЃСЏ РѕР± Р©РёС‚.',
-            'divide': 'Р”РµР»РёС‚ Р±РёР»РµС‚С‹ РІСЂР°РіР° (РЅРѕ РЅРµ РЅРёР¶Рµ 1). Р‘СЊРµС‚СЃСЏ РѕР± Р©РёС‚.',
-            'steal': 'Р—Р°Р±РёСЂР°РµС‚ Р±РёР»РµС‚С‹ Сѓ РІСЂР°РіР° РІ С‚РІРѕСЋ РїРѕР»СЊР·Сѓ (РѕСЃС‚Р°РІР»СЏСЏ РµРјСѓ РјРёРЅРёРјСѓРј 1).',
-            'swap': 'РџРѕР»РЅРѕСЃС‚СЊСЋ РјРµРЅСЏРµС‚ РјРµСЃС‚Р°РјРё Р±РёР»РµС‚С‹ С‚РІРѕРµРіРѕ Р»РѕС‚Р° Рё РІСЂР°Р¶РµСЃРєРѕРіРѕ.',
-            'tax': 'Р“Р»РѕР±Р°Р»СЊРЅС‹Р№ РЅР°Р»РѕРі: РѕС‚РЅРёРјР°РµС‚ Р±РёР»РµС‚С‹ Сѓ Р’РЎР•РҐ РёРіСЂ РЅР° РђР»С‚Р°СЂРµ (РїСЂРѕР±РёРІР°РµС‚ РѕР±С‹С‡РЅС‹Рµ С‰РёС‚С‹).',
-            'emp': 'РЈРЅРёС‡С‚РѕР¶Р°РµС‚ Р°Р±СЃРѕР»СЋС‚РЅРѕ РІСЃРµ С‰РёС‚С‹ РЅР° РІС‹Р±СЂР°РЅРЅРѕРј Р»РѕС‚Рµ.',
-            'poison_tickets': 'РћС‚СЂР°РІР»СЏРµС‚ Р»РѕС‚. РЎР¶РёРіР°РµС‚ Р±РёР»РµС‚С‹ РїРѕ С‚Р°Р№РјРµСЂСѓ (РґРѕ 1), РїРѕРєР° РЅРµ РєСѓРїСЏС‚ РћС‡РёС‰РµРЅРёРµ. РРіРЅРѕСЂРёСЂСѓРµС‚ С‰РёС‚С‹.',
-            'acid_shield': 'Р Р°Р·СЉРµРґР°РµС‚ Р±СЂРѕРЅСЋ. Р›РѕРјР°РµС‚ С‰РёС‚С‹ РїРѕ С‚Р°Р№РјРµСЂСѓ, РїРѕРєР° РЅРµ РєСѓРїСЏС‚ РћС‡РёС‰РµРЅРёРµ. РРіРЅРѕСЂРёСЂСѓРµС‚ С‰РёС‚С‹.',
-            'status': 'Р’РµС€Р°РµС‚ РЅР° Р»РѕС‚ СЃС‚Р°С‚СѓСЃ (Р—Р°С‰РёС‚Р°, Р—Р°РјРѕСЂРѕР·РєР° РёР»Рё РјРіРЅРѕРІРµРЅРЅР°СЏ РЎРјРµСЂС‚СЊ).'
+            'add_tickets': 'Моментально добавляет указанное число билетов.',
+            'add_all': 'Добавляет билеты сразу всем твоим живым лотам.',
+            'multiply': 'Умножает текущие билеты лота.',
+            'cleanse': 'Снимает 1 любой негативный статус (Яд, Кислота и т.д.).',
+            'sub_tickets': 'Срезает билеты у врага (но не ниже 1). Бьется об Щит.',
+            'divide': 'Делит билеты врага (но не ниже 1). Бьется об Щит.',
+            'steal': 'Забирает билеты у врага в твою пользу (оставляя ему минимум 1).',
+            'swap': 'Полностью меняет местами билеты твоего лота и вражеского.',
+            'tax': 'Глобальный налог: отнимает билеты у ВСЕХ игр на Алтаре (пробивает обычные щиты).',
+            'emp': 'Уничтожает абсолютно все щиты на выбранном лоте.',
+            'poison_tickets': 'Отравляет лот. Сжигает билеты по таймеру (до 1), пока не купят Очищение. Игнорирует щиты.',
+            'acid_shield': 'Разъедает броню. Ломает щиты по таймеру, пока не купят Очищение. Игнорирует щиты.',
+            'status': 'Вешает на лот статус (Защита, Заморозка или мгновенная Смерть).'
         };
 
         function renderRulesUI() {
@@ -569,9 +569,9 @@
             const limitsList = document.getElementById('dynamic-limits-list');
             if(limitsList) {
                 limitsList.innerHTML = `
-                    <li><span class="eff-badge" style="background:#222b20; border-color:#32422f;">F</span> <b>Р¤РћР›Р›РћР’Р•Р :</b> РњР°РєСЃ <b>${gl.follower || 0}</b> Р±РёР»РµС‚РѕРІ Р·Р° Р±Р°Р»Р»С‹. РљРѕР»РµСЃР°: <b>${lim.f_free || 0}</b> Р±РµСЃРїР», <b>${lim.f_buffs || 0}</b> Р±Р°С„С„, <b>${lim.f_debuffs || 0}</b> РґРµР±Р°С„С„.</li>
-                    <li><span class="eff-badge vip-badge">VIP</span> <b>VIP:</b> РњР°РєСЃ <b>${gl.vip || 0}</b> Р±РёР»РµС‚РѕРІ Р·Р° Р±Р°Р»Р»С‹. РљРѕР»РµСЃР°: <b>${lim.vip_free || 0}</b> Р±РµСЃРїР», <b>${lim.vip_buffs || 0}</b> Р±Р°С„С„, <b>${lim.vip_debuffs || 0}</b> РґРµР±Р°С„С„.</li>
-                    <li><span class="eff-badge sub-badge">SUB</span> <b>SUB:</b> РњР°РєСЃ <b>${gl.sub || 0}</b> Р±РёР»РµС‚РѕРІ Р·Р° Р±Р°Р»Р»С‹. РљРѕР»РµСЃР°: <b>${lim.sub_free || 0}</b> Р±РµСЃРїР», <b>${lim.sub_buffs || 0}</b> Р±Р°С„С„, <b>${lim.sub_debuffs || 0}</b> РґРµР±Р°С„С„.</li>
+                    <li><span class="eff-badge" style="background:#222b20; border-color:#32422f;">F</span> <b>ФОЛЛОВЕР:</b> Макс <b>${gl.follower || 0}</b> билетов за баллы. Колеса: <b>${lim.f_free || 0}</b> беспл, <b>${lim.f_buffs || 0}</b> бафф, <b>${lim.f_debuffs || 0}</b> дебафф.</li>
+                    <li><span class="eff-badge vip-badge">VIP</span> <b>VIP:</b> Макс <b>${gl.vip || 0}</b> билетов за баллы. Колеса: <b>${lim.vip_free || 0}</b> беспл, <b>${lim.vip_buffs || 0}</b> бафф, <b>${lim.vip_debuffs || 0}</b> дебафф.</li>
+                    <li><span class="eff-badge sub-badge">SUB</span> <b>SUB:</b> Макс <b>${gl.sub || 0}</b> билетов за баллы. Колеса: <b>${lim.sub_free || 0}</b> беспл, <b>${lim.sub_buffs || 0}</b> бафф, <b>${lim.sub_debuffs || 0}</b> дебафф.</li>
                 `;
             }
         }
@@ -581,9 +581,9 @@
             const baseUrl = "../icons/";
             const renderGrid = (arr, containerId, cssClass) => {
                 const container = document.getElementById(containerId); let html = "";
-                if(!arr || arr.length === 0) { container.innerHTML = "<p>РџСѓСЃС‚Рѕ</p>"; return; }
+                if(!arr || arr.length === 0) { container.innerHTML = "<p>Пусто</p>"; return; }
                 arr.forEach(eff => {
-                    let desc = mechDescriptions[eff.mech] || "РЈРЅРёРєР°Р»СЊРЅР°СЏ РјР°РіРёСЏ РЎРєРёРЅРІРѕР»РєРµСЂР°.";
+                    let desc = mechDescriptions[eff.mech] || "Уникальная магия Скинволкера.";
                     let imgTag = `<img src="${baseUrl}${eff.id}.png" class="custom-icon" style="width:36px; height:36px; vertical-align:middle;" onerror="this.outerHTML='${eff.icon}'">`;
                     html += `<div class="dict-item ${cssClass}"><div class="dict-icon">${imgTag}</div><div class="dict-info"><h4>${eff.name}</h4><p>${desc}</p></div></div>`;
                 });
@@ -592,7 +592,7 @@
             renderGrid(currentConfig.dictionary.buffs, 'dict-render-buffs', 'buff'); renderGrid(currentConfig.dictionary.debuffs, 'dict-render-debuffs', 'debuff');
         }
 
-        // рџ”Ґ TWITCH РђР’РўРћР РР—РђР¦РРЇ & РРќРўР•Р РђРљРўРР’ рџ”Ґ
+        // 🔥 TWITCH АВТОРИЗАЦИЯ & ИНТЕРАКТИВ 🔥
         const TWITCH_CLIENT_ID = 'gko3y2nhxg0ocvte0ru970pbau3eiq';
         const REDIRECT_URI = 'https://skinnystreams04-ai.github.io/skinwalker-sites/auction/';
         const STREAMER_LOGIN = 'skinwalker_nozxc'; 
@@ -617,10 +617,10 @@
         async function sendTwitchCommand(cmd) {
             let token = localStorage.getItem('tw_token');
             if(!token || !window.currentUserId || !window.broadcasterId) { 
-                showToast('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё С‡РµСЂРµР· Twitch!', true); return; 
+                showToast('Сначала войди через Twitch!', true); return; 
             }
             try {
-                showToast(`вЏі РћС‚РїСЂР°РІР»СЏСЋ: ${cmd}...`);
+                showToast(`⏳ Отправляю: ${cmd}...`);
                 const response = await fetch('https://api.twitch.tv/helix/chat/messages', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}`, 'Client-Id': TWITCH_CLIENT_ID, 'Content-Type': 'application/json' },
@@ -628,20 +628,20 @@
                 });
                 
                 if (response.ok) {
-                    showToast(`вњ… РљРѕРјР°РЅРґР° РѕС‚РїСЂР°РІР»РµРЅР° РІ С‡Р°С‚!`);
+                    showToast(`✅ Команда отправлена в чат!`);
                 } else {
                     const errData = await response.json();
                     console.error("Twitch API Error:", errData);
                     if (response.status === 401 || response.status === 403) {
-                        showToast('вќЊ РћС€РёР±РєР° РїСЂР°РІ! РўРµР±Рµ РЅСѓР¶РЅРѕ РћР‘РЇР—РђРўР•Р›Р¬РќРћ РЅР°Р¶Р°С‚СЊ "Р’С‹Р№С‚Рё" РІ РїСЂРѕС„РёР»Рµ Рё РІРѕР№С‚Рё Р·Р°РЅРѕРІРѕ!', true);
+                        showToast('❌ Ошибка прав! Тебе нужно ОБЯЗАТЕЛЬНО нажать "Выйти" в профиле и войти заново!', true);
                     } else {
-                        showToast(`вќЊ РћС€РёР±РєР° РўРІРёС‡Р°: ${errData.message}`, true);
+                        showToast(`❌ Ошибка Твича: ${errData.message}`, true);
                     }
                 }
-            } catch(e) { console.error(e); showToast('вќЊ РћС€РёР±РєР° СЃРµС‚Рё! РџСЂРѕРІРµСЂСЊ РёРЅС‚РµСЂРЅРµС‚.', true); }
+            } catch(e) { console.error(e); showToast('❌ Ошибка сети! Проверь интернет.', true); }
         }
 
-        // рџ”Ґ РЎРРЎРўР•РњРђ РўРђР Р“Р•РўРРќР“Рђ РљРђРЎРўРћР’ рџ”Ґ
+        // 🔥 СИСТЕМА ТАРГЕТИНГА КАСТОВ 🔥
         let targetingMode = false;
         let targetingState = 'none'; // 'step1', 'step2', 'single'
         let firstTarget = null;
@@ -659,24 +659,24 @@
                 if (loadedSpell.mech === 'steal' || loadedSpell.mech === 'swap') {
                     targetingState = 'step1';
                     document.body.className = 'targeting-self';
-                    hintEl.innerText = "РЁРђР“ 1: Р’С‹Р±РµСЂРё РЎР’РћР™ Р»РѕС‚";
-                    showToast('Р Р•Р–РРњ РћР‘РњР•РќРђ: РЎРЅР°С‡Р°Р»Р° РІС‹Р±РµСЂРё СЃРІРѕР№ Р»РѕС‚!');
+                    hintEl.innerText = "ШАГ 1: Выбери СВОЙ лот";
+                    showToast('РЕЖИМ ОБМЕНА: Сначала выбери свой лот!');
                 } else if (loadedSpell.target === 'self') {
                     targetingState = 'single';
                     document.body.className = 'targeting-self';
-                    hintEl.innerText = "Р’С‹Р±РµСЂРё РЎР’РћР™ Р»РѕС‚";
-                    showToast('РњРђР“РРЇ: Р’С‹Р±РµСЂРё СЃРІРѕР№ Р»РѕС‚ РґР»СЏ Р±Р°С„С„Р°!');
+                    hintEl.innerText = "Выбери СВОЙ лот";
+                    showToast('МАГИЯ: Выбери свой лот для баффа!');
                 } else {
                     targetingState = 'single';
                     document.body.className = 'targeting-any';
-                    hintEl.innerText = "Р’С‹Р±РµСЂРё Р›Р®Р‘РћР™ Р»РѕС‚ (С†РµР»СЊ)";
-                    showToast('РњРђР“РРЇ: Р’С‹Р±РµСЂРё Р»СЋР±РѕР№ Р»РѕС‚ (РґР°Р¶Рµ СЃРІРѕР№)!');
+                    hintEl.innerText = "Выбери ЛЮБОЙ лот (цель)";
+                    showToast('МАГИЯ: Выбери любой лот (даже свой)!');
                 }
             } else {
                 targetingState = 'none';
                 document.body.className = '';
                 invEl.classList.remove('active');
-                hintEl.innerText = "РќР°Р¶РјРё СЃСЋРґР°, С‡С‚РѕР±С‹ РїСЂРёРјРµРЅРёС‚СЊ!";
+                hintEl.innerText = "Нажми сюда, чтобы применить!";
             }
         }
 
@@ -687,19 +687,19 @@
                 firstTarget = { slot: slotIndex };
                 targetingState = 'step2';
                 document.body.className = 'targeting-any';
-                document.getElementById('inv-hint').innerText = "РЁРђР“ 2: Р’С‹Р±РµСЂРё Р»РѕС‚ Р¦Р•Р›Р";
-                showToast('РћС‚Р»РёС‡РЅРѕ! РўРµРїРµСЂСЊ РІС‹Р±РµСЂРё Р»РѕС‚ РІСЂР°РіР° (С†РµР»Рё).');
+                document.getElementById('inv-hint').innerText = "ШАГ 2: Выбери лот ЦЕЛИ";
+                showToast('Отлично! Теперь выбери лот врага (цели).');
                 return;
             }
 
             let cmd = "";
             if (targetingState === 'step2') {
-                cmd = `!РєР°СЃС‚ ${firstTarget.slot} @${ownerLogin} ${slotIndex}`;
+                cmd = `!каст ${firstTarget.slot} @${ownerLogin} ${slotIndex}`;
             } else {
                 if (loadedSpell.target === 'self') {
-                    cmd = `!РєР°СЃС‚ ${slotIndex}`;
+                    cmd = `!каст ${slotIndex}`;
                 } else {
-                    cmd = `!РєР°СЃС‚ ${slotIndex} @${ownerLogin}`;
+                    cmd = `!каст ${slotIndex} @${ownerLogin}`;
                 }
             }
 
@@ -709,7 +709,7 @@
             targetingState = 'none';
             document.body.className = '';
             document.getElementById('inv-spell-content').classList.remove('active');
-            document.getElementById('inv-hint').innerText = "РћР¶РёРґР°РЅРёРµ СЃРµСЂРІРµСЂР°...";
+            document.getElementById('inv-hint').innerText = "Ожидание сервера...";
         }
 
         async function checkTwitchAuth() {
@@ -758,7 +758,7 @@
             }
         }
 
-        // рџ”Ґ Р РђРЎР§Р•Рў Р‘РђР›РђРќРЎРћР’ Р Р›РРњРРўРћР’ рџ”Ґ
+        // 🔥 РАСЧЕТ БАЛАНСОВ И ЛИМИТОВ 🔥
         function renderWallet(data) {
             if (!window.currentUserLogin || !data) return;
             
@@ -771,7 +771,7 @@
             if (player) {
                 wGold = player.wallet_gold || 0; wTickets = player.wallet_tickets || 0;
                 
-                // рџ”Ґ РџР РђР’РР›Р¬РќР«Р™ РџР РРћР РРўР•Рў Р РћР›Р•Р™ (SUB > VIP > F) рџ”Ґ
+                // 🔥 ПРАВИЛЬНЫЙ ПРИОРИТЕТ РОЛЕЙ (SUB > VIP > F) 🔥
                 let rolePriority = { 'SUB': 3, 'VIP': 2, 'F': 1 };
                 let finalRole = detectedRole; 
                 
@@ -783,29 +783,29 @@
                 else if (player.is_vip && finalRole !== "SUB") finalRole = "VIP";
                 role = finalRole;
 
-                // Р‘Р•Р Р•Рњ РРќР¤РћР РњРђР¦РР® РЎРўР РћР“Рћ РР— Р‘РђР—Р« Р‘Р•Р— Р’Р«Р§РРЎР›Р•РќРР™ РџРћ Р›РћРўРђРњ!
+                // БЕРЕМ ИНФОРМАЦИЮ СТРОГО ИЗ БАЗЫ БЕЗ ВЫЧИСЛЕНИЙ ПО ЛОТАМ!
                 ticketsBought = parseInt(player.tickets_bought || player.bought_tickets || 0);
                 buffsUsed = parseInt(player.spins_buffs_used || player.buffs_used || 0); 
                 debuffsUsed = parseInt(player.spins_debuffs_used || player.debuffs_used || 0); 
                 freeUsed = parseInt(player.spins_free_used || player.free_used || 0);
 
-                // РћР‘РќРћР’Р›Р•РќРР• РРќР’Р•РќРўРђР РЇ
+                // ОБНОВЛЕНИЕ ИНВЕНТАРЯ
                 const invCount = document.getElementById('inv-count');
                 const invContent = document.getElementById('inv-content');
                 if (player.active_mech) {
                     loadedSpell = {
                         mech: player.active_mech,
-                        name: player.active_name || 'РњР°РіРёСЏ',
+                        name: player.active_name || 'Магия',
                         icon: player.active_icon || 'вњЁ',
                         target: player.active_target || 'self'
                     };
                     
-                    let hintText = 'РќР°Р¶РјРё СЃСЋРґР°, С‡С‚РѕР±С‹ РїСЂРёРјРµРЅРёС‚СЊ!';
+                    let hintText = 'Нажми сюда, чтобы применить!';
                     if (targetingMode) {
-                        if (targetingState === 'step2') hintText = 'РЁРђР“ 2: Р’С‹Р±РµСЂРё Р»РѕС‚ Р¦Р•Р›Р';
-                        else if (targetingState === 'step1') hintText = 'РЁРђР“ 1: Р’С‹Р±РµСЂРё РЎР’РћР™ Р»РѕС‚';
-                        else if (loadedSpell.target === 'self') hintText = 'Р’С‹Р±РµСЂРё РЎР’РћР™ Р»РѕС‚';
-                        else hintText = 'Р’С‹Р±РµСЂРё Р›Р®Р‘РћР™ Р»РѕС‚ (С†РµР»СЊ)';
+                        if (targetingState === 'step2') hintText = 'ШАГ 2: Выбери лот ЦЕЛИ';
+                        else if (targetingState === 'step1') hintText = 'ШАГ 1: Выбери СВОЙ лот';
+                        else if (loadedSpell.target === 'self') hintText = 'Выбери СВОЙ лот';
+                        else hintText = 'Выбери ЛЮБОЙ лот (цель)';
                     }
 
                     invCount.innerText = "1 / 1";
@@ -816,7 +816,7 @@
                 } else {
                     loadedSpell = null; targetingMode = false; document.body.className = ''; targetingState = 'none';
                     invCount.innerText = "0 / 1";
-                    invContent.innerHTML = `<div style="color: #6c7086; text-align: center; padding: 4px; font-size: 14px;">РџСѓСЃС‚Рѕ. РљСЂСѓС‚Рё РєРѕР»РµСЃРѕ!</div>`;
+                    invContent.innerHTML = `<div style="color: #6c7086; text-align: center; padding: 4px; font-size: 14px;">Пусто. Крути колесо!</div>`;
                 }
             }
             
@@ -834,7 +834,7 @@
                 if (role === 'VIP') { maxTickets = gl.vip || 25; maxBuffs = lim.vip_buffs || 2; maxDebuffs = lim.vip_debuffs || 1; maxFree = lim.vip_free || 0; } 
                 else if (role === 'SUB') { maxTickets = gl.sub || 50; maxBuffs = lim.sub_buffs || 3; maxDebuffs = lim.sub_debuffs || 2; maxFree = lim.sub_free || 0; }
 
-                // РўР•РџР•Р Р¬ РћРўРћР‘Р РђР–РђР•РўРЎРЇ РљРђРљ: РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ / РњР°РєСЃРёРјСѓРј
+                // ТЕПЕРЬ ОТОБРАЖАЕТСЯ КАК: Использовано / Максимум
                 document.getElementById('lim-tix').innerText = `${ticketsBought} / ${maxTickets}`;
                 document.getElementById('lim-free').innerText = `${freeUsed} / ${maxFree}`;
                 document.getElementById('lim-buff').innerText = `${buffsUsed} / ${maxBuffs}`;
@@ -847,7 +847,7 @@
         }
         function copyNick(element, nick) { const textToCopy = '@' + nick; if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(textToCopy); } }
 
-        // Р‘РђР—РћР’РђРЇ Р›РћР“РРљРђ РђРЈРљР¦РРћРќРђ Р FIREBASE
+        // БАЗОВАЯ ЛОГИКА АУКЦИОНА И FIREBASE
         const playersGrid = document.getElementById("players-grid");
         const cauldronList = document.getElementById("cauldron-list");
         const firebaseUrl = "https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app/auction_data.json";
@@ -868,9 +868,9 @@
 
                 if (data && data.current_phase) {
                     const phaseInd = document.getElementById('phase-indicator');
-                    if (data.current_phase === 1) { phaseInd.className = 'phase-indicator p2'; phaseInd.innerHTML = 'рџџЎ Р¤РђР—Рђ 1: РЇРЎРќР«Р™ Р”Р•РќР¬'; } 
-                    else if (data.current_phase === 2) { phaseInd.className = 'phase-indicator p3'; phaseInd.innerHTML = 'рџЊ‘ Р¤РђР—Рђ 2: Р—РђРўРњР•РќРР•'; } 
-                    else { phaseInd.className = 'phase-indicator'; phaseInd.innerHTML = 'РћР–РР”РђРќРР• РЎРўРђР РўРђ'; }
+                    if (data.current_phase === 1) { phaseInd.className = 'phase-indicator p2'; phaseInd.innerHTML = '🟡 ФАЗА 1: ЯСНЫЙ ДЕНЬ'; } 
+                    else if (data.current_phase === 2) { phaseInd.className = 'phase-indicator p3'; phaseInd.innerHTML = '🌑 ФАЗА 2: ЗАТМЕНИЕ'; } 
+                    else { phaseInd.className = 'phase-indicator'; phaseInd.innerHTML = 'ОЖИДАНИЕ СТАРТА'; }
                 }
 
                 if (currentConfig && currentConfig.dictionary) {
@@ -879,8 +879,8 @@
                     if (currentConfig.dictionary.debuffs) currentConfig.dictionary.debuffs.forEach(e => dictionaryMap[e.id] = e);
                 }
 
-                if (data && data.players) { try { drawSlots(data.players); } catch (e) {} } else { playersGrid.innerHTML = "<h2 style='color: #4a5c41; text-align: center; width: 100%;'>РђР»С‚Р°СЂСЊ РїСѓСЃС‚... Р–РґРµРј Р¶РµСЂС‚РІ.</h2>"; cauldronList.innerHTML = ""; }
-                if (data && data.log) { drawLog(data.log); } else { document.getElementById('action-log-list').innerHTML = '<div style="text-align: center; padding: 20px; color: #6c7086; font-style: italic;">РђСѓРєС†РёРѕРЅ Р·Р°РїСѓС‰РµРЅ. Р–РґРµРј РїРµСЂРІС‹С… РґРµР№СЃС‚РІРёР№...</div>'; }
+                if (data && data.players) { try { drawSlots(data.players); } catch (e) {} } else { playersGrid.innerHTML = "<h2 style='color: #4a5c41; text-align: center; width: 100%;'>Алтарь пуст... Ждем жертв.</h2>"; cauldronList.innerHTML = ""; }
+                if (data && data.log) { drawLog(data.log); } else { document.getElementById('action-log-list').innerHTML = '<div style="text-align: center; padding: 20px; color: #6c7086; font-style: italic;">Аукцион запущен. Ждем первых действий...</div>'; }
 
                 if (data && data.last_spin && currentConfig && currentConfig.wheels) {
                     const spinData = data.last_spin;
@@ -913,7 +913,7 @@
                     let gamesArr = Array.isArray(player.games) ? player.games : Object.values(player.games);
                     localGameCount = gamesArr.length;
                     gamesArr.forEach(game => {
-                        let safeName = game.name != null ? String(game.name) : "Р‘РµР· РЅР°Р·РІР°РЅРёСЏ"; let upperName = safeName.toUpperCase(); 
+                        let safeName = game.name != null ? String(game.name) : "Без названия"; let upperName = safeName.toUpperCase(); 
                         let t = parseInt(game.tickets) || 0; let g = parseInt(game.gold) || 0;
                         if (!globalCauldron[upperName]) globalCauldron[upperName] = { tickets: 0, gold: 0, rawName: safeName, badges: [] };
                         globalCauldron[upperName].tickets += t; globalCauldron[upperName].gold += g; 
@@ -929,8 +929,8 @@
             
             playersData.sort((a, b) => b.totalTickets - a.totalTickets);
             
-            let headerHtml = `<div class="table-header"><div class="th-user">Р—Р РРўР•Р›Р¬</div><div class="th-games" style="grid-template-columns: repeat(${globalMaxGames}, 1fr);">`;
-            for(let i = 1; i <= globalMaxGames; i++) { headerHtml += `<div class="th-game">РР“Р Рђ ${i}</div>`; }
+            let headerHtml = `<div class="table-header"><div class="th-user">ЗРИТЕЛЬ</div><div class="th-games" style="grid-template-columns: repeat(${globalMaxGames}, 1fr);">`;
+            for(let i = 1; i <= globalMaxGames; i++) { headerHtml += `<div class="th-game">ИГРА ${i}</div>`; }
             headerHtml += `</div></div>`; playersGrid.innerHTML = headerHtml;
 
             if(typeof window.failedImages === 'undefined') window.failedImages = {};
@@ -941,14 +941,14 @@
                     let gamesArr = Array.isArray(player.games) ? player.games : Object.values(player.games);
                     gamesArr.forEach(game => {
                         slotIndex++;
-                        let safeName = game.name != null ? String(game.name) : "Р‘РµР· РЅР°Р·РІР°РЅРёСЏ"; let upperName = safeName.toUpperCase(); let globalGold = globalCauldron[upperName].gold;
+                        let safeName = game.name != null ? String(game.name) : "Без названия"; let upperName = safeName.toUpperCase(); let globalGold = globalCauldron[upperName].gold;
                         let itemClass = ""; let globalBadge = "";
 
-                        // рџ”Ґ РћРџР Р•Р”Р•Р›РЇР•Рњ РЎР’РћР™ Р›Р Р­РўРћ Р›РћРў Р”Р›РЇ CSS РўРђР Р“Р•РўРРќР“Рђ рџ”Ґ
+                        // 🔥 ОПРЕДЕЛЯЕМ СВОЙ ЛИ ЭТО ЛОТ ДЛЯ CSS ТАРГЕТИНГА 🔥
                         let isMineClass = (player.user && window.currentUserLogin && player.user.toLowerCase() === window.currentUserLogin.toLowerCase()) ? 'is-mine' : '';
 
-                        if (globalGold >= 100) { itemClass = "absolute-slot"; globalBadge = `<div class="badge absolute" title="РќРµСѓСЏР·РІРёРјРѕСЃС‚СЊ">рџ›ЎпёЏ</div>`; } 
-                        else if (globalGold >= 50) { itemClass = "immortal-slot"; globalBadge = `<div class="badge immortal" title="Р‘РµСЃСЃРјРµСЂС‚РёРµ">рџ’Ђ</div>`; }
+                        if (globalGold >= 100) { itemClass = "absolute-slot"; globalBadge = `<div class="badge absolute" title="Неуязвимость">🛡️</div>`; } 
+                        else if (globalGold >= 50) { itemClass = "immortal-slot"; globalBadge = `<div class="badge immortal" title="Бессмертие">💀</div>`; }
 
                         let badgesArr = Array.isArray(game.badges) ? game.badges : Object.values(game.badges || {}); let badgeCounts = {};
                         badgesArr.forEach(b => { if (!b || !b.type) return; badgeCounts[b.type] = (badgeCounts[b.type] || 0) + 1; });
@@ -957,10 +957,10 @@
                             let count = badgeCounts[type]; let iconText = ""; let titleText = "";
                             if (dictionaryMap[type]) { iconText = `${dictionaryMap[type].icon}`; titleText = dictionaryMap[type].name; } 
                             else {
-                                if(type === 'shield') iconText = "рџ›ЎпёЏ"; else if(type === 'fire') iconText = "рџ”Ґ";
-                                else if(type === 'freeze') iconText = "вќ„пёЏ"; else if(type === 'kill') iconText = "рџ’Ђ";
-                                else if(type === 'poison') iconText = "в пёЏ"; else if(type === 'acid') iconText = "рџ§Є";
-                                else { iconText = `вњЁ`; titleText = type; }
+                                if(type === 'shield') iconText = "🛡️"; else if(type === 'fire') iconText = "🔥";
+                                else if(type === 'freeze') iconText = "❄️"; else if(type === 'kill') iconText = "💀";
+                                else if(type === 'poison') iconText = "☠️"; else if(type === 'acid') iconText = "🧪";
+                                else { iconText = `✨`; titleText = type; }
                             }
                             let imgUrl = `${baseUrl}${type}.png`; let imgTag = "";
                             if(window.failedImages[imgUrl]) { imgTag = iconText; } else { imgTag = `<img src="${imgUrl}" class="custom-icon" onerror="window.failedImages['${imgUrl}']=true; this.outerHTML='${iconText}'">`; }
@@ -969,26 +969,26 @@
                         
                         let goldHtmlPill = game.gold > 0 ? `<span class="pr-g-tix" style="color: #b8a87b; background: rgba(184, 168, 123, 0.1); border-color: rgba(184, 168, 123, 0.2); margin-right: 5px;"><img src="${baseUrl}BILET_GOLD.png" class="custom-icon"> ${game.gold}</span>` : '';
                         
-                        // Р’РЁРРўР«Р™ ONCLICK Р”Р›РЇ РўРђР Р“Р•РўРРќР“Рђ
+                        // ВШИТЫЙ ONCLICK ДЛЯ ТАРГЕТИНГА
                         gamesHtml += `<div class="pr-game-pill ${itemClass} ${isMineClass}" onclick="handleGameClick('${player.user}', ${slotIndex})"><div class="pr-g-top"><div class="pr-g-name-wrap"><span class="pr-g-name">${safeName}</span></div><div style="display:flex; align-items:center;">${goldHtmlPill}<span class="pr-g-tix"><img src="${baseUrl}BILET.png" class="custom-icon"> ${game.tickets || 0}</span></div></div><div class="pr-g-bottom"><div class="badges-mini-container">${globalBadge + localBadges}</div></div></div>`;
                     });
                 }
-                playersGrid.innerHTML += `<div class="player-row"><div class="pr-user-info"><div class="pr-role-name"><span class="role-badge ${player.role ? player.role.toLowerCase() : 'f'}">${player.role || 'F'}</span><span class="pr-name" onclick="copyNick(this, '${player.user || "Р—СЂРёС‚РµР»СЊ"}')">${player.user || "Р—СЂРёС‚РµР»СЊ"}</span></div><div class="pr-total">ОЈ ${player.totalTickets} Р±РёР»РµС‚РѕРІ</div></div><div class="pr-games" style="grid-template-columns: repeat(${globalMaxGames}, 1fr);">${gamesHtml}</div></div>`;
+                playersGrid.innerHTML += `<div class="player-row"><div class="pr-user-info"><div class="pr-role-name"><span class="role-badge ${player.role ? player.role.toLowerCase() : 'f'}">${player.role || 'F'}</span><span class="pr-name" onclick="copyNick(this, '${player.user || "Зритель"}')">${player.user || "Зритель"}</span></div><div class="pr-total">Σ ${player.totalTickets} билетов</div></div><div class="pr-games" style="grid-template-columns: repeat(${globalMaxGames}, 1fr);">${gamesHtml}</div></div>`;
             });
 
             const sortedGames = Object.values(globalCauldron).sort((a, b) => (b.tickets + b.gold) - (a.tickets + a.gold)); 
             const cauldronListEl = document.getElementById("cauldron-list"); let html = "";
             sortedGames.forEach(game => {
                 let statusBadge = ""; let itemClass = "";
-                if (game.gold >= 100) { itemClass = "absolute"; statusBadge = `<div class="status-badge absolute">рџ›ЎпёЏ РќР•РЈРЇР—Р’РРњРћРЎРўР¬</div>`; } 
-                else if (game.gold >= 50) { itemClass = "immortal"; statusBadge = `<div class="status-badge immortal">рџ’Ђ Р‘Р•РЎРЎРњР•Р РўРР•</div>`; }
+                if (game.gold >= 100) { itemClass = "absolute"; statusBadge = `<div class="status-badge absolute">🛡️ НЕУЯЗВИМОСТЬ</div>`; } 
+                else if (game.gold >= 50) { itemClass = "immortal"; statusBadge = `<div class="status-badge immortal">💀 БЕССМЕРТИЕ</div>`; }
                 let safeNameEscaped = game.rawName.replace(/'/g, "\\'").replace(/"/g, "&quot;");
                 let goldTickets = game.gold > 0 ? `<span style="color: #b8a87b; margin-right: 12px; display:flex; align-items:center;"><img src="${baseUrl}BILET_GOLD.png" class="custom-icon" style="margin-right: 4px;"> ${game.gold}</span>` : '';
                 let bottomRow = statusBadge ? `<div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 5px;">${statusBadge}</div>` : '';
 
                 html += `<div class="cauldron-item ${itemClass}">
                             <div class="c-top-row">
-                                <div class="c-game-name" onclick="copyText(this, '${safeNameEscaped}')" title="РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РЅР°Р·РІР°РЅРёРµ">${game.rawName}</div>
+                                <div class="c-game-name" onclick="copyText(this, '${safeNameEscaped}')" title="Скопировать название">${game.rawName}</div>
                                 <div class="c-tickets" style="display:flex; align-items:center;">
                                     ${goldTickets}
                                     <span style="display:flex; align-items:center;"><img src="${baseUrl}BILET.png" class="custom-icon" style="margin-right: 4px;"> ${game.tickets}</span>
@@ -1034,7 +1034,7 @@
                 if (!startTime) startTime = timestamp; const progress = Math.min((timestamp - startTime) / duration, 1);
                 canvas.style.transform = `scale(1) rotate(${absoluteFinalAngle * easeOut(progress)}rad)`;
                 if (progress < 1) { requestAnimationFrame(animateWheel); } else {
-                    document.getElementById('res-user').innerText = `РљР РЈРўРРў: ${spinData.user}`; document.getElementById('res-text').innerText = `${targetItem.name}`; document.getElementById('res-text').style.color = neonColor;
+                    document.getElementById('res-user').innerText = `КРУТИТ: ${spinData.user}`; document.getElementById('res-text').innerText = `${targetItem.name}`; document.getElementById('res-text').style.color = neonColor;
                     resultBox.classList.add('show');
                     clearTimeout(wheelTimeout); wheelTimeout = setTimeout(() => { overlay.classList.remove('active'); setTimeout(() => { isSpinning = false; }, 500); }, 4000); 
                 }
