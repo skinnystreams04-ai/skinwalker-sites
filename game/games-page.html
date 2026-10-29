@@ -705,7 +705,7 @@
                         const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                         const broadcasterId = (await bRes.json()).data[0].id;
                         if (currentUser.id === broadcasterId) isFollower = true; 
-                        else { const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } }); if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; } const fData = await fRes.json(); if (fData.data && fData.data.length > 0) isFollower = true; }
+                        else { const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } }); if (fRes.ok) { const fData = await fRes.json(); if (fData.data && fData.data.length > 0) isFollower = true; } }
                     } catch(e) {}
                     window.isUserFollower = isFollower;
 

@@ -741,11 +741,10 @@
                         } else {
                             const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': 'Bearer ' + token } });
                             
-                            // Если у юзера старый токен без новых прав - принудительно разлогиниваем его
-                            if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; }
-                            
-                            const fData = await fRes.json();
-                            if (fData.data && fData.data.length > 0) isFollower = true;
+                            if (fRes.ok) {
+                                const fData = await fRes.json();
+                                if (fData.data && fData.data.length > 0) isFollower = true;
+                            }
                         }
                     } catch(e) { console.warn("Ошибка проверки фоллоува:", e); }
                     

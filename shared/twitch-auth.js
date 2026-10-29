@@ -5,8 +5,8 @@
     const tokenKey = 'twitch_token';
     const legacyTokenKey = 'tw_token';
     const scopes = {
-        auction: 'user:read:subscriptions user:write:chat',
-        default: ''
+        auction: 'user:read:subscriptions user:write:chat user:read:follows',
+        default: 'user:read:follows'
     };
 
     function getSiteId() {
