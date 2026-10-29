@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skinwalker Игры - Хаб</title>
+    <title>Skinwalker РРіСЂС‹ - РҐР°Р±</title>
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/site-header.css">
-    <script src="../shared/site-header.js" defer></script>
-    <script src="../shared/twitch-auth.js" defer></script>
-    <script src="../shared/firebase-stream.js" defer></script>
+    <script src="../shared/site-header.js"></script>
+    <script src="../shared/twitch-auth.js"></script>
+    <script src="../shared/firebase-stream.js"></script>
 
     <style>
-        /* ГЛОБАЛЬНЫЕ ЦВЕТА И ХАМЕЛЕОН */
+        /* Р“Р›РћР‘РђР›Р¬РќР«Р• Р¦Р’Р•РўРђ Р РҐРђРњР•Р›Р•РћРќ */
         :root {
             --theme-primary: #a6e3a1;
             --theme-glow: rgba(166, 227, 161, 0.5);
@@ -19,7 +19,7 @@
             --btn-color: #a6e3a1;
         }
 
-        /* ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ (ЛОГОТИП) */
+        /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
         .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
         .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
         .nav-logo-wrap:hover { filter: brightness(1.2); }
@@ -69,7 +69,7 @@
         .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px; font-family: 'Neucha', cursive;}
         .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
 
-        /* ВЫПАДАЮЩЕЕ МЕНЮ ВИЗУАЛА */
+        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ */
         .visual-dropdown { position: relative; display: inline-block; }
         .visual-dropdown-content { display: none; position: absolute; left: 50%; transform: translateX(-50%); top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
         .visual-dropdown.show .visual-dropdown-content { display: flex; }
@@ -125,7 +125,7 @@
         #dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: blur(40px) brightness(0.2); opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.5s ease, background-image 0.5s ease; }
         #dynamic-bg.active { opacity: 1; }
 
-        /* ЗАЛ СЛАВЫ И ПОИСК */
+        /* Р—РђР› РЎР›РђР’Р« Р РџРћРРЎРљ */
         .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
         .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
@@ -149,102 +149,102 @@
 </head>
 <body>
     <div id="dynamic-bg"></div>
-    <div class="loading-screen" id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column;">Загрузка данных...</div>
+    <div class="loading-screen" id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column;">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
 
     <nav class="top-nav">
-        <!-- ЛЕВАЯ ЧАСТЬ (Логотип и Меню) -->
+        <!-- Р›Р•Р’РђРЇ Р§РђРЎРўР¬ (Р›РѕРіРѕС‚РёРї Рё РњРµРЅСЋ) -->
         <div style="display: flex; align-items: center; gap: 50px;">
             
-            <!-- ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ -->
+            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
             <div class="logo-dropdown">
-                <div class="nav-logo-wrap">Skinwalker Игры <span class="logo-arrow">▼</span></div>
+                <div class="nav-logo-wrap">Skinwalker РРіСЂС‹ <span class="logo-arrow">в–ј</span></div>
                 <div class="logo-dropdown-content">
                     <a href="../anime/index.html" class="logo-link" style="--site-color: #a6e3a1;">
-                        <span style="font-size: 14px;">▶</span> Аниме
+                        <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
                     </a>
                     <a href="index.html" class="logo-link active" style="--site-color: #ffd700;">
-                        <span style="font-size: 14px;">▶</span> Игры
+                        <span style="font-size: 14px;">в–¶</span> РРіСЂС‹
                     </a>
                 </div>
             </div>
             
-            <!-- ЛОКАЛЬНОЕ МЕНЮ ИГР -->
+            <!-- Р›РћРљРђР›Р¬РќРћР• РњР•РќР® РР“Р  -->
             <div style="display: flex; gap: 20px; align-items: center;">
-                <a href="index.html" class="nav-btn active" style="color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); --btn-color: #ffd700;">Хаб</a>
-                <a href="games-tierlist.html" class="nav-btn btn-tier">Тир-лист</a>
-                <button onclick="window.openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Зрители</button>
+                <a href="index.html" class="nav-btn active" style="color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); --btn-color: #ffd700;">РҐР°Р±</a>
+                <a href="games-tierlist.html" class="nav-btn btn-tier">РўРёСЂ-Р»РёСЃС‚</a>
+                <button onclick="window.openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
                 
-                <!-- ВЫПАДАЮЩЕЕ МЕНЮ ВИЗУАЛА -->
+                <!-- Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ -->
                 <div class="visual-dropdown" id="visual-dropdown">
-                    <button class="nav-btn btn-visual" onclick="toggleVisualMenu()">Визуал</button>
+                    <button class="nav-btn btn-visual" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
                     <div class="visual-dropdown-content">
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
-                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
-                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">Я</button>
-                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Р§Р°С‚</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> <!-- Вот этот </div> закрывает левую часть -->
+        </div> <!-- Р’РѕС‚ СЌС‚РѕС‚ </div> Р·Р°РєСЂС‹РІР°РµС‚ Р»РµРІСѓСЋ С‡Р°СЃС‚СЊ -->
 
-        <!-- ПРАВАЯ ЧАСТЬ (АВТОРИЗАЦИЯ) -->
+        <!-- РџР РђР’РђРЇ Р§РђРЎРўР¬ (РђР’РўРћР РР—РђР¦РРЇ) -->
         <div class="nav-auth" id="nav-auth">
-            <button class="twitch-btn" onclick="loginTwitch()">Войти через Twitch</button>
+            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
         </div>
     </nav>
 
-    <!-- ПАНЕЛЬ ФИЛЬТРОВ -->
+    <!-- РџРђРќР•Р›Р¬ Р¤РР›Р¬РўР РћР’ -->
     <div class="controls-bar" style="display: none;" id="controls-bar">
-        <input type="text" id="search-input" class="search-input" placeholder="Поиск по названию..." oninput="applyFiltersAndSort()">
+        <input type="text" id="search-input" class="search-input" placeholder="РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ..." oninput="applyFiltersAndSort()">
         <div class="controls-divider"></div>
         <select id="sort-select" class="sort-select" onchange="toggleRoleSelect(); applyFiltersAndSort();">
-            <option value="overall">По Итоговой оценке</option>
-            <option value="avgTheory">По среднему Критериев</option>
-            <option value="visuals">По Визуалу</option>
-            <option value="gameplay">По Геймплею</option>
-            <option value="sound">По Звуку</option>
-            <option value="tech">По Технике</option>
-            <option value="atmosphere">По Атмосфере</option>
-            <option value="az">По алфавиту (A-Z)</option>
-            <option value="release_year">По году выхода</option>
-            <option value="hours">По часам в игре</option>
+            <option value="overall">РџРѕ РС‚РѕРіРѕРІРѕР№ РѕС†РµРЅРєРµ</option>
+            <option value="avgTheory">РџРѕ СЃСЂРµРґРЅРµРјСѓ РљСЂРёС‚РµСЂРёРµРІ</option>
+            <option value="visuals">РџРѕ Р’РёР·СѓР°Р»Сѓ</option>
+            <option value="gameplay">РџРѕ Р“РµР№РјРїР»РµСЋ</option>
+            <option value="sound">РџРѕ Р—РІСѓРєСѓ</option>
+            <option value="tech">РџРѕ РўРµС…РЅРёРєРµ</option>
+            <option value="atmosphere">РџРѕ РђС‚РјРѕСЃС„РµСЂРµ</option>
+            <option value="az">РџРѕ Р°Р»С„Р°РІРёС‚Сѓ (A-Z)</option>
+            <option value="release_year">РџРѕ РіРѕРґСѓ РІС‹С…РѕРґР°</option>
+            <option value="hours">РџРѕ С‡Р°СЃР°Рј РІ РёРіСЂРµ</option>
         </select>
         <div class="controls-divider" id="role-divider"></div>
         <select id="role-select" class="sort-select" onchange="applyFiltersAndSort()">
-            <option value="streamer">Стример</option>
-            <option value="me">Я</option>
-            <option value="chat">Чат</option>
+            <option value="streamer">РЎС‚СЂРёРјРµСЂ</option>
+            <option value="me">РЇ</option>
+            <option value="chat">Р§Р°С‚</option>
         </select>
-        <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="Изменить направление">↓</button>
+        <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="РР·РјРµРЅРёС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ">в†“</button>
     </div>
 
-    <!-- ОСНОВНАЯ СЕТКА И ПАНЕЛЬ -->
+    <!-- РћРЎРќРћР’РќРђРЇ РЎР•РўРљРђ Р РџРђРќР•Р›Р¬ -->
     <div class="main-layout" id="main-layout">
-        <div id="trophy-room" class="trophy-room"><div class="loading">Синхронизация с базой...</div></div>
+        <div id="trophy-room" class="trophy-room"><div class="loading">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ Р±Р°Р·РѕР№...</div></div>
         
         <div class="hub-right-panel" id="hub-right-panel">
-            <div id="hub-preview-placeholder" class="preview-placeholder">Наведите курсор на любую игру, чтобы увидеть статистику</div>
+            <div id="hub-preview-placeholder" class="preview-placeholder">РќР°РІРµРґРёС‚Рµ РєСѓСЂСЃРѕСЂ РЅР° Р»СЋР±СѓСЋ РёРіСЂСѓ, С‡С‚РѕР±С‹ СѓРІРёРґРµС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ</div>
             
             <div id="hub-preview-container" style="display: none; flex-direction: column;">
                 <img id="hub-preview-cover" src="" class="preview-cover" alt="cover">
                 <div class="preview-content">
-                    <div id="hub-preview-title" class="preview-title" style="margin-bottom: 10px;">Название</div>
+                    <div id="hub-preview-title" class="preview-title" style="margin-bottom: 10px;">РќР°Р·РІР°РЅРёРµ</div>
                     <div class="chart-container" style="height: 200px; margin-bottom: 15px;"><canvas id="hub-previewChart"></canvas></div>
                     <div class="theory-container" id="hub-preview-theory" style="margin-top: 10px;"></div>
-                    <button id="hub-preview-btn" style="margin-top: 15px; width: 100%; background: #121612; border: 1px solid var(--theme-panel-border); color: #fff; padding: 10px; font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: border-color 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">Страница Игры ▶</button>
+                    <button id="hub-preview-btn" style="margin-top: 15px; width: 100%; background: #121612; border: 1px solid var(--theme-panel-border); color: #fff; padding: 10px; font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: border-color 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">РЎС‚СЂР°РЅРёС†Р° РРіСЂС‹ в–¶</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
+    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
-            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">×</div>
-            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
+            <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
-                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="window.filterLeaderboard()">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="window.filterLeaderboard()">
             </div>
             <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
@@ -292,7 +292,7 @@
         
         function getTierData(score) {
             const num = Number(score) || 0;
-            if (num === 0) return { letter: '—', color: '#6b7a62', glow: 'none' };
+            if (num === 0) return { letter: 'вЂ”', color: '#6b7a62', glow: 'none' };
             if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)' };
             if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)' };
             if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)' };
@@ -363,7 +363,7 @@
 
         function toggleSortDir() {
             currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
-            document.getElementById('sort-dir-btn').innerText = currentSortDir === 'desc' ? '↓' : '↑';
+            document.getElementById('sort-dir-btn').innerText = currentSortDir === 'desc' ? 'в†“' : 'в†‘';
             applyFiltersAndSort();
         }
 
@@ -409,14 +409,14 @@
                     const uInfo = getUserInfo(currentUser.login, currentUser.color);
                     
                     document.getElementById('nav-auth').innerHTML = `
-                        <div class="user-profile-neon" style="cursor: pointer;" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">
+                        <div class="user-profile-neon" style="cursor: pointer;" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
                             <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color};">
                                 <img src="${currentUser.profile_image_url}" class="user-avatar">
                             </div>
                             <div class="profile-info">
                                 <div class="profile-top">
                                     <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color};">${currentUser.display_name}</span>
-                                    <button class="logout-neon" onclick="event.stopPropagation(); logoutTwitch();" title="Выйти из аккаунта">Выйти</button>
+                                    <button class="logout-neon" onclick="event.stopPropagation(); logoutTwitch();" title="Р’С‹Р№С‚Рё РёР· Р°РєРєР°СѓРЅС‚Р°">Р’С‹Р№С‚Рё</button>
                                 </div>
                                 <div class="profile-bottom">
                                     ${uInfo.badge}
@@ -436,7 +436,7 @@
                     }
                     startOnlineHeartbeat();
                 }
-            } catch (e) { console.error('Ошибка авторизации', e); }
+            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
         }
 
         function startOnlineHeartbeat() {
@@ -455,7 +455,7 @@
             try {
                 const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
                 if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
-            } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
+            } catch(e) { console.warn("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±Р°Р·Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№", e); }
 
             await checkTwitchAuth();
 
@@ -471,7 +471,7 @@
                 window.globalCommData = commData; 
                 
                 const room = document.getElementById('trophy-room');
-                if (!data) { room.innerHTML = "<div class='loading'>База пуста.</div>"; return; }
+                if (!data) { room.innerHTML = "<div class='loading'>Р‘Р°Р·Р° РїСѓСЃС‚Р°.</div>"; return; }
                 
                 globalGames = []; 
 
@@ -550,14 +550,14 @@
                     scoresObj.me.avgTheory = getAvg(scoresObj.me.visuals + scoresObj.me.gameplay + scoresObj.me.sound + scoresObj.me.tech + scoresObj.me.atmosphere, 5);
 
                     const hours = info.hours || info.episodesTotal || '?';
-                    const status = info.status || 'Без статуса';
+                    const status = info.status || 'Р‘РµР· СЃС‚Р°С‚СѓСЃР°';
 
                     globalGames.push({
                         id: gameId, 
                         title: gameData.title || gameId.replace(/_/g, ' '), 
                         coverUrl: gameData.coverUrl || '',
                         hours: safeNum(hours), 
-                        badgeText: `${status} • ${hours} ч.`,
+                        badgeText: `${status} вЂў ${hours} С‡.`,
                         release_year: parseInt(info.year) || 0, 
                         az: (gameData.title || gameId).toLowerCase(),
                         tier: sc.tier || 'UNRANKED', 
@@ -592,7 +592,7 @@
             const needsRole = ['overall', 'avgTheory', 'visuals', 'gameplay', 'sound', 'tech', 'atmosphere'].includes(sortVal);
 
             let filtered = globalGames.filter(f => f.title.toLowerCase().includes(query));
-            const tierWeight = { 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'F': 1, 'UNRANKED': 0, '—': 0 };
+            const tierWeight = { 'S': 6, 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'F': 1, 'UNRANKED': 0, 'вЂ”': 0 };
 
             filtered.sort((a, b) => {
                 let valA, valB;
@@ -640,14 +640,14 @@
             room.innerHTML = "";
             
             if (arr.length === 0) { 
-                room.innerHTML = "<div class='loading'>Ничего не найдено...</div>"; 
+                room.innerHTML = "<div class='loading'>РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ...</div>"; 
                 return; 
             }
 
             const validKeys = ['overall', 'avgTheory', 'visuals', 'gameplay', 'sound', 'tech', 'atmosphere'];
             const scoreKey = validKeys.includes(sortVal) ? sortVal : 'overall';
-            const sortNames = { 'avgTheory': 'СРЕДНЕМУ КРИТЕРИЮ', 'visuals': 'ВИЗУАЛУ', 'gameplay': 'ГЕЙМПЛЕЮ', 'sound': 'ЗВУКУ', 'tech': 'ТЕХНИКЕ', 'atmosphere': 'АТМОСФЕРЕ' };
-            const labelHtml = scoreKey !== 'overall' ? `<div style="text-align: center; color: #829c73; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 1px 1px 2px #000;">ОЦЕНКА ПО ${sortNames[scoreKey]}</div>` : '';
+            const sortNames = { 'avgTheory': 'РЎР Р•Р”РќР•РњРЈ РљР РРўР•Р РР®', 'visuals': 'Р’РР—РЈРђР›РЈ', 'gameplay': 'Р“Р•Р™РњРџР›Р•Р®', 'sound': 'Р—Р’РЈРљРЈ', 'tech': 'РўР•РҐРќРРљР•', 'atmosphere': 'РђРўРњРћРЎР¤Р•Р Р•' };
+            const labelHtml = scoreKey !== 'overall' ? `<div style="text-align: center; color: #829c73; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 1px 1px 2px #000;">РћР¦Р•РќРљРђ РџРћ ${sortNames[scoreKey]}</div>` : '';
 
             arr.forEach((f, index) => {
                 const safeIdForLink = encodeURIComponent(f.id).replace(/'/g, "%27");
@@ -656,15 +656,15 @@
                 const safeCoverUrl = f.coverUrl.replace(/'/g, "\\'");
                 const s = f.scores;
 
-                // Проверяем наличие видео в базе данных
+                // РџСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РІРёРґРµРѕ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
                 const gameOriginalData = window.globalCommData ? window.globalCommData[f.id] : null;
-                // Ищем напрямую в сырой базе данных игр
+                // РС‰РµРј РЅР°РїСЂСЏРјСѓСЋ РІ СЃС‹СЂРѕР№ Р±Р°Р·Рµ РґР°РЅРЅС‹С… РёРіСЂ
                 fetch(`${FIREBASE_BASE}/games_db/${encodeURIComponent(f.id)}.json`).then(res => res.json()).then(dbGame => {
                      if (dbGame && (dbGame.videoUrl || (dbGame.videoUrls && dbGame.videoUrls.length > 0))) {
-                        // Ищем ВНУТРЕННЮЮ часть карточки, которая анимируется
+                        // РС‰РµРј Р’РќРЈРўР Р•РќРќР®Р® С‡Р°СЃС‚СЊ РєР°СЂС‚РѕС‡РєРё, РєРѕС‚РѕСЂР°СЏ Р°РЅРёРјРёСЂСѓРµС‚СЃСЏ
                         const cardFace = document.querySelector(`#card-${safeDomId} .card-face`);
                         if (cardFace) {
-                            // Создаем значок камеры (подстроенный под высоту статуса)
+                            // РЎРѕР·РґР°РµРј Р·РЅР°С‡РѕРє РєР°РјРµСЂС‹ (РїРѕРґСЃС‚СЂРѕРµРЅРЅС‹Р№ РїРѕРґ РІС‹СЃРѕС‚Сѓ СЃС‚Р°С‚СѓСЃР°)
                             const badgeHtml = `
                                 <div style="position: absolute; top: 8px; left: 8px; background: rgba(11, 13, 10, 0.6); backdrop-filter: blur(8px); border: 1px solid var(--card-border); border-radius: 6px; padding: 4px 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 15; transition: 0.5s;">
                                     <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: none; stroke: var(--theme-light, #c4d1b8); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z" /><rect x="3" y="6" width="12" height="12" rx="2" /></svg>
@@ -672,7 +672,7 @@
                             `;
                             cardFace.insertAdjacentHTML('beforeend', badgeHtml);
                             
-                            // Находим плашку статуса и сдвигаем её в правый угол
+                            // РќР°С…РѕРґРёРј РїР»Р°С€РєСѓ СЃС‚Р°С‚СѓСЃР° Рё СЃРґРІРёРіР°РµРј РµС‘ РІ РїСЂР°РІС‹Р№ СѓРіРѕР»
                             const statusBadge = cardFace.querySelector('.ep-badge');
                             if (statusBadge) {
                                 statusBadge.style.left = 'auto';
@@ -715,9 +715,9 @@
                     }
                 };
 
-                const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'Стример', valStr) : '';
-                const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Чат', valChat) : '';
-                const meBoxHtml = visRoles.me ? getBoxHtml('me', 'Я', valMe) : '';
+                const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'РЎС‚СЂРёРјРµСЂ', valStr) : '';
+                const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Р§Р°С‚', valChat) : '';
+                const meBoxHtml = visRoles.me ? getBoxHtml('me', 'РЇ', valMe) : '';
 
                 const cardHtml = `
                 <div class="card-container" id="card-${safeDomId}" data-cover="${safeCoverUrl}" onmouseenter="openHubPreview(${index})" onmouseleave="closeHubPreview()" onclick="window.location.href='${detailsLink}'" style="--card-color: #283325; --card-border: rgba(40, 51, 37, 0.8); --card-shadow: rgba(0,0,0,0.5); --card-shadow-hover: rgba(166, 227, 161, 0.25);">
@@ -849,11 +849,11 @@
                     </div>
                     <div style="color: #fff; font-size: 26px; font-weight: bold; text-shadow: ${numAvg > 0 ? getScoreShadow(numAvg, true) : 'none'}; margin-bottom: 5px; font-family: 'Neucha', cursive;">${numAvg > 0 ? numAvg : '-'}</div>
                     <div style="width: 100%; display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed rgba(74, 92, 65, 0.6); padding-top: 8px; margin-top: 5px;">
-                        ${row('Визуал', theory.visuals)}
-                        ${row('Геймплей', theory.gameplay)}
-                        ${row('Звук', theory.sound)}
-                        ${row('Техника', theory.tech)}
-                        ${row('Атмосфера', theory.atmosphere)}
+                        ${row('Р’РёР·СѓР°Р»', theory.visuals)}
+                        ${row('Р“РµР№РјРїР»РµР№', theory.gameplay)}
+                        ${row('Р—РІСѓРє', theory.sound)}
+                        ${row('РўРµС…РЅРёРєР°', theory.tech)}
+                        ${row('РђС‚РјРѕСЃС„РµСЂР°', theory.atmosphere)}
                     </div>
                 </div>
                 `;
@@ -861,9 +861,9 @@
 
             document.getElementById('hub-preview-theory').innerHTML = `
                 <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
-                    ${visRoles.streamer ? createStatCol('Стример', radarColors[0].border, s.streamer.avgTheory, s.streamer) : ''}
-                    ${visRoles.me ? createStatCol('Я', radarColors[2].border, s.me.avgTheory, s.me) : ''}
-                    ${visRoles.chat ? createStatCol('Чат', radarColors[1].border, s.chat.avgTheory, s.chat) : ''}
+                    ${visRoles.streamer ? createStatCol('РЎС‚СЂРёРјРµСЂ', radarColors[0].border, s.streamer.avgTheory, s.streamer) : ''}
+                    ${visRoles.me ? createStatCol('РЇ', radarColors[2].border, s.me.avgTheory, s.me) : ''}
+                    ${visRoles.chat ? createStatCol('Р§Р°С‚', radarColors[1].border, s.chat.avgTheory, s.chat) : ''}
                 </div>
             `;
 
@@ -880,7 +880,7 @@
             } else {
                 hubRadarChart = new Chart(ctx, {
                     type: 'radar',
-                    data: { labels: ['Визуал', 'Геймплей', 'Звук', 'Техника', 'Атмосфера'], datasets: datasets },
+                    data: { labels: ['Р’РёР·СѓР°Р»', 'Р“РµР№РјРїР»РµР№', 'Р—РІСѓРє', 'РўРµС…РЅРёРєР°', 'РђС‚РјРѕСЃС„РµСЂР°'], datasets: datasets },
                     options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' }, pointLabels: { font: { size: 11, weight: 'bold' }, color: '#c4d1b8' } } } }
                 });
             }
@@ -897,15 +897,15 @@
         window.SkinwalkerFirebaseStream.subscribe('games-data', `${FIREBASE_BASE}/games_db.json`, initApp);
         window.SkinwalkerFirebaseStream.subscribe('games-community', `${FIREBASE_BASE}/games_community_db.json`, initApp);
 
-        // --- ЛОГИКА ЗАЛА СЛАВЫ (ТОЛЬКО ИГРЫ - ЗАЩИЩЕННАЯ ВЕРСИЯ) ---
+        // --- Р›РћР“РРљРђ Р—РђР›Рђ РЎР›РђР’Р« (РўРћР›Р¬РљРћ РР“Р Р« - Р—РђР©РР©Р•РќРќРђРЇ Р’Р•Р РЎРРЇ) ---
         let lbAllUsers = [];
 
         window.openLeaderboard = async function() {
             try {
                 if (!window.globalCommData) {
                     const btn = document.querySelector('button[onclick="window.openLeaderboard()"]');
-                    const oldText = btn ? btn.innerText : 'Зрители';
-                    if (btn) btn.innerText = "Загрузка...";
+                    const oldText = btn ? btn.innerText : 'Р—СЂРёС‚РµР»Рё';
+                    if (btn) btn.innerText = "Р—Р°РіСЂСѓР·РєР°...";
                     
                     const gamesCommRes = await fetch(`${FIREBASE_BASE}/games_community_db.json`);
                     window.globalCommData = await gamesCommRes.json() || {};
@@ -950,8 +950,8 @@
                 if (modal) modal.style.display = 'flex';
                 
             } catch(e) {
-                console.error("Ошибка при сборке Зала Славы:", e);
-                alert("Ошибка сборки зрителей: " + e.message);
+                console.error("РћС€РёР±РєР° РїСЂРё СЃР±РѕСЂРєРµ Р—Р°Р»Р° РЎР»Р°РІС‹:", e);
+                alert("РћС€РёР±РєР° СЃР±РѕСЂРєРё Р·СЂРёС‚РµР»РµР№: " + e.message);
             }
         };
 
@@ -961,7 +961,7 @@
             
             listEl.innerHTML = '';
             if (usersArray.length === 0) {
-                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">Никого не найдено.</div>'; 
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>'; 
                 return;
             }
             
@@ -970,9 +970,9 @@
                 const rank = originalIndex + 1;
                 
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = '👑'; }
-                else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
-                else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
 
                 const safeName = (u.name || '').toString().toLowerCase();
                 const dbUser = window.globalUsersDB ? window.globalUsersDB[safeName] : null;
@@ -980,8 +980,8 @@
                 const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
                 const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
                 const statusDot = isOnline 
-                    ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">В сети</span>' 
-                    : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">Не в сети</span>';
+                    ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' 
+                    : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
 
                 const html = `
                 <a href="profile.html?user=${u.id}" class="lb-item">
@@ -995,7 +995,7 @@
                     </div>
                     <div class="lb-stats">
                         <div class="lb-count">${u.count}</div>
-                        <div class="lb-count-label">оценок</div>
+                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
                     </div>
                 </a>`;
                 listEl.insertAdjacentHTML('beforeend', html);

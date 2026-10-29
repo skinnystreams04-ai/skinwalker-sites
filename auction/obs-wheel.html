@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>OBS Аукцион Рулетка</title>
+    <title>OBS РђСѓРєС†РёРѕРЅ Р СѓР»РµС‚РєР°</title>
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; overflow: hidden; background: transparent; font-family: 'Neucha', cursive; }
@@ -11,7 +11,7 @@
         .wheel-overlay.active { opacity: 1; }
         
         .wheel-scale-box { position: relative; width: 500px; height: 500px; transform: scale(0.1); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .wheel-overlay.active .wheel-scale-box { transform: scale(1.4); } /* Крупно для OBS */
+        .wheel-overlay.active .wheel-scale-box { transform: scale(1.4); } /* РљСЂСѓРїРЅРѕ РґР»СЏ OBS */
         
         #wheel-canvas { position: absolute; width: 475px; height: 475px; top: 12.5px; left: 12.5px; border-radius: 50%; background-image: url('../icons/wheel/Wheel_Base.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 1; }
         #wheel-frame { position: absolute; width: 500px; height: 500px; top: 0; left: 0; background-image: url('../icons/wheel/Frame_Free.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: 5; }
@@ -28,7 +28,7 @@
 
     <div class="wheel-overlay" id="wheel-modal">
         <div class="wheel-scale-box"><canvas id="wheel-canvas" width="800" height="800"></canvas><div id="wheel-frame"></div></div>
-        <div class="wheel-result" id="wheel-result"><div class="res-user" id="res-user">КРУТИТ: ЗРИТЕЛЬ</div><div class="res-text" id="res-text">Награда!</div></div>
+        <div class="wheel-result" id="wheel-result"><div class="res-user" id="res-user">РљР РЈРўРРў: Р—Р РРўР•Р›Р¬</div><div class="res-text" id="res-text">РќР°РіСЂР°РґР°!</div></div>
     </div>
 
     <script>
@@ -36,7 +36,7 @@
         const configUrl = "https://skinwalkerauction-default-rtdb.europe-west1.firebasedatabase.app/auction_config.json";
 
         let currentConfig = null;
-        let spinQueue = []; // 🔥 ТА САМАЯ ОЧЕРЕДЬ 🔥
+        let spinQueue = []; // рџ”Ґ РўРђ РЎРђРњРђРЇ РћР§Р•Р Р•Р”Р¬ рџ”Ґ
         let isSpinning = false;
         let lastProcessedSpinTime = 0;
         let isFirstLoad = true;
@@ -86,13 +86,13 @@
                     if (isFirstLoad) { lastProcessedSpinTime = spinData.timestamp; isFirstLoad = false; } 
                     else if (spinData.timestamp > lastProcessedSpinTime) { 
                         lastProcessedSpinTime = spinData.timestamp; 
-                        spinQueue.push(spinData); // ДОБАВЛЯЕМ В ОЧЕРЕДЬ!
+                        spinQueue.push(spinData); // Р”РћР‘РђР’Р›РЇР•Рњ Р’ РћР§Р•Р Р•Р”Р¬!
                     }
                 } else { isFirstLoad = false; }
-            } catch (error) { console.error('Ошибка загрузки OBS-колеса:', error); }
+            } catch (error) { console.error('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё OBS-РєРѕР»РµСЃР°:', error); }
         }
         
-        // Используем Firebase stream; редкий запрос остаётся резервом при сбое событий.
+        // РСЃРїРѕР»СЊР·СѓРµРј Firebase stream; СЂРµРґРєРёР№ Р·Р°РїСЂРѕСЃ РѕСЃС‚Р°С‘С‚СЃСЏ СЂРµР·РµСЂРІРѕРј РїСЂРё СЃР±РѕРµ СЃРѕР±С‹С‚РёР№.
         async function fetchLoop() {
             await fetchFromCloud();
             startFirebaseStreams();
@@ -101,10 +101,10 @@
         }
         fetchLoop();
 
-        // Процессор очереди (проверяет каждые полсекунды)
+        // РџСЂРѕС†РµСЃСЃРѕСЂ РѕС‡РµСЂРµРґРё (РїСЂРѕРІРµСЂСЏРµС‚ РєР°Р¶РґС‹Рµ РїРѕР»СЃРµРєСѓРЅРґС‹)
         setInterval(() => {
             if (!isSpinning && spinQueue.length > 0) {
-                const nextSpin = spinQueue.shift(); // Берем первого из очереди
+                const nextSpin = spinQueue.shift(); // Р‘РµСЂРµРј РїРµСЂРІРѕРіРѕ РёР· РѕС‡РµСЂРµРґРё
                 startWheelAnimation(nextSpin);
             }
         }, 500);
@@ -164,7 +164,7 @@
                 if (!startTime) startTime = timestamp; const progress = Math.min((timestamp - startTime) / duration, 1);
                 canvas.style.transform = `scale(1) rotate(${absoluteFinalAngle * easeOut(progress)}rad)`;
                 if (progress < 1) { requestAnimationFrame(animateWheel); } else {
-                    document.getElementById('res-user').innerText = `КРУТИТ: ${spinData.user}`; 
+                    document.getElementById('res-user').innerText = `РљР РЈРўРРў: ${spinData.user}`; 
                     document.getElementById('res-text').innerText = `${targetItem.name}`;
                     
                     const targetWeight = Number(targetItem.weight) || 1;
@@ -177,10 +177,10 @@
 
                     resultBox.classList.add('show');
                     
-                    // Убираем колесо и даем паузу перед следующим
+                    // РЈР±РёСЂР°РµРј РєРѕР»РµСЃРѕ Рё РґР°РµРј РїР°СѓР·Сѓ РїРµСЂРµРґ СЃР»РµРґСѓСЋС‰РёРј
                     setTimeout(() => { 
                         overlay.classList.remove('active'); 
-                        setTimeout(() => { isSpinning = false; }, 600); // 0.6 сек на исчезновение
+                        setTimeout(() => { isSpinning = false; }, 600); // 0.6 СЃРµРє РЅР° РёСЃС‡РµР·РЅРѕРІРµРЅРёРµ
                     }, 4000); 
                 }
             }
