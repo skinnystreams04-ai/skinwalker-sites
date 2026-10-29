@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Р”РµС‚Р°Р»Рё РђРЅРёРјРµ</title>
+    <title>Детали Аниме</title>
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/site-header.css">
     <script src="../shared/site-header.js" defer></script>
@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 
-    <style> /* <--- РџР РћРџРЈР©Р•Рќ РРњР•РќРќРћ Р­РўРћРў РўР•Р“ */
+    <style> /* <--- ПРОПУЩЕН ИМЕННО ЭТОТ ТЕГ */
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #0b0d0a; border-left: 1px solid #283325; }
@@ -19,16 +19,16 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--theme-primary, #a6e3a1); box-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); }
 
     :root {
-    --theme-primary: #a6e3a1; /* Р‘Р°Р·РѕРІС‹Р№ С†РІРµС‚ С‚РµРєСЃС‚Р° */
-    --theme-glow: rgba(166, 227, 161, 0.2); /* РЎРІРµС‡РµРЅРёРµ */
-    /* РќРѕРІС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ СЃР°РјРёС… РїР°РЅРµР»РµР№ (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ С‚РµРјРЅС‹Рµ) */
+    --theme-primary: #a6e3a1; /* Базовый цвет текста */
+    --theme-glow: rgba(166, 227, 161, 0.2); /* Свечение */
+    /* Новые переменные для самих панелей (по умолчанию темные) */
     --theme-panel-bg-top: #101411;
     --theme-panel-bg-bottom: #080a08;
     --theme-panel-header: #0b0d0a;
     --theme-panel-border: #283325;
 }
 
-       /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+       /* ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ (ЛОГОТИП) */
         .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
         .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
         .nav-logo-wrap:hover { filter: brightness(1.2); }
@@ -99,11 +99,11 @@
         .season-btn { background: rgba(0,0,0,0.4); border: 1px solid #4a5c41; color: #a4b09c; padding: 6px 16px; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .season-btn:hover { background: #161a15; color: #c4d1b8; border-color: #829c73; }
         .season-btn.active { background: var(--theme-glow); border-color: var(--theme-primary); color: var(--theme-primary); box-shadow: 0 0 10px var(--theme-glow); }
-        /* РќР°СЃС‚СЂРѕР№РєРё СѓРјРЅРѕРіРѕ РїР»РµРµСЂР° */
+        /* Настройки умного плеера */
         .plyr { border-radius: 6px; border: 1px solid var(--theme-panel-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); --plyr-color-main: var(--theme-primary); font-family: 'Neucha', cursive; }
         .plyr__video-wrapper { background: #000; aspect-ratio: 16 / 9; }
         
-        /* РЎРўР•РљР›РЇРќРќР«Р• РџР›РђРЁРљР РћР¦Р•РќРћРљ */
+        /* СТЕКЛЯННЫЕ ПЛАШКИ ОЦЕНОК */
         .scores-row { display: flex; justify-content: space-between; align-items: stretch; gap: 10px; }
         .score-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 5px; border-radius: 8px; flex: 1; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; transition: 0.3s; }
         .score-box:hover { transform: translateY(-3px); filter: brightness(1.2); }
@@ -133,7 +133,7 @@
         .send-btn { align-self: flex-end; background: #1a2618; border: 1px solid var(--theme-primary); color: var(--theme-primary); padding: 10px 30px; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;}
         .send-btn:hover { background: var(--theme-primary); color: #0b0d0a; box-shadow: 0 0 15px var(--theme-glow); }
         
-        /* РЎРўР РћР“РР• РљРћРњРњР•РќРўРђР РР РЎ Р¦Р’Р•РўРќР«Рњ РўР•РљРЎРўРћРњ */
+        /* СТРОГИЕ КОММЕНТАРИИ С ЦВЕТНЫМ ТЕКСТОМ */
         .comments-list { display: flex; flex-direction: column; gap: 25px; }
         .comment-wrapper { display: flex; flex-direction: column; gap: 15px; }
         
@@ -186,7 +186,7 @@
         .replies-list { display: flex; flex-direction: column; gap: 15px; margin-left: 40px; border-left: 2px solid #283325; padding-left: 20px; display: none; }
         .reply-input-wrapper { display: none; margin-left: 40px; margin-top: 5px; flex-direction: column; gap: 10px; }
 
-        /* РњРћР”РђР›Р¬РќР«Р• РћРљРќРђ Р UI */
+        /* МОДАЛЬНЫЕ ОКНА И UI */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-box { background: linear-gradient(180deg, var(--theme-panel-bg-top) 0%, var(--theme-panel-bg-bottom) 100%); border: 2px solid var(--theme-primary); border-radius: 12px; padding: 30px; width: 750px; box-shadow: 0 0 30px var(--theme-glow); position: relative; transition: background 0.5s, border-color 0.5s, box-shadow 0.5s; }
         .modal-title { color: var(--theme-primary); font-size: 24px; text-transform: uppercase; margin: 0 0 20px 0; text-align: center; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 10px var(--theme-glow); transition: 0.5s; }
@@ -209,18 +209,18 @@
         #toast.show { transform: translateY(0); opacity: 1; }
         #toast.error { background: #ff5555; color: white; box-shadow: 0 5px 20px rgba(255, 85, 85, 0.4); }
         
-        /* РљРќРћРџРљР Р’ РЁРђРџРљР• */
+        /* КНОПКИ В ШАПКЕ */
         .nav-btn { background: transparent; border: none; color: #a4b09c; padding: 5px 0; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; position: relative; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; outline: none; }
         .nav-btn::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: var(--btn-color, #a6e3a1); transition: 0.3s; transform: translateX(-50%); box-shadow: 0 0 8px var(--btn-color, #a6e3a1); }
         .nav-btn:hover { color: var(--btn-color, #a6e3a1); text-shadow: 0 0 10px var(--btn-color, #a6e3a1); }
         .nav-btn:hover::after { width: 100%; }
 
-        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ */
+        /* ВЫПАДАЮЩЕЕ МЕНЮ ВИЗУАЛА */
         .visual-dropdown { position: relative; display: inline-block; }
         .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid #4a5c41; border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
         .visual-dropdown.show .visual-dropdown-content { display: flex; }
 
-        /* РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р Р’ РњР•РќР® */
+        /* ПЕРЕКЛЮЧАТЕЛИ В МЕНЮ */
         .mode-toggle { display: flex; align-items: center; gap: 10px; font-family: 'Neucha', cursive; font-size: 18px; }
         .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -239,7 +239,7 @@
         .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
         .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
 
-        /* Р—РђР› РЎР›РђР’Р« (РљР РђРЎРР’Р«Р™ Р”РР—РђР™Рќ) */
+        /* ЗАЛ СЛАВЫ (КРАСИВЫЙ ДИЗАЙН) */
         .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
         .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: inherit; }
@@ -264,39 +264,39 @@
 </head>
 <body>
 
-    <div class="loading-screen" id="loading-screen">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
-    <div id="toast">вњ… РћС†РµРЅРєР° СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°!</div>
+    <div class="loading-screen" id="loading-screen">Загрузка данных...</div>
+    <div id="toast">✅ Оценка успешно сохранена!</div>
 
     <nav class="top-nav">
         <div style="display: flex; align-items: center; gap: 50px;">
             
-            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <!-- ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ -->
             <div class="logo-dropdown">
                 <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
                 <div class="logo-dropdown-content">
-                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР° РЅР° С‚РµРєСѓС‰СѓСЋ РїР°РїРєСѓ РђРЅРёРјРµ -->
+                    <!-- Относительная ссылка на текущую папку Аниме -->
                     <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;">
                         <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
                     </a>
-                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР°: РІС‹Р№С‚Рё РЅР°Р·Р°Рґ (../) Рё Р·Р°Р№С‚Рё РІ РїР°РїРєСѓ Game -->
+                    <!-- Относительная ссылка: выйти назад (../) и зайти в папку Game -->
                     <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;">
-                        <span style="font-size: 14px;">в–¶</span> РРіСЂС‹
+                        <span style="font-size: 14px;">▶</span> Игры
                     </a>
                 </div>
             </div>
             
-            <!-- Р›РћРљРђР›Р¬РќРћР• РњР•РќР® (РўРѕР»СЊРєРѕ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃР°Р№С‚Р°) -->
+            <!-- ЛОКАЛЬНОЕ МЕНЮ (Только для текущего сайта) -->
             <div style="display: flex; gap: 25px; align-items: center;">
-                <!-- РЈР‘Р РђР›Р Р—РћР›РћРўРћР• РЎР’Р•Р§Р•РќРР• РЈ РҐРђР‘Рђ -->
-                <a href="index.html" class="nav-btn" style="--btn-color: #ffd700;">РҐР°Р±</a>
-                <a href="tierlist.html" class="nav-btn" style="--btn-color: #ff4a4a;">РўРёСЂ-Р»РёСЃС‚</a>
+                <!-- УБРАЛИ ЗОЛОТОЕ СВЕЧЕНИЕ У ХАБА -->
+                <a href="index.html" class="nav-btn" style="--btn-color: #ffd700;">Хаб</a>
+                <a href="tierlist.html" class="nav-btn" style="--btn-color: #ff4a4a;">Тир-лист</a>
                 
-                <button onclick="window.openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                <button onclick="window.openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Зрители</button>
                 
                 <div class="visual-dropdown" id="visual-dropdown">
-                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Визуал</button>
                     <div class="visual-dropdown-content">
-                        <!-- Р”РћР‘РђР’РР›Р Р’Р«Р РђР’РќРР’РђРќРР• РџРћ Р¦Р•РќРўР РЈ -->
+                        <!-- ДОБАВИЛИ ВЫРАВНИВАНИЕ ПО ЦЕНТРУ -->
                         <div class="mode-toggle" style="margin: 0; justify-content: center;">
                             <span id="label-score" class="mode-label inactive" onclick="document.getElementById('display-mode-switch').click()">123</span>
                             <label class="switch">
@@ -307,9 +307,9 @@
                         </div>
                         <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
-                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
                             <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
-                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Р§Р°С‚</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
                         </div>
                     </div>
                 </div>
@@ -317,7 +317,7 @@
         </div>
         
         <div class="nav-auth" id="nav-auth">
-            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+            <button class="twitch-btn" onclick="loginTwitch()">Войти через Twitch</button>
         </div>
     </nav>
 
@@ -325,24 +325,24 @@
         
         <div class="col-left">
             <div class="widget-base" style="height: 100%;">
-                <div class="widget-header"><div class="widget-title">РРЅС„РѕСЂРјР°С†РёСЏ</div></div>
+                <div class="widget-header"><div class="widget-title">Информация</div></div>
                 <div class="widget-content">
                     <img id="cover-img" src="" class="cover-img">
-                    <div style="font-size: 24px; color: #c4d1b8; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 10px;" id="title-display">РќР°Р·РІР°РЅРёРµ</div>
+                    <div style="font-size: 24px; color: #c4d1b8; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 10px;" id="title-display">Название</div>
                     <div class="genre-badges" id="genres-display"></div>
-                    <div class="info-row"><span class="info-label">РЎС‚СѓРґРёСЏ:</span><span class="info-val" id="studio-display">---</span></div>
-                    <div class="info-row"><span class="info-label">Р¤РѕСЂРјР°С‚:</span><span class="info-val" id="format-display">---</span></div>
-                    <div class="info-row"><span class="info-label">Р РµР№С‚РёРЅРі:</span><span class="info-val" id="rating-display">---</span></div>
-                    <div class="info-row"><span class="info-label">Р“РѕРґ:</span><span class="info-val" id="year-display">---</span></div>
-                    <div class="info-row"><span class="info-label">РџСЂРѕСЃРјРѕС‚СЂРµРЅРѕ:</span><span class="info-val" id="ep-display">--- / ---</span></div>
-                    <div class="info-row"><span class="info-label">Р”Р°С‚Р° РїСЂРѕСЃРјРѕС‚СЂР°:</span><span class="info-val" id="date-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Студия:</span><span class="info-val" id="studio-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Формат:</span><span class="info-val" id="format-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Рейтинг:</span><span class="info-val" id="rating-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Год:</span><span class="info-val" id="year-display">---</span></div>
+                    <div class="info-row"><span class="info-label">Просмотрено:</span><span class="info-val" id="ep-display">--- / ---</span></div>
+                    <div class="info-row"><span class="info-label">Дата просмотра:</span><span class="info-val" id="date-display">---</span></div>
                 </div>
             </div>
         </div>
 
         <div class="col-center">
             <div class="widget-base">
-                <div class="widget-header"><div class="widget-title">РњРµРґРёР°С‚РµРєР°</div></div>
+                <div class="widget-header"><div class="widget-title">Медиатека</div></div>
                 <div class="widget-content">
                     <div class="player-nav">
     <div class="season-tabs" id="season-tabs-container"></div>
@@ -355,21 +355,21 @@
             </div>
 
             <div class="widget-base">
-                <div class="widget-header"><div class="widget-title">РћРїРёСЃР°РЅРёРµ СЃСЋР¶РµС‚Р°</div></div>
+                <div class="widget-header"><div class="widget-title">Описание сюжета</div></div>
                 <div class="widget-content">
-                    <div class="synopsis-text" id="synopsis-display">Р—Р°РіСЂСѓР·РєР°...</div>
+                    <div class="synopsis-text" id="synopsis-display">Загрузка...</div>
                 </div>
             </div>
 
             <div class="widget-base" style="flex: 1;">
-                <div class="widget-header"><div class="widget-title">РљРѕРјРјРµРЅС‚Р°СЂРёРё</div></div>
+                <div class="widget-header"><div class="widget-title">Комментарии</div></div>
                 <div class="widget-content" style="padding: 25px;">
                     <div class="comment-input-area" id="main-comment-area">
-                        <textarea id="comment-text" class="comment-textarea" placeholder="РќР°РїРёС€Рё СЃРІРѕСЋ СЂРµС†РµРЅР·РёСЋ РЅР° СЌС‚РѕС‚ СЃРµР·РѕРЅ..."></textarea>
-                        <button class="send-btn" id="send-comment-btn" onclick="postComment()">РћС‚РїСЂР°РІРёС‚СЊ</button>
+                        <textarea id="comment-text" class="comment-textarea" placeholder="Напиши свою рецензию на этот сезон..."></textarea>
+                        <button class="send-btn" id="send-comment-btn" onclick="postComment()">Отправить</button>
                     </div>
                     <div class="comments-list" id="comments-list">
-                        <div style="color: #6b7a62; text-align: center; padding: 20px;">Р—Р°РіСЂСѓР·РєР° РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ...</div>
+                        <div style="color: #6b7a62; text-align: center; padding: 20px;">Загрузка комментариев...</div>
                     </div>
                 </div>
             </div>
@@ -377,14 +377,14 @@
 
         <div class="col-right">
             <div class="widget-base" style="height: 100%;">
-                <div class="widget-header"><div class="widget-title">РЎС‚Р°С‚РёСЃС‚РёРєР°</div></div>
+                <div class="widget-header"><div class="widget-title">Статистика</div></div>
                 <div class="widget-content" style="display: flex; flex-direction: column;">
                     
-                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 10px; text-align: center; font-weight: bold; letter-spacing: 1px;">РС‚РѕРіРѕРІР°СЏ РѕС†РµРЅРєР°</div>
+                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 10px; text-align: center; font-weight: bold; letter-spacing: 1px;">Итоговая оценка</div>
                     
                     <div class="scores-row">
                         <div class="score-box streamer-element" id="box-streamer" onmouseover="highlightChart(0)" onmouseout="resetChart()">
-                            <div class="score-label streamer" id="label-streamer">РЎС‚СЂРёРјРµСЂ</div>
+                            <div class="score-label streamer" id="label-streamer">Стример</div>
                             <div class="main-score" id="streamer-score-val">0<span> / 10</span></div>
                         </div>
                         <div class="score-box me-element" id="box-me" onmouseover="highlightChart(2)" onmouseout="resetChart()">
@@ -392,20 +392,20 @@
                             <div class="main-score" id="my-score-display">0<span> / 10</span></div>
                         </div>
                         <div class="score-box chat-element" id="box-chat" onmouseover="highlightChart(1)" onmouseout="resetChart()">
-                            <div class="score-label chat" id="label-chat">Р§Р°С‚</div>
+                            <div class="score-label chat" id="label-chat">Чат</div>
                             <div class="main-score" id="chat-score-val">0<span> / 10</span></div>
                         </div>
                     </div>
 
                     <div style="border-top: 1px dashed #283325; margin: 5px 0 15px 0;"></div>
 
-                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 15px; text-align: center; font-weight: bold; letter-spacing: 1px;">РђРЅР°Р»РёР· РєСЂРёС‚РµСЂРёРµРІ</div>
+                    <div style="color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); font-size: 16px; text-transform: uppercase; margin-bottom: 15px; text-align: center; font-weight: bold; letter-spacing: 1px;">Анализ критериев</div>
                     
                     <div class="chart-wrapper"><canvas id="detailsChart"></canvas></div>
                     
                     <div class="interactive-legend">
                         <div class="legend-col streamer-element" id="legend-box-streamer" onmouseover="highlightChart(0)" onmouseout="resetChart()">
-                            <div class="legend-title" id="legend-label-streamer"><div class="dot" id="dot-streamer"></div>РЎС‚СЂРёРјРµСЂ</div>
+                            <div class="legend-title" id="legend-label-streamer"><div class="dot" id="dot-streamer"></div>Стример</div>
                             <div class="legend-score" id="avg-streamer-score">0</div>
                             <div class="legend-breakdown" id="breakdown-streamer"></div>
                         </div>
@@ -415,44 +415,44 @@
                             <div class="legend-breakdown" id="breakdown-viewer"></div>
                         </div>
                         <div class="legend-col chat-element" id="legend-box-chat" onmouseover="highlightChart(1)" onmouseout="resetChart()">
-                            <div class="legend-title" id="legend-label-chat"><div class="dot" id="dot-chat"></div>Р§Р°С‚</div>
+                            <div class="legend-title" id="legend-label-chat"><div class="dot" id="dot-chat"></div>Чат</div>
                             <div class="legend-score" id="avg-chat-score">0</div>
                             <div class="legend-breakdown" id="breakdown-chat"></div>
                         </div>
                     </div>
 
-                    <button class="rate-btn" id="rate-title-btn" onclick="openRatingModal()">РћС†РµРЅРёС‚СЊ С‚Р°Р№С‚Р»</button>
+                    <button class="rate-btn" id="rate-title-btn" onclick="openRatingModal()">Оценить тайтл</button>
 
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- РњРћР”РђР›Р¬РќРћР• РћРљРќРћ РћР¦Р•РќРљР -->
+    <!-- МОДАЛЬНОЕ ОКНО ОЦЕНКИ -->
     <div id="rating-modal" class="modal-overlay" style="display: none;">
         <div class="modal-box">
             <div class="close-btn" onclick="closeRatingModal()">Г—</div>
-            <h2 class="modal-title">Р’С‹СЃС‚Р°РІРёС‚СЊ РѕС†РµРЅРєСѓ</h2>
+            <h2 class="modal-title">Выставить оценку</h2>
             
             <div class="modal-content-wrapper">
                 <div class="modal-sliders">
                     <div class="slider-group" style="margin-bottom: 25px;">
                         <div class="slider-header" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--theme-primary); font-size: 18px; text-transform: uppercase;">РС‚РѕРіРѕРІР°СЏ РѕС†РµРЅРєР°</span>
+                            <span style="color: var(--theme-primary); font-size: 18px; text-transform: uppercase;">Итоговая оценка</span>
                             <div style="display: flex; align-items: center; gap: 15px;">
-                                <span id="m-overall-tier" style="font-size: 32px; font-weight: bold; font-family: 'Neucha', cursive; text-shadow: none; color: #6b7a62;">вЂ”</span>
+                                <span id="m-overall-tier" style="font-size: 32px; font-weight: bold; font-family: 'Neucha', cursive; text-shadow: none; color: #6b7a62;">—</span>
                                 <span id="m-overall" style="color: #fff; font-size: 26px; font-weight: bold;">0.0</span>
                             </div>
                         </div>
                         <input type="range" id="modal-overall" min="0" max="10" step="0.1" value="0" oninput="updateOverallSlider(this.value)">
                     </div>
 
-                    <label style="margin-top: 15px; border-top: 1px dashed #283325; padding-top: 15px;">РћС†РµРЅРєР° РїРѕ РєСЂРёС‚РµСЂРёСЏРј:</label>
-                    <div class="slider-group"><div class="slider-header"><span>РЎСЋР¶РµС‚</span><span id="m-plot">5.0</span></div><input type="range" id="msl-plot" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-plot').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
-                    <div class="slider-group"><div class="slider-header"><span>Р’РёР·СѓР°Р»</span><span id="m-vis">5.0</span></div><input type="range" id="msl-vis" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-vis').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
-                    <div class="slider-group"><div class="slider-header"><span>РњСѓР·С‹РєР°</span><span id="m-mus">5.0</span></div><input type="range" id="msl-mus" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-mus').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <label style="margin-top: 15px; border-top: 1px dashed #283325; padding-top: 15px;">Оценка по критериям:</label>
+                    <div class="slider-group"><div class="slider-header"><span>Сюжет</span><span id="m-plot">5.0</span></div><input type="range" id="msl-plot" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-plot').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>Визуал</span><span id="m-vis">5.0</span></div><input type="range" id="msl-vis" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-vis').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>Музыка</span><span id="m-mus">5.0</span></div><input type="range" id="msl-mus" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-mus').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
                     <div class="slider-group"><div class="slider-header"><span>РњРёСЂ</span><span id="m-wor">5.0</span></div><input type="range" id="msl-wor" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-wor').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
-                    <div class="slider-group"><div class="slider-header"><span>РџРµСЂСЃРѕРЅР°Р¶Рё</span><span id="m-atm">5.0</span></div><input type="range" id="msl-atm" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-atm').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
+                    <div class="slider-group"><div class="slider-header"><span>Персонажи</span><span id="m-atm">5.0</span></div><input type="range" id="msl-atm" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('m-atm').innerText=parseFloat(this.value).toFixed(1); syncModalChart();"></div>
                 </div>
 
                 <div class="modal-chart-area">
@@ -460,17 +460,17 @@
                 </div>
             </div>
 
-            <button class="rate-btn" id="save-rate-btn" onclick="saveUserRating()">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+            <button class="rate-btn" id="save-rate-btn" onclick="saveUserRating()">Сохранить</button>
         </div>
     </div>
 
-    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
+    <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box">
             <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
-            <div class="leaderboard-header">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div class="leaderboard-header">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
-                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="window.filterLeaderboard()">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="window.filterLeaderboard()">
             </div>
             <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
@@ -511,7 +511,7 @@
             document.getElementById('label-score').className = currentDisplayMode === 'score' ? 'mode-label active' : 'mode-label inactive';
             document.getElementById('label-score').style.color = currentDisplayMode === 'score' ? '#a6e3a1' : '';
             
-            applyPageVisuals(); // Р­РўРЈ Р¤РЈРќРљР¦РР® РњР« РќРђРџРРЁР•Рњ РќРР–Р•
+            applyPageVisuals(); // ЭТУ ФУНКЦИЮ МЫ НАПИШЕМ НИЖЕ
         }
 
         function toggleRoleVis(role) {
@@ -557,11 +557,11 @@
                 }
             };
 
-            renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamer, 'РЎС‚СЂРёРјРµСЂ');
-            renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Р§Р°С‚');
+            renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamer, 'Стример');
+            renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Чат');
             renderBox('box-me', 'label-me', 'my-score-display', window.pageScores.me, 'РњРѕСЏ');
 
-            // РџР РЇР§Р•Рњ РџР›РђРЁРљР РџРћРЎР›Р• Р Р•РќР”Р•Р Рђ
+            // ПРЯЧЕМ ПЛАШКИ ПОСЛЕ РЕНДЕРА
             document.getElementById('box-streamer').style.display = visRoles.streamer ? 'flex' : 'none';
             document.getElementById('legend-box-streamer').style.display = visRoles.streamer ? 'flex' : 'none';
             document.getElementById('box-chat').style.display = visRoles.chat ? 'flex' : 'none';
@@ -570,7 +570,7 @@
             document.getElementById('legend-box-me').style.display = showMe ? 'flex' : 'none';
         }
 
-        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїР»РµРµСЂР° Plyr
+        // Инициализация плеера Plyr
 
         window.globalUsersDB = {};
 
@@ -657,18 +657,18 @@
 
         function getTierData(score) {
             const num = Number(score) || 0;
-            if (num === 0) return { letter: 'вЂ”', color: '#6b7a62', glow: 'none', label: 'РќРµ СЃРјРѕС‚СЂРµР» / Р‘РµР· РѕС†РµРЅРєРё' };
-            // РўРµРјРЅРѕ-РєСЂР°СЃРЅС‹Р№
-            if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)', label: 'РЁРµРґРµРІСЂ' };
-            // Р—РѕР»РѕС‚РѕР№
-            if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)', label: 'РћС‚Р»РёС‡РЅРѕ' };
-            // Р¤РёРѕР»РµС‚РѕРІС‹Р№
-            if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)', label: 'РҐРѕСЂРѕС€Рѕ' };
+            if (num === 0) return { letter: '—', color: '#6b7a62', glow: 'none', label: 'Не смотрел / Без оценки' };
+            // Темно-красный
+            if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)', label: 'Шедевр' };
+            // Золотой
+            if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)', label: 'Отлично' };
+            // Фиолетовый
+            if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)', label: 'Хорошо' };
             // РЎРёРЅРёР№
-            if (num >= 5.0) return { letter: 'C', color: '#89b4fa', glow: '0 0 15px rgba(137, 180, 250, 0.8)', label: 'РќРѕСЂРјР°Р»СЊРЅРѕ' };
-            // Р—РµР»РµРЅС‹Р№
-            if (num >= 3.0) return { letter: 'D', color: '#a6e3a1', glow: '0 0 15px rgba(166, 227, 161, 0.8)', label: 'РЎР»Р°Р±Рѕ' };
-            // РЎРµСЂС‹Р№
+            if (num >= 5.0) return { letter: 'C', color: '#89b4fa', glow: '0 0 15px rgba(137, 180, 250, 0.8)', label: 'Нормально' };
+            // Зеленый
+            if (num >= 3.0) return { letter: 'D', color: '#a6e3a1', glow: '0 0 15px rgba(166, 227, 161, 0.8)', label: 'Слабо' };
+            // Серый
             return { letter: 'F', color: '#888888', glow: '0 0 15px rgba(136, 136, 136, 0.8)', label: 'РњСѓСЃРѕСЂ' };
         }
 
@@ -730,49 +730,49 @@
                     
                     const uInfo = getUserInfo(currentUser.login, currentUser.color);
 
-                    // --- РџР РћР’Р•Р РљРђ РќРђ Р¤РћР›Р›РћРЈ ---
+                    // --- ПРОВЕРКА НА ФОЛЛОУ ---
                     let isFollower = false;
                     try {
                         const bRes = await fetch(`https://api.twitch.tv/helix/users?login=${ADMIN_USERNAME}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
                         const broadcasterId = (await bRes.json()).data[0].id;
 
                         if (currentUser.id === broadcasterId) {
-                            isFollower = true; // РЎС‚СЂРёРјРµСЂСѓ РјРѕР¶РЅРѕ РІСЃС‘
+                            isFollower = true; // Стримеру можно всё
                         } else {
                             const fRes = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${currentUser.id}&broadcaster_id=${broadcasterId}`, { headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` } });
                             
-                            // Р•СЃР»Рё Сѓ СЋР·РµСЂР° СЃС‚Р°СЂС‹Р№ С‚РѕРєРµРЅ Р±РµР· РЅРѕРІС‹С… РїСЂР°РІ - РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕ СЂР°Р·Р»РѕРіРёРЅРёРІР°РµРј РµРіРѕ
+                            // Если у юзера старый токен без новых прав - принудительно разлогиниваем его
                             if (fRes.status === 401 || fRes.status === 403) { logoutTwitch(); return; }
                             
                             const fData = await fRes.json();
                             if (fData.data && fData.data.length > 0) isFollower = true;
                         }
-                    } catch(e) { console.warn("РћС€РёР±РєР° РїСЂРѕРІРµСЂРєРё С„РѕР»Р»РѕСѓРІР°:", e); }
+                    } catch(e) { console.warn("Ошибка проверки фоллоува:", e); }
                     
                     window.isUserFollower = isFollower;
 
-                    // Р‘Р»РѕРєРёСЂСѓРµРј РєРЅРѕРїРєРё РґР»СЏ Р»РµРІС‹С… С‚РёРїРѕРІ
+                    // Блокируем кнопки для левых типов
                     if (!isFollower) {
                         setTimeout(() => {
                             const rateBtn = document.querySelector('button[onclick*="openRatingModal"]');
-                            if (rateBtn) { rateBtn.innerText = "Р¤РћР›Р›РћР’Р•Р Р« (РћР‘РќРћР’Р РЎРўР РђРќРР¦РЈ)"; rateBtn.style.opacity = "0.5"; rateBtn.style.pointerEvents = "none"; }
+                            if (rateBtn) { rateBtn.innerText = "ФОЛЛОВЕРЫ (ОБНОВИ СТРАНИЦУ)"; rateBtn.style.opacity = "0.5"; rateBtn.style.pointerEvents = "none"; }
                             
                             const commInput = document.getElementById('comment-input');
                             const commSubmit = document.querySelector('button[onclick*="submitComment"]');
-                            if (commInput) { commInput.placeholder = "РџРѕРґРїРёС€РёСЃСЊ РЅР° РєР°РЅР°Р» Рё РѕР±РЅРѕРІРё СЃС‚СЂР°РЅРёС†Сѓ (F5), С‡С‚РѕР±С‹ РїРёСЃР°С‚СЊ..."; commInput.disabled = true; }
+                            if (commInput) { commInput.placeholder = "Подпишись на канал и обнови страницу (F5), чтобы писать..."; commInput.disabled = true; }
                             if (commSubmit) commSubmit.style.display = "none";
                         }, 800);
                     }
                     
                     document.getElementById('nav-auth').innerHTML = `
                         <div class="user-profile-neon">
-                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">
                                 <img src="${currentUser.profile_image_url}" class="user-avatar">
                             </div>
                             <div class="profile-info">
                                 <div class="profile-top">
-                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span>
-                                    <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">${currentUser.display_name}</span>
+                                    <button class="logout-neon" onclick="logoutTwitch()">Выйти</button>
                                 </div>
                                 <div class="profile-bottom">
                                     ${uInfo.badge}
@@ -789,7 +789,7 @@
 
                     if (currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase()) { document.body.classList.add('is-admin'); }
                 }
-            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+            } catch (e) { console.error('Ошибка авторизации', e); }
         }
 
         function initCharts() {
@@ -798,10 +798,10 @@
             radarChart = new Chart(ctx, {
                 type: 'radar',
                 data: { 
-                    labels: ['РЎСЋР¶РµС‚', 'Р’РёР·СѓР°Р»', 'РњСѓР·С‹РєР°', 'РњРёСЂ', 'РџРµСЂСЃРѕРЅР°Р¶Рё'], 
+                    labels: ['Сюжет', 'Визуал', 'Музыка', 'Мир', 'Персонажи'], 
                     datasets: [
-                        { label: 'РЎС‚СЂРёРјРµСЂ', data: [0,0,0,0,0], backgroundColor: radarColors[0].bg, borderColor: radarColors[0].border, pointBackgroundColor: radarColors[0].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, 
-                        { label: 'Р§Р°С‚', data: [0,0,0,0,0], backgroundColor: radarColors[1].bg, borderColor: radarColors[1].border, pointBackgroundColor: radarColors[1].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, 
+                        { label: 'Стример', data: [0,0,0,0,0], backgroundColor: radarColors[0].bg, borderColor: radarColors[0].border, pointBackgroundColor: radarColors[0].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, 
+                        { label: 'Чат', data: [0,0,0,0,0], backgroundColor: radarColors[1].bg, borderColor: radarColors[1].border, pointBackgroundColor: radarColors[1].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }, 
                         { label: 'РЇ', data: [0,0,0,0,0], backgroundColor: radarColors[2].bg, borderColor: radarColors[2].border, pointBackgroundColor: radarColors[2].border, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }
                     ] 
                 },
@@ -819,7 +819,7 @@
                 const ctxModal = document.getElementById('modalChart').getContext('2d');
                 modalRadarChart = new Chart(ctxModal, {
                     type: 'radar',
-                    data: { labels: ['РЎСЋР¶РµС‚', 'Р’РёР·СѓР°Р»', 'РњСѓР·С‹РєР°', 'РњРёСЂ', 'РџРµСЂСЃРѕРЅР°Р¶Рё'], datasets: [{ label: 'РћС†РµРЅРєР°', data: [5,5,5,5,5], backgroundColor: bg, borderColor: color, pointBackgroundColor: color, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }] },
+                    data: { labels: ['Сюжет', 'Визуал', 'Музыка', 'Мир', 'Персонажи'], datasets: [{ label: 'Оценка', data: [5,5,5,5,5], backgroundColor: bg, borderColor: color, pointBackgroundColor: color, pointBorderColor: '#0b0d0a', borderWidth: 2, pointRadius: 3 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: '#283325' }, angleLines: { color: '#283325' }, pointLabels: { font: { size: 10, weight: 'bold' }, color: '#c4d1b8' } } } }
                 });
             }
@@ -875,7 +875,7 @@
         async function saveUserRating() {
             if (!currentUser) return;
             const btn = document.getElementById('save-rate-btn');
-            btn.innerText = "РЎРћРҐР РђРќР•РќРР•..."; btn.style.pointerEvents = "none";
+            btn.innerText = "СОХРАНЕНИЕ..."; btn.style.pointerEvents = "none";
 
             const overall = parseFloat(document.getElementById('modal-overall').value) || 0;
             const theory = { plot: parseFloat(document.getElementById('msl-plot').value), visuals: parseFloat(document.getElementById('msl-vis').value), music: parseFloat(document.getElementById('msl-mus').value), world: parseFloat(document.getElementById('msl-wor').value), atmosphere: parseFloat(document.getElementById('msl-atm').value) };
@@ -890,10 +890,10 @@
                 }
                 
                 if (!res.ok) throw new Error("Server error");
-                closeRatingModal(); showToast("вњ… РћС†РµРЅРєР° СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°!"); await loadAnimeData(); 
-            } catch (e) { showToast("вќЊ РћС€РёР±РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ!", true); }
+                closeRatingModal(); showToast("✅ Оценка успешно сохранена!"); await loadAnimeData(); 
+            } catch (e) { showToast("❌ Ошибка сохранения!", true); }
             
-            btn.innerText = "РЎРћРҐР РђРќРРўР¬"; btn.style.pointerEvents = "auto";
+            btn.innerText = "СОХРАНИТЬ"; btn.style.pointerEvents = "auto";
         }
 
         function highlightChart(index) {
@@ -914,11 +914,11 @@
         function generateBreakdownHtml(theoryObj) {
             if (!theoryObj) theoryObj = {plot:0, visuals:0, music:0, world:0, atmosphere:0};
             const createRow = (name, val) => `<div class="crit-row" style="${getGlassRowStyle(val)}"><span style="color:${getScoreColor(val, 1)}; text-shadow: ${getScoreShadow(val, false)};">${name}</span><span style="color:#fff; text-shadow: ${getScoreShadow(val, false)};">${val}</span></div>`;
-            return createRow('РЎСЋР¶РµС‚', theoryObj.plot) + 
-                   createRow('Р’РёР·СѓР°Р»', theoryObj.visuals) + 
-                   createRow('РњСѓР·С‹РєР°', theoryObj.music) + 
+            return createRow('Сюжет', theoryObj.plot) + 
+                   createRow('Визуал', theoryObj.visuals) + 
+                   createRow('Музыка', theoryObj.music) + 
                    createRow('РњРёСЂ', theoryObj.world) + 
-                   createRow('РџРµСЂСЃРѕРЅР°Р¶Рё', theoryObj.atmosphere);
+                   createRow('Персонажи', theoryObj.atmosphere);
         }
 
         function applyDynamicTheme(imageUrl) {
@@ -932,7 +932,7 @@
                 const color = colorThief.getColor(hiddenImg);
                 let r = color[0], g = color[1], b = color[2];
                 
-                // РџСЂРѕРІРµСЂСЏРµРј СЏСЂРєРѕСЃС‚СЊ. Р•СЃР»Рё С†РІРµС‚ СЃР»РёС€РєРѕРј С‚РµРјРЅС‹Р№ - РёСЃРєСѓСЃСЃС‚РІРµРЅРЅРѕ РµРіРѕ РѕСЃРІРµС‚Р»СЏРµРј РґР»СЏ С‚РµРєСЃС‚Р°
+                // Проверяем яркость. Если цвет слишком темный - искусственно его осветляем для текста
                 const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
                 if (luminance < 90) {
                     r = Math.min(255, r + 80);
@@ -940,22 +940,22 @@
                     b = Math.min(255, b + 80);
                 }
 
-                // РЎРІРµС‚Р»С‹Р№ С†РІРµС‚ РґР»СЏ С‚РµРєСЃС‚Р° Рё СЃРІРµС‡РµРЅРёСЏ
+                // Светлый цвет для текста и свечения
                 document.documentElement.style.setProperty('--theme-primary', `rgb(${r}, ${g}, ${b})`);
                 document.documentElement.style.setProperty('--theme-glow', `rgba(${r}, ${g}, ${b}, 0.5)`);
                 
-                // РћСЂРёРіРёРЅР°Р»СЊРЅС‹Р№ С‚РµРјРЅС‹Р№ С†РІРµС‚ РґР»СЏ Р·Р°Р»РёРІРєРё РїР°РЅРµР»РµР№
+                // Оригинальный темный цвет для заливки панелей
                 document.documentElement.style.setProperty('--theme-panel-bg-top', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.08)`);
                 document.documentElement.style.setProperty('--theme-panel-bg-bottom', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.02)`);
                 document.documentElement.style.setProperty('--theme-panel-header', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.15)`);
                 document.documentElement.style.setProperty('--theme-panel-border', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.4)`);
             } catch (e) {
-                console.warn("РЎРєСЂРёРїС‚ РЅРµ СЃРјРѕРі РїСЂРѕС‡РёС‚Р°С‚СЊ С†РІРµС‚:", e);
+                console.warn("Скрипт не смог прочитать цвет:", e);
             }
-            resolve(); // Р”Р°РµРј СЃРёРіРЅР°Р», С‡С‚Рѕ С‚РµРјР° РіРѕС‚РѕРІР°
+            resolve(); // Даем сигнал, что тема готова
         };
 
-        hiddenImg.onerror = resolve; // Р•СЃР»Рё РѕС€РёР±РєР° - РІСЃРµ СЂР°РІРЅРѕ РѕС‚РєСЂС‹РІР°РµРј СЃР°Р№С‚
+        hiddenImg.onerror = resolve; // Если ошибка - все равно открываем сайт
         hiddenImg.src = imageUrl + '?bypassCache=' + Date.now();
     });
 }
@@ -967,24 +967,24 @@
                 try {
                     const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
                     if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
-                } catch(e) { console.warn("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±Р°Р·Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№", e); }
+                } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
-                loadingScreen.innerText = "РђРІС‚РѕСЂРёР·Р°С†РёСЏ Twitch...";
+                loadingScreen.innerText = "Авторизация Twitch...";
                 await checkTwitchAuth();
 
-                loadingScreen.innerText = "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіСЂР°С„РёРєРѕРІ...";
+                loadingScreen.innerText = "Инициализация графиков...";
                 initCharts();
 
                 const urlParams = new URLSearchParams(window.location.search);
                 currentFranchiseId = urlParams.get('id');
-                if(!currentFranchiseId) throw new Error("Р¤СЂР°РЅС€РёР·Р° РЅРµ РІС‹Р±СЂР°РЅР° РІ СЃСЃС‹Р»РєРµ!");
+                if(!currentFranchiseId) throw new Error("Франшиза не выбрана в ссылке!");
 
-                loadingScreen.innerText = "Р—Р°РіСЂСѓР·РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…...";
+                loadingScreen.innerText = "Загрузка базы данных...";
                 const res = await fetch(`${FIREBASE_BASE}/anime_db/${encodeURIComponent(currentFranchiseId)}.json`, { cache: 'no-store' });
-                if (!res.ok) throw new Error(`РћС€РёР±РєР° СЃРµСЂРІРµСЂР°: HTTP ${res.status}`);
+                if (!res.ok) throw new Error(`Ошибка сервера: HTTP ${res.status}`);
                 
                 franchiseData = await res.json();
-                if (!franchiseData) throw new Error("РўР°Р№С‚Р» РЅРµ РЅР°Р№РґРµРЅ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…!");
+                if (!franchiseData) throw new Error("Тайтл не найден в базе данных!");
 
                 const seasonKeys = Object.keys(franchiseData);
                 const tabsContainer = document.getElementById('season-tabs-container');
@@ -1002,26 +1002,26 @@
                     tabsContainer.appendChild(btn);
                 });
 
-                loadingScreen.innerText = "Р РµРЅРґРµСЂРёРЅРі СЃРµР·РѕРЅР°...";
+                loadingScreen.innerText = "Рендеринг сезона...";
                 await renderSeasonData(seasonKeys[0]);
 
                 loadingScreen.style.display = 'none';
                 document.getElementById('main-layout').style.display = 'flex';
             } catch(e) { 
                 console.error(e);
-                document.getElementById('loading-screen').innerHTML = `<span style="color:#ff5555;">РћРЁРР‘РљРђ: ${e.message}</span><br><br><span style="font-size:16px; color:#a4b09c;">РќР°Р¶РјРё <b>Ctrl + F5</b>, С‡С‚РѕР±С‹ СЃР±СЂРѕСЃРёС‚СЊ РєРµС€.</span>`;
+                document.getElementById('loading-screen').innerHTML = `<span style="color:#ff5555;">ОШИБКА: ${e.message}</span><br><br><span style="font-size:16px; color:#a4b09c;">Нажми <b>Ctrl + F5</b>, чтобы сбросить кеш.</span>`;
             }
         }
 
         async function renderSeasonData(seasonKey) {
             currentSeasonKey = seasonKey;
             const anime = franchiseData[seasonKey];
-            if (!anime) throw new Error("Р”Р°РЅРЅС‹Рµ СЃРµР·РѕРЅР° РїРѕРІСЂРµР¶РґРµРЅС‹!");
+            if (!anime) throw new Error("Данные сезона повреждены!");
 
-            // РџСЂРѕРїСѓСЃРєР°РµРј СЃСЃС‹Р»РєСѓ С‡РµСЂРµР· РїСЂРѕРєСЃРё РґР»СЏ РѕР±С…РѕРґР° CORS-Р·Р°С‰РёС‚С‹
+            // Пропускаем ссылку через прокси для обхода CORS-защиты
             document.getElementById('ep-display').innerText = `${anime.info.episodesWatched} / ${anime.info.episodesTotal}`;
             
-            // --- Р“Р•РќР•Р РђРўРћР  РљРќРћРџРћРљ РЎР•Р РР™ Р Р—РђР“Р РЈР—РљРђ Р’РР”Р•Рћ ---
+            // --- ГЕНЕРАТОР КНОПОК СЕРИЙ И ЗАГРУЗКА ВИДЕО ---
             const epContainer = document.getElementById('episodes-container');
             if (epContainer) epContainer.innerHTML = '';
             
@@ -1030,10 +1030,10 @@
             if (urls.length > 0) {
                 if (urls.length > 1 && epContainer) {
                     urls.forEach((urlItem, index) => {
-                        // Р Р°СЃС€РёС„СЂРѕРІС‹РІР°РµРј РЅРѕРІС‹Р№ С„РѕСЂРјР°С‚ РёР· Р±Р°Р·С‹
+                        // Расшифровываем новый формат из базы
                         const isObj = typeof urlItem === 'object';
                         const linkUrl = isObj ? urlItem.url : urlItem;
-                        const linkLabel = isObj ? urlItem.label : `Р§Р°СЃС‚СЊ ${index + 1}`;
+                        const linkLabel = isObj ? urlItem.label : `Часть ${index + 1}`;
 
                         const btn = document.createElement('button');
                         btn.className = `season-btn ${index === 0 ? 'active' : ''}`;
@@ -1050,7 +1050,7 @@
                     });
                 }
                 
-                // Р”РѕСЃС‚Р°РµРј СЃР°РјСѓСЋ РїРµСЂРІСѓСЋ СЃСЃС‹Р»РєСѓ РґР»СЏ Р°РІС‚РѕР·Р°РїСѓСЃРєР°
+                // Достаем самую первую ссылку для автозапуска
                 const firstUrl = typeof urls[0] === 'object' ? urls[0].url : urls[0];
                 document.getElementById('main-player').src = firstUrl;
             } else {
@@ -1058,7 +1058,7 @@
             }
 
             await applyDynamicTheme(anime.coverUrl);
-            document.getElementById('cover-img').src = anime.coverUrl; // <-- Р­С‚Р° СЃС‚СЂРѕРєР° РІРµСЂРЅРµС‚ РєР°СЂС‚РёРЅРєСѓ
+            document.getElementById('cover-img').src = anime.coverUrl; // <-- Эта строка вернет картинку
             document.getElementById('title-display').innerText = anime.title;
             document.getElementById('studio-display').innerText = anime.info.studio;
             document.getElementById('format-display').innerText = anime.info.format;
@@ -1067,12 +1067,12 @@
             document.getElementById('ep-display').innerText = `${anime.info.episodesWatched} / ${anime.info.episodesTotal}`;
             if(anime.info.dateWatched) {
                 const [y, m, d] = anime.info.dateWatched.split('-'); document.getElementById('date-display').innerText = `${d}.${m}.${y}`;
-            } else { document.getElementById('date-display').innerText = "Р’ РїСЂРѕС†РµСЃСЃРµ..."; }
+            } else { document.getElementById('date-display').innerText = "В процессе..."; }
             document.getElementById('synopsis-display').innerText = anime.info.description;
             if(anime.info.genres) { document.getElementById('genres-display').innerHTML = anime.info.genres.map(g => `<span class="genre-badge">${g}</span>`).join(''); }
 
             const commRes = await fetch(`${FIREBASE_BASE}/community_db/${encodeURIComponent(currentFranchiseId)}/${encodeURIComponent(seasonKey)}/ratings.json`, { cache: 'no-store' });
-            if (!commRes.ok) throw new Error(`РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РѕС†РµРЅРѕРє: HTTP ${commRes.status}`);
+            if (!commRes.ok) throw new Error(`Ошибка загрузки оценок: HTTP ${commRes.status}`);
             currentCommunityRatings = (await commRes.json()) || {};
 
             let chatTotalOvr = 0, chatPlot = 0, chatVis = 0, chatMus = 0, chatWor = 0, chatAtm = 0, chatCount = 0;
@@ -1100,7 +1100,7 @@
             const tStr = strScores.theory || {plot:0, visuals:0, music:0, world:0, atmosphere:0};
             const strTheoryAvg = calcTheoryAvg(tStr);
 
-            // РЎРўР•РљР›РЇРќРќР«Р• РџР›РђРЁРљР Р›Р•Р“Р•РќР”Р« (РџРћР” Р“Р РђР¤РРљРћРњ)
+            // СТЕКЛЯННЫЕ ПЛАШКИ ЛЕГЕНДЫ (ПОД ГРАФИКОМ)
             document.getElementById('legend-box-streamer').style.cssText = getGlassBoxStyle(strTheoryAvg);
             document.getElementById('legend-label-streamer').style.color = getScoreColor(strTheoryAvg, 1);
             document.getElementById('legend-label-streamer').style.textShadow = getScoreShadow(strTheoryAvg, false);
@@ -1129,7 +1129,7 @@
             document.getElementById('breakdown-chat').innerHTML = generateBreakdownHtml(tChat);
             document.getElementById('breakdown-viewer').innerHTML = generateBreakdownHtml(tMe);
             
-            // Р—Р°РїСѓСЃРєР°РµРј РїРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ РІРёР·СѓР°Р»РѕРІ Р’ РЎРђРњРћРњ РљРћРќР¦Р•, С‡С‚РѕР±С‹ РѕРЅ РїСЂР°РІРёР»СЊРЅРѕ СЃРєСЂС‹Р» РѕС†РµРЅРєРё
+            // Запускаем переключатель визуалов В САМОМ КОНЦЕ, чтобы он правильно скрыл оценки
             window.pageScores = { streamer: strOvr, chat: chatOvr, me: meOvr };
             if (typeof applyPageVisuals === 'function') applyPageVisuals();
 
@@ -1142,7 +1142,7 @@
                 radarChart.update();
             }
 
-            // Р’РћРў Р­РўРђ РљРќРћРџРљРђ РџРћРўР•Р РЇР›РђРЎР¬
+            // ВОТ ЭТА КНОПКА ПОТЕРЯЛАСЬ
             const rateBtn = document.getElementById('rate-title-btn');
             if (currentUser) {
                 const isStreamer = currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
@@ -1150,11 +1150,11 @@
                 if (isStreamer && strOvr > 0) hasRated = true;
                 if (!isStreamer && currentCommunityRatings[currentUser.id] && safeNum(currentCommunityRatings[currentUser.id].overall) > 0) hasRated = true;
                 
-                rateBtn.innerText = hasRated ? "РР·РјРµРЅРёС‚СЊ РѕС†РµРЅРєСѓ" : "РћС†РµРЅРёС‚СЊ С‚Р°Р№С‚Р»";
+                rateBtn.innerText = hasRated ? "Изменить оценку" : "Оценить тайтл";
                 rateBtn.style.opacity = "1";
                 rateBtn.style.pointerEvents = "auto";
             } else { 
-                rateBtn.innerText = "РћС†РµРЅРёС‚СЊ С‚Р°Р№С‚Р»"; 
+                rateBtn.innerText = "Оценить тайтл"; 
                 rateBtn.style.opacity = "0.5";
                 rateBtn.style.pointerEvents = "none";
             }
@@ -1162,7 +1162,7 @@
             await loadComments(); 
         }
 
-        // === РЈРќРР’Р•Р РЎРђР›Р¬РќР«Р™ Р Р•РќР”Р•Р  РљРћРњРњР•РќРўРћР’ ===
+        // === УНИВЕРСАЛЬНЫЙ РЕНДЕР КОММЕНТОВ ===
         function createCommentCard(c, isReply = false, parentId = null) {
             const authorId = c.userId || c.id;
             const isMe = currentUser && authorId === currentUser.id;
@@ -1170,14 +1170,14 @@
             
             const d = new Date(c.timestamp);
             const dateStr = `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')} РІ ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-            const editedHtml = c.isEdited ? `<span class="edited-tag">(РёР·РјРµРЅРµРЅРѕ)</span>` : '';
+            const editedHtml = c.isEdited ? `<span class="edited-tag">(изменено)</span>` : '';
             
             const uInfo = getUserInfo(c.displayName, c.userColor);
 
             let actions = `<div class="comment-actions">
-                                <button class="btn-reply" onclick="toggleReplyBox('${parentId || c.id}', '${isReply ? c.displayName : ''}')">РћС‚РІРµС‚РёС‚СЊ</button>
-                                ${isMe ? `<button class="btn-edit" onclick="${isReply ? `editReply('${parentId}', '${c.rid}')` : `editComment('${c.id}')`}">РР·РјРµРЅРёС‚СЊ</button>` : ''}
-                                ${isMe || isAdminViewer ? `<button class="btn-del" onclick="${isReply ? `deleteReply('${parentId}', '${c.rid}')` : `deleteComment('${c.id}')`}">РЈРґР°Р»РёС‚СЊ</button>` : ''}
+                                <button class="btn-reply" onclick="toggleReplyBox('${parentId || c.id}', '${isReply ? c.displayName : ''}')">Ответить</button>
+                                ${isMe ? `<button class="btn-edit" onclick="${isReply ? `editReply('${parentId}', '${c.rid}')` : `editComment('${c.id}')`}">Изменить</button>` : ''}
+                                ${isMe || isAdminViewer ? `<button class="btn-del" onclick="${isReply ? `deleteReply('${parentId}', '${c.rid}')` : `deleteComment('${c.id}')`}">Удалить</button>` : ''}
                             </div>`;
 
             let ratingHtml = '';
@@ -1190,13 +1190,13 @@
                 
                 ratingHtml = `
                 <div class="comment-rating-block">
-                    <div class="cr-overall tooltip-element" data-title="РС‚РѕРіРѕРІР°СЏ РѕС†РµРЅРєР°" style="color:${getScoreColor(ovr, 1)}; text-shadow:${getScoreShadow(ovr, true)};">${ovr}</div>
+                    <div class="cr-overall tooltip-element" data-title="Итоговая оценка" style="color:${getScoreColor(ovr, 1)}; text-shadow:${getScoreShadow(ovr, true)};">${ovr}</div>
                     <div class="cr-theory">
-                        <span class="tooltip-element" style="color:${getScoreColor(t.plot, 1)}; text-shadow:${getScoreShadow(t.plot, false)};" data-title="РЎСЋР¶РµС‚: ${t.plot}">${t.plot}</span>
-                        <span class="tooltip-element" style="color:${getScoreColor(t.visuals, 1)}; text-shadow:${getScoreShadow(t.visuals, false)};" data-title="Р’РёР·СѓР°Р»: ${t.visuals}">${t.visuals}</span>
-                        <span class="tooltip-element" style="color:${getScoreColor(t.music, 1)}; text-shadow:${getScoreShadow(t.music, false)};" data-title="РњСѓР·С‹РєР°: ${t.music}">${t.music}</span>
+                        <span class="tooltip-element" style="color:${getScoreColor(t.plot, 1)}; text-shadow:${getScoreShadow(t.plot, false)};" data-title="Сюжет: ${t.plot}">${t.plot}</span>
+                        <span class="tooltip-element" style="color:${getScoreColor(t.visuals, 1)}; text-shadow:${getScoreShadow(t.visuals, false)};" data-title="Визуал: ${t.visuals}">${t.visuals}</span>
+                        <span class="tooltip-element" style="color:${getScoreColor(t.music, 1)}; text-shadow:${getScoreShadow(t.music, false)};" data-title="Музыка: ${t.music}">${t.music}</span>
                         <span class="tooltip-element" style="color:${getScoreColor(t.world, 1)}; text-shadow:${getScoreShadow(t.world, false)};" data-title="РњРёСЂ: ${t.world}">${t.world}</span>
-                        <span class="tooltip-element" style="color:${getScoreColor(t.atmosphere, 1)}; text-shadow:${getScoreShadow(t.atmosphere, false)};" data-title="РџРµСЂСЃРѕРЅР°Р¶Рё: ${t.atmosphere}">${t.atmosphere}</span>
+                        <span class="tooltip-element" style="color:${getScoreColor(t.atmosphere, 1)}; text-shadow:${getScoreShadow(t.atmosphere, false)};" data-title="Персонажи: ${t.atmosphere}">${t.atmosphere}</span>
                     </div>
                 </div>`;
             }
@@ -1238,11 +1238,11 @@
             const btn = document.getElementById(`toggle-btn-${commentId}`);
             if (list.style.display === 'none' || list.style.display === '') {
                 list.style.display = 'flex';
-                btn.innerHTML = `в–І РЎРєСЂС‹С‚СЊ РѕС‚РІРµС‚С‹`;
+                btn.innerHTML = `▲ Скрыть ответы`;
             } else {
                 list.style.display = 'none';
                 const count = btn.getAttribute('data-count');
-                btn.innerHTML = `в–ј РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹ (${count})`;
+                btn.innerHTML = `▼ Показать ответы (${count})`;
             }
         }
 
@@ -1266,7 +1266,7 @@
             const list = document.getElementById('comments-list'); list.innerHTML = '';
             const arr = Object.entries(currentComments).map(([id, data]) => ({id, ...data})).sort((a,b) => b.timestamp - a.timestamp);
 
-            if (arr.length === 0) { list.innerHTML = '<div style="color: #6b7a62; text-align: center; padding: 20px; font-size: 18px;">РџРѕРєР° РЅРµС‚ СЂРµС†РµРЅР·РёР№. Р‘СѓРґСЊ РїРµСЂРІС‹Рј!</div>'; return; }
+            if (arr.length === 0) { list.innerHTML = '<div style="color: #6b7a62; text-align: center; padding: 20px; font-size: 18px;">Пока нет рецензий. Будь первым!</div>'; return; }
 
             arr.forEach(c => {
                 const mainCommentHtml = createCommentCard(c);
@@ -1275,7 +1275,7 @@
                 let toggleRepliesBtn = '';
                 if (c.replies) {
                     const replArr = Object.entries(c.replies).map(([rid, rdata]) => ({rid: rid, ...rdata})).sort((a,b)=>a.timestamp - b.timestamp);
-                    toggleRepliesBtn = `<button class="toggle-replies-btn" id="toggle-btn-${c.id}" data-count="${replArr.length}" onclick="toggleRepliesList('${c.id}')">в–ј РџРѕРєР°Р·Р°С‚СЊ РѕС‚РІРµС‚С‹ (${replArr.length})</button>`;
+                    toggleRepliesBtn = `<button class="toggle-replies-btn" id="toggle-btn-${c.id}" data-count="${replArr.length}" onclick="toggleRepliesList('${c.id}')">▼ Показать ответы (${replArr.length})</button>`;
                     repliesHtml = `<div class="replies-list" id="replies-list-${c.id}">` + replArr.map(rep => createCommentCard(rep, true, c.id)).join('') + `</div>`;
                 }
 
@@ -1285,25 +1285,25 @@
                     ${toggleRepliesBtn}
                     ${repliesHtml}
                     <div class="reply-input-wrapper" id="reply-box-${c.id}">
-                        <textarea id="reply-text-${c.id}" class="comment-textarea" style="min-height: 50px;" placeholder="РќР°РїРёСЃР°С‚СЊ РѕС‚РІРµС‚..."></textarea>
-                        <button class="send-btn" id="send-reply-btn-${c.id}" style="padding: 8px 20px; font-size: 15px;" onclick="postReply('${c.id}')">РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚</button>
+                        <textarea id="reply-text-${c.id}" class="comment-textarea" style="min-height: 50px;" placeholder="Написать ответ..."></textarea>
+                        <button class="send-btn" id="send-reply-btn-${c.id}" style="padding: 8px 20px; font-size: 15px;" onclick="postReply('${c.id}')">Отправить ответ</button>
                     </div>
                 </div>`;
             });
 
             if (!editingTarget.type) {
                 document.getElementById('comment-text').value = ''; 
-                document.getElementById('send-comment-btn').innerText = "РћС‚РїСЂР°РІРёС‚СЊ";
+                document.getElementById('send-comment-btn').innerText = "Отправить";
             }
         }
 
         async function postComment() {
-            if (!currentUser) { showToast("РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё С‡РµСЂРµР· Twitch!", true); return; }
+            if (!currentUser) { showToast("Сначала войди через Twitch!", true); return; }
             const text = document.getElementById('comment-text').value.trim();
             if (!text) return;
 
             const btn = document.getElementById('send-comment-btn');
-            btn.innerText = "РћРўРџР РђР’РљРђ..."; btn.style.pointerEvents = "none";
+            btn.innerText = "РћРўРџР РђР'РљРђ..."; btn.style.pointerEvents = "none";
             
             const commentId = editingTarget.type === 'comment' ? editingTarget.id : (Date.now() + '_' + currentUser.id);
 
@@ -1319,54 +1319,54 @@
                     });
                 }
                 
-                showToast(editingTarget.type === 'comment' ? "рџ’¬ Р РµС†РµРЅР·РёСЏ РёР·РјРµРЅРµРЅР°!" : "рџ’¬ Р РµС†РµРЅР·РёСЏ РґРѕР±Р°РІР»РµРЅР°!"); 
+                showToast(editingTarget.type === 'comment' ? "💬 Рецензия изменена!" : "💬 Рецензия добавлена!"); 
                 
                 document.getElementById('comment-text').value = '';
                 editingTarget = { type: null, id: null, parentId: null };
-                btn.innerText = "РћС‚РїСЂР°РІРёС‚СЊ";
+                btn.innerText = "Отправить";
                 
                 await loadComments();
             } catch(e) { 
-                showToast("вќЊ РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ!", true); 
-                btn.innerText = editingTarget.type === 'comment' ? "РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" : "РћС‚РїСЂР°РІРёС‚СЊ";
+                showToast("❌ Ошибка при отправке!", true); 
+                btn.innerText = editingTarget.type === 'comment' ? "Сохранить изменения" : "Отправить";
             }
             btn.style.pointerEvents = "auto";
         }
 
         async function postReply(commentId) {
-            if (!currentUser) { showToast("РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРё С‡РµСЂРµР· Twitch!", true); return; }
+            if (!currentUser) { showToast("Сначала войди через Twitch!", true); return; }
             const inputEl = document.getElementById(`reply-text-${commentId}`);
             const text = inputEl.value.trim();
             if (!text) return;
 
             const btn = document.getElementById(`send-reply-btn-${commentId}`);
-            btn.innerText = "РћРўРџР РђР’РљРђ..."; btn.style.pointerEvents = "none";
+            btn.innerText = "РћРўРџР РђР'РљРђ..."; btn.style.pointerEvents = "none";
 
             try {
                 if (editingTarget.type === 'reply' && editingTarget.parentId === commentId) {
                     await fetch(`${FIREBASE_BASE}/community_db/${encodeURIComponent(currentFranchiseId)}/${encodeURIComponent(currentSeasonKey)}/comments/${commentId}/replies/${editingTarget.id}.json`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text, isEdited: true }) });
                     editingTarget = { type: null, id: null, parentId: null };
-                    showToast("рџ’¬ РћС‚РІРµС‚ РёР·РјРµРЅРµРЅ!");
+                    showToast("💬 Ответ изменен!");
                 } else {
                     const replyId = Date.now() + '_' + currentUser.id;
                     const replyData = { userId: currentUser.id, displayName: currentUser.display_name, profileImage: currentUser.profile_image_url, userColor: currentUser.color, text: text, timestamp: Date.now() };
                     await fetch(`${FIREBASE_BASE}/community_db/${encodeURIComponent(currentFranchiseId)}/${encodeURIComponent(currentSeasonKey)}/comments/${commentId}/replies/${replyId}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(replyData) });
-                    showToast("рџ’¬ РћС‚РІРµС‚ РґРѕР±Р°РІР»РµРЅ!");
+                    showToast("💬 Ответ добавлен!");
                 }
                 
                 inputEl.value = ''; 
                 toggleReplyBox(commentId); 
-                btn.innerText = "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚";
+                btn.innerText = "Отправить ответ";
                 await loadComments();
             } catch(e) { 
-                showToast("вќЊ РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ РѕС‚РІРµС‚Р°!", true); 
-                btn.innerText = editingTarget.type === 'reply' ? "РЎРѕС…СЂР°РЅРёС‚СЊ" : "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚";
+                showToast("❌ Ошибка при отправке ответа!", true); 
+                btn.innerText = editingTarget.type === 'reply' ? "Сохранить" : "Отправить ответ";
             }
             btn.style.pointerEvents = "auto";
         }
 
         async function deleteComment(commentId) {
-            if (!confirm("РўРѕС‡РЅРѕ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РєРѕРјРјРµРЅС‚Р°СЂРёР№ СЃРѕ РІСЃРµРјРё РѕС‚РІРµС‚Р°РјРё?")) return;
+            if (!confirm("Точно удалить этот комментарий со всеми ответами?")) return;
             try {
                 const res = await fetch(`${FIREBASE_BASE}/community_db/${encodeURIComponent(currentFranchiseId)}/${encodeURIComponent(currentSeasonKey)}/comments/${commentId}.json`, { method: 'DELETE' });
                 if (!res.ok) throw new Error("Server error");
@@ -1374,15 +1374,15 @@
                 if (editingTarget.id === commentId) {
                     document.getElementById('comment-text').value = '';
                     editingTarget = { type: null, id: null, parentId: null };
-                    document.getElementById('send-comment-btn').innerText = "РћС‚РїСЂР°РІРёС‚СЊ";
+                    document.getElementById('send-comment-btn').innerText = "Отправить";
                 }
                 
-                showToast("рџ—‘пёЏ РљРѕРјРјРµРЅС‚Р°СЂРёР№ СѓРґР°Р»РµРЅ."); await loadComments();
-            } catch(e) { showToast("вќЊ РћС€РёР±РєР° СѓРґР°Р»РµРЅРёСЏ!", true); }
+                showToast("🗑️ Комментарий удален."); await loadComments();
+            } catch(e) { showToast("❌ Ошибка удаления!", true); }
         }
 
         async function deleteReply(commentId, replyId) {
-            if (!confirm("РўРѕС‡РЅРѕ СѓРґР°Р»РёС‚СЊ СЌС‚РѕС‚ РѕС‚РІРµС‚?")) return;
+            if (!confirm("Точно удалить этот ответ?")) return;
             try {
                 const res = await fetch(`${FIREBASE_BASE}/community_db/${encodeURIComponent(currentFranchiseId)}/${encodeURIComponent(currentSeasonKey)}/comments/${commentId}/replies/${replyId}.json`, { method: 'DELETE' });
                 if (!res.ok) throw new Error("Server error");
@@ -1390,11 +1390,11 @@
                 if (editingTarget.id === replyId) {
                     document.getElementById(`reply-text-${commentId}`).value = '';
                     editingTarget = { type: null, id: null, parentId: null };
-                    document.getElementById(`send-reply-btn-${commentId}`).innerText = "РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚";
+                    document.getElementById(`send-reply-btn-${commentId}`).innerText = "Отправить ответ";
                 }
 
-                showToast("рџ—‘пёЏ РћС‚РІРµС‚ СѓРґР°Р»РµРЅ."); await loadComments();
-            } catch(e) { showToast("вќЊ РћС€РёР±РєР° СѓРґР°Р»РµРЅРёСЏ!", true); }
+                showToast("🗑️ Ответ удален."); await loadComments();
+            } catch(e) { showToast("❌ Ошибка удаления!", true); }
         }
 
         function editComment(commentId) {
@@ -1404,7 +1404,7 @@
                 document.getElementById('main-comment-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
                 editingTarget = { type: 'comment', id: commentId, parentId: null };
-                document.getElementById('send-comment-btn').innerText = "РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ";
+                document.getElementById('send-comment-btn').innerText = "Сохранить изменения";
             }
         }
 
@@ -1418,11 +1418,11 @@
                 textarea.focus();
                 
                 editingTarget = { type: 'reply', id: replyId, parentId: commentId };
-                document.getElementById(`send-reply-btn-${commentId}`).innerText = "РЎРѕС…СЂР°РЅРёС‚СЊ";
+                document.getElementById(`send-reply-btn-${commentId}`).innerText = "Сохранить";
             }
         }
 
-        // --- Р›РћР“РРљРђ РњР•РќР® Р’РР—РЈРђР›Рђ ---
+        // --- ЛОГИКА МЕНЮ ВИЗУАЛА ---
         function toggleVisualMenu() { document.getElementById('visual-dropdown').classList.toggle('show'); }
         window.addEventListener('click', function(e) {
             if (!document.getElementById('visual-dropdown').contains(e.target)) {
@@ -1486,12 +1486,12 @@
                 }
             };
 
-            // РЎРќРђР§РђР›Рђ Р РРЎРЈР•Рњ
-            renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamer, 'РЎС‚СЂРёРјРµСЂ');
-            renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Р§Р°С‚');
+            // СНАЧАЛА РИСУЕМ
+            renderBox('box-streamer', 'label-streamer', 'streamer-score-val', window.pageScores.streamer, 'Стример');
+            renderBox('box-chat', 'label-chat', 'chat-score-val', window.pageScores.chat, 'Чат');
             renderBox('box-me', 'label-me', 'my-score-display', window.pageScores.me, 'РњРѕСЏ');
 
-            // РџРћРўРћРњ РЎРљР Р«Р’РђР•Рњ РќР•РќРЈР–РќРћР• (РїРµСЂРµР±РёРІР°СЏ РѕС‚СЂРёСЃРѕРІРєСѓ)
+            // ПОТОМ СКРЫВАЕМ НЕНУЖНОЕ (перебивая отрисовку)
             const boxStr = document.getElementById('box-streamer'); const legStr = document.getElementById('legend-box-streamer');
             const boxChat = document.getElementById('box-chat'); const legChat = document.getElementById('legend-box-chat');
             const boxMe = document.getElementById('box-me'); const legMe = document.getElementById('legend-box-me');
@@ -1519,18 +1519,18 @@
             });
         });
 
-        // --- Р›РћР“РРљРђ Р—РђР›Рђ РЎР›РђР’Р« ---
+        // --- ЛОГИКА ЗАЛА СЛАВЫ ---
         let lbAllUsers = [];
 
         window.openLeaderboard = async function() {
             try {
                 if (!window.globalCommData) {
                     const btn = document.querySelector('button[onclick*="openLeaderboard"]');
-                    const oldText = btn ? btn.innerText : 'Р—СЂРёС‚РµР»Рё';
-                    if (btn) btn.innerText = "Р—Р°РіСЂСѓР·РєР°...";
+                    const oldText = btn ? btn.innerText : 'Зрители';
+                    if (btn) btn.innerText = "Загрузка...";
                     
                     const res = await fetch(`${FIREBASE_BASE}/community_db.json`);
-                    if (!res.ok) throw new Error("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±Р°Р·Сѓ");
+                    if (!res.ok) throw new Error("Не удалось загрузить базу");
                     window.globalCommData = await res.json() || {};
                     
                     if (btn) btn.innerText = oldText;
@@ -1568,8 +1568,8 @@
                 if (modal) modal.style.display = 'flex';
                 
             } catch(e) {
-                console.error("РћС€РёР±РєР° РїСЂРё СЃР±РѕСЂРєРµ Р—Р°Р»Р° РЎР»Р°РІС‹:", e);
-                alert("РћС€РёР±РєР° СЃР±РѕСЂРєРё Р·СЂРёС‚РµР»РµР№: " + e.message);
+                console.error("Ошибка при сборке Зала Славы:", e);
+                alert("Ошибка сборки зрителей: " + e.message);
             }
         };
 
@@ -1579,7 +1579,7 @@
             
             listEl.innerHTML = '';
             if (usersArray.length === 0) {
-                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>'; 
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">Никого не найдено.</div>'; 
                 return;
             }
             
@@ -1587,17 +1587,17 @@
                 const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
                 const rank = originalIndex + 1;
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
-                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
-                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
                 const safeName = (u.name || '').toString().toLowerCase();
                 const dbUser = window.globalUsersDB ? window.globalUsersDB[safeName] : null;
                 const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
                 const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
                 const statusDot = isOnline 
-                    ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' 
-                    : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+                    ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">В сети</span>' 
+                    : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">Не в сети</span>';
 
                 listEl.insertAdjacentHTML('beforeend', `
                 <a href="profile.html?user=${u.id}" class="lb-item">
@@ -1611,7 +1611,7 @@
                     </div>
                     <div class="lb-stats">
                         <div class="lb-count">${u.count}</div>
-                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                        <div class="lb-count-label">оценок</div>
                     </div>
                 </a>`);
             });

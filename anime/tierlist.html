@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>РђРЅРёРјРµ РўРёСЂ-Р»РёСЃС‚</title>
+    <title>Аниме Тир-лист</title>
     <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/site-header.css">
     <script src="../shared/site-header.js" defer></script>
@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <style>
 
-        /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+        /* ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ (ЛОГОТИП) */
         .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
         .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
         .nav-logo-wrap:hover { filter: brightness(1.2); }
@@ -23,7 +23,7 @@
         .logo-link:hover { background: rgba(0,0,0,0.4); color: var(--site-color); text-shadow: 0 0 10px var(--site-color); border-color: var(--site-color); }
         .logo-link.active { color: var(--site-color); background: rgba(0,0,0,0.3); border-left: 3px solid var(--site-color); border-radius: 4px 8px 8px 4px; }
 
-        /* Р“Р›РћР‘РђР›Р¬РќР«Р• Р¦Р’Р•РўРђ Р РҐРђРњР•Р›Р•РћРќ */
+        /* ГЛОБАЛЬНЫЕ ЦВЕТА И ХАМЕЛЕОН */
         :root {
             --theme-primary: #a6e3a1;
             --theme-glow: rgba(166, 227, 161, 0.5);
@@ -33,12 +33,12 @@
 
         body { margin: 0; padding: 0 0 40px 0; font-family: 'Neucha', cursive; background: #0b0d0a; color: #a4b09c; min-height: 100vh; overflow-x: hidden; }
 
-        /* РџР›РђР’РќР«Р• РџР•Р Р•РҐРћР”Р« Р”Р›РЇ РҐРђРњР•Р›Р•РћРќРђ */
+        /* ПЛАВНЫЕ ПЕРЕХОДЫ ДЛЯ ХАМЕЛЕОНА */
         .top-nav, .nav-logo, .board-title, .tier-board, .board-header, .visual-dropdown-content {
             transition: color 0.5s ease, text-shadow 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
         }
 
-        /* РЈРќРР’Р•Р РЎРђР›Р¬РќРђРЇ РЁРђРџРљРђ */
+        /* УНИВЕРСАЛЬНАЯ ШАПКА */
         .top-nav { background: #0b0d0a; border-bottom: 2px solid var(--theme-panel-border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; z-index: 1000; }
         .nav-logo { color: var(--theme-primary); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; text-shadow: 0 0 10px var(--theme-glow); cursor: pointer; }
         .nav-logo:hover { filter: brightness(1.2); }
@@ -48,7 +48,7 @@
         .nav-btn:hover { color: var(--btn-color, #a6e3a1); text-shadow: 0 0 10px var(--btn-color, #a6e3a1); }
         .nav-btn:hover::after, .nav-btn.active::after { width: 100%; }
 
-        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ (РљРђРљ Р’ РҐРђР‘Р•) */
+        /* ВЫПАДАЮЩЕЕ МЕНЮ ВИЗУАЛА (КАК В ХАБЕ) */
         .visual-dropdown { position: relative; display: inline-block; }
         .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border, #283325); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
         .visual-dropdown.show .visual-dropdown-content { display: flex; }
@@ -69,7 +69,7 @@
         .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
         .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
 
-        /* РњРРќРРњРђР›РРЎРўРР§РќР«Р• РљРќРћРџРљР РљРђРџРЎРЈР›Р« (Р”Р›РЇ Р”РћРЎРљР РўРР -Р›РРЎРўРђ) */
+        /* МИНИМАЛИСТИЧНЫЕ КНОПКИ КАПСУЛЫ (ДЛЯ ДОСКИ ТИР-ЛИСТА) */
         .tier-role-filters { display: flex; gap: 5px; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
         .tier-role-btn { background: transparent; border: none; color: #6b7a62; font-family: 'Neucha', cursive; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; padding: 6px 16px; border-radius: 8px; outline: none; }
         .tier-role-btn:hover { color: #c4d1b8; }
@@ -77,7 +77,7 @@
         .tier-role-btn.active.user { color: #a6e3a1; background: rgba(166, 227, 161, 0.15); text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
         .tier-role-btn.active.chat { color: #b8a87b; background: rgba(184, 168, 123, 0.15); text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
 
-        /* РџР РћР¤РР›Р¬ TWITCH Р’ РЁРђРџРљР• */
+        /* ПРОФИЛЬ TWITCH В ШАПКЕ */
         .nav-auth .twitch-btn { background: #6441a5; color: white; padding: 8px 16px; border-radius: 8px; font-family: 'Neucha', cursive; font-size: 18px; font-weight: bold; cursor: pointer; border: 1px solid #4a307a; transition: 0.2s; letter-spacing: 1px;}
         .nav-auth .twitch-btn:hover { background: #7d5bbe; box-shadow: 0 0 15px rgba(100, 65, 165, 0.8); }
         .user-profile-neon { display: flex; align-items: center; gap: 18px; background: rgba(15, 20, 15, 0.2); backdrop-filter: blur(16px); padding: 10px 25px 10px 10px; border-radius: 12px; border: 1px solid var(--theme-panel-border); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: 0.3s ease; }
@@ -98,7 +98,7 @@
         .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px; font-family: 'Neucha', cursive;}
         .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
 
-        /* Р”РРќРђРњРР§Р•РЎРљРР™ Р¤РћРќ (РћРіСЂР°РЅРёС‡РµРЅ РѕРєРЅРѕРј) */
+        /* ДИНАМИЧЕСКИЙ ФОН (Ограничен окном) */
         #dynamic-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background-size: cover; background-position: center; 
@@ -108,7 +108,7 @@
         }
         #dynamic-bg.active { opacity: 1; }
 
-        /* РћРЎРќРћР’Рђ РўРР -Р›РРЎРўРђ */
+        /* ОСНОВА ТИР-ЛИСТА */
         .tier-board { 
             position: relative; z-index: 1; 
             margin: 20px 40px; display: flex; flex-direction: column; 
@@ -127,7 +127,7 @@
         .tier-label { width: 100px; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; flex-shrink: 0; box-shadow: 5px 0 15px rgba(0,0,0,0.5); z-index: 2; }
         .tier-content { display: flex; flex-wrap: wrap; gap: 12px; padding: 15px; flex: 1; align-content: flex-start; min-height: 120px; }
 
-        /* РљРђР РўРћР§РљРђ РђРќРРњР• */
+        /* КАРТОЧКА АНИМЕ */
         .tier-item { width: 100px; height: 150px; border-radius: 6px; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); background-size: cover; background-position: center; transition: all 0.2s ease-out; border: 2px solid transparent; text-decoration: none; display: block; }
         .tier-item:hover { transform: scale(1.1) translateY(-5px); z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 15px var(--theme-light, rgba(255,255,255,0.1)); border-color: var(--theme-light, rgba(255,255,255,0.3)); }
         
@@ -135,7 +135,7 @@
         .anime-title { color: var(--theme-light, #e4e4e4); font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 2px 2px 4px #000, 0 0 10px rgba(0,0,0,0.8); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.1; transition: color 0.3s; }
         .item-score { text-align: center; font-size: 18px; font-weight: bold; padding-bottom: 2px; text-shadow: 1px 1px 2px #000; font-family: 'Neucha', cursive; }
 
-        /* Р—РђР› РЎР›РђР’Р« (Р›РР”Р•Р Р‘РћР Р”) */
+        /* ЗАЛ СЛАВЫ (ЛИДЕРБОРД) */
         .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
         .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
@@ -159,23 +159,23 @@
     
     <nav class="top-nav">
         <div style="display: flex; align-items: center; gap: 50px;">
-            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <!-- ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ -->
             <div class="logo-dropdown">
                 <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
                 <div class="logo-dropdown-content">
                     <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;"><span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ</a>
-                    <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;"><span style="font-size: 14px;">в–¶</span> РРіСЂС‹</a>
+                    <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;"><span style="font-size: 14px;">▶</span> Игры</a>
                 </div>
             </div>
             
             <div style="display: flex; gap: 25px; align-items: center;">
-                <a href="index.html" class="nav-btn" style="--btn-color: #ffd700;">РҐР°Р±</a>
-                <a href="tierlist.html" class="nav-btn active" style="--btn-color: #ff4a4a; color: #ff4a4a; text-shadow: 0 0 10px rgba(255, 74, 74, 0.5);">РўРёСЂ-Р»РёСЃС‚</a>
-                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                <a href="index.html" class="nav-btn" style="--btn-color: #ffd700;">Хаб</a>
+                <a href="tierlist.html" class="nav-btn active" style="--btn-color: #ff4a4a; color: #ff4a4a; text-shadow: 0 0 10px rgba(255, 74, 74, 0.5);">Тир-лист</a>
+                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Зрители</button>
                 
-                <!-- РњР•РќР® Р’РР—РЈРђР›Рђ (РўРћР§РќРћ РљРђРљ Р’ РҐРђР‘Р•) -->
+                <!-- МЕНЮ ВИЗУАЛА (ТОЧНО КАК В ХАБЕ) -->
                 <div class="visual-dropdown" id="visual-dropdown">
-                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Визуал</button>
                     <div class="visual-dropdown-content">
                         <div class="mode-toggle" style="margin: 0; justify-content: center;">
                             <span id="label-score" class="mode-label inactive" onclick="document.getElementById('display-mode-switch').click()">123</span>
@@ -187,9 +187,9 @@
                         </div>
                         <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
-                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleGlobalRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleGlobalRoleVis('streamer')">Стример</button>
                             <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleGlobalRoleVis('me')">РЇ</button>
-                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleGlobalRoleVis('chat')">Р§Р°С‚</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleGlobalRoleVis('chat')">Чат</button>
                         </div>
                     </div>
                 </div>
@@ -197,38 +197,38 @@
         </div>
         
         <div class="nav-auth" id="nav-auth">
-            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+            <button class="twitch-btn" onclick="loginTwitch()">Войти через Twitch</button>
         </div>
     </nav>
 
-    <!-- === РћРЎРќРћР’Рђ РўРР -Р›РРЎРўРђ === -->
+    <!-- === ОСНОВА ТИР-ЛИСТА === -->
     <div class="tier-board">
-        <!-- Р¤РѕРЅ РҐР°РјРµР»РµРѕРЅР° Р·Р°РїРµСЂС‚ РІРЅСѓС‚СЂРё РґРѕСЃРєРё -->
+        <!-- Фон Хамелеона заперт внутри доски -->
         <div id="dynamic-bg"></div>
         
         <div class="board-header">
-            <div class="board-title">РђРЅРёРјРµ РўРёСЂ-Р»РёСЃС‚</div>
+            <div class="board-title">Аниме Тир-лист</div>
             
-            <!-- РљРќРћРџРљР-РљРђРџРЎРЈР›Р« Р”Р›РЇ Р’Р«Р‘РћР Рђ Р РћР›Р РўРР -Р›РРЎРўРђ -->
+            <!-- КНОПКИ-КАПСУЛЫ ДЛЯ ВЫБОРА РОЛИ ТИР-ЛИСТА -->
             <div class="tier-role-filters" id="tier-role-filters">
-                <button id="btn-streamer" class="tier-role-btn streamer active" onclick="setRole('streamer')">РЎС‚СЂРёРјРµСЂ</button>
-                <button id="btn-chat" class="tier-role-btn chat" onclick="setRole('chat')">Р§Р°С‚</button>
+                <button id="btn-streamer" class="tier-role-btn streamer active" onclick="setRole('streamer')">Стример</button>
+                <button id="btn-chat" class="tier-role-btn chat" onclick="setRole('chat')">Чат</button>
             </div>
         </div>
 
-        <!-- Р’РћРў РўРћРў РЎРђРњР«Р™ РљРћРќРўР•Р™РќР•Р , РљРћРўРћР Р«Р™ РўР« РЎР›РЈР§РђР™РќРћ РЈР”РђР›РР› -->
+        <!-- ВОТ ТОТ САМЫЙ КОНТЕЙНЕР, КОТОРЫЙ ТЫ СЛУЧАЙНО УДАЛИЛ -->
         <div id="tier-content-area">
-            <div style="text-align: center; font-size: 20px; color: #829c73; padding: 50px;">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…...</div>
+            <div style="text-align: center; font-size: 20px; color: #829c73; padding: 50px;">Синхронизация с базой данных...</div>
         </div>
     </div>
 
-    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
+    <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
             <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
-            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
-                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="filterLeaderboard()">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="filterLeaderboard()">
             </div>
             <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
@@ -242,12 +242,12 @@
         let currentUser = null;
         let globalFranchises = [];
 
-        // Р§РёС‚Р°РµРј ID СЋР·РµСЂР° РёР· СЃСЃС‹Р»РєРё (РґР»СЏ РїРµСЂСЃРѕРЅР°Р»СЊРЅРѕРіРѕ С‚РёСЂ-Р»РёСЃС‚Р°)
+        // Читаем ID юзера из ссылки (для персонального тир-листа)
         let targetUserId = new URLSearchParams(window.location.search).get('user');
         let currentTierRole = targetUserId ? 'user' : 'streamer'; 
-        let targetUserName = "Р—СЂРёС‚РµР»СЊ";
+        let targetUserName = "Зритель";
 
-        // Р¦РІРµС‚Р° РґР»СЏ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅС‹С… Р»РёРЅРёР№ С‚РёСЂРѕРІ
+        // Цвета для горизонтальных линий тиров
         const tierColors = { 'S': '255, 74, 74', 'A': '255, 215, 0', 'B': '203, 166, 247', 'C': '137, 180, 250', 'D': '166, 227, 161', 'F': '136, 136, 136' };
 
         const tiersConfig = [
@@ -259,7 +259,7 @@
             { id: 'F', color: '#888888', min: 0.1 }
         ];
 
-        // --- Р“Р›РћР‘РђР›Р¬РќР«Р• РџР•Р Р•РњР•РќРќР«Р• Р’РР—РЈРђР›Рђ ---
+        // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ВИЗУАЛА ---
         let currentDisplayMode = localStorage.getItem('skinwalker_display_mode') || 'score';
         let visRoles = JSON.parse(localStorage.getItem('skinwalker_vis_roles')) || { streamer: true, me: true, chat: true };
 
@@ -297,7 +297,7 @@
             }
         }
 
-        // --- Р›РћР“РРљРђ РњР•РќР® ---
+        // --- ЛОГИКА МЕНЮ ---
         function toggleVisualMenu() { document.getElementById('visual-dropdown').classList.toggle('show'); }
         window.addEventListener('click', function(e) {
             if (!document.getElementById('visual-dropdown').contains(e.target)) {
@@ -305,7 +305,7 @@
             }
         });
 
-        // --- РђР’РўРћР РР—РђР¦РРЇ Р РЁРђРџРљРђ ---
+        // --- АВТОРИЗАЦИЯ И ШАПКА ---
         function loginTwitch() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=`; }
         function logoutTwitch() { try { localStorage.removeItem('twitch_token'); } catch(e){} location.reload(); }
 
@@ -352,13 +352,13 @@
                     
                     document.getElementById('nav-auth').innerHTML = `
                         <div class="user-profile-neon">
-                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">
                                 <img src="${currentUser.profile_image_url}" class="user-avatar">
                             </div>
                             <div class="profile-info">
                                 <div class="profile-top">
-                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span>
-                                    <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">${currentUser.display_name}</span>
+                                    <button class="logout-neon" onclick="logoutTwitch()">Выйти</button>
                                 </div>
                                 <div class="profile-bottom">
                                     ${uInfo.badge}
@@ -373,10 +373,10 @@
                         </div>
                     `;
                 }
-            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+            } catch (e) { console.error('Ошибка авторизации', e); }
         }
 
-        // --- Р›РћР“РРљРђ Р—РђР›Рђ РЎР›РђР’Р« ---
+        // --- ЛОГИКА ЗАЛА СЛАВЫ ---
         let lbAllUsers = [];
 
         function openLeaderboard() {
@@ -406,20 +406,20 @@
             const listEl = document.getElementById('leaderboard-list');
             listEl.innerHTML = '';
             if (usersArray.length === 0) {
-                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>'; return;
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">Никого не найдено.</div>'; return;
             }
             usersArray.forEach((u) => {
                 const originalIndex = lbAllUsers.findIndex(orig => orig.id === u.id);
                 const rank = originalIndex + 1;
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
-                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
-                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
                 const dbUser = window.globalUsersDB ? window.globalUsersDB[u.name.toLowerCase()] : null;
                 const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
                 const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
-                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">В сети</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">Не в сети</span>';
 
                 const html = `
                 <a href="profile.html?user=${u.id}" class="lb-item">
@@ -433,7 +433,7 @@
                     </div>
                     <div class="lb-stats">
                         <div class="lb-count">${u.count}</div>
-                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                        <div class="lb-count-label">оценок</div>
                     </div>
                 </a>`;
                 listEl.insertAdjacentHTML('beforeend', html);
@@ -446,7 +446,7 @@
             renderLeaderboard(filtered);
         }
 
-        // --- Р›РћР“РРљРђ РўРР -Р›РРЎРўРђ ---
+        // --- ЛОГИКА ТИР-ЛИСТА ---
         const safeNum = (v) => Number(v) || 0;
         const getAvg = (sum, count) => count > 0 ? parseFloat((sum/count).toFixed(1)) : 0;
 
@@ -496,9 +496,9 @@
                     });
                 }
 
-                // РЎРѕР·РґР°РµРј РІРєР»Р°РґРєСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РµСЃР»Рё СЌС‚Рѕ С‡РµР№-С‚Рѕ Р»РёС‡РЅС‹Р№ С‚РёСЂ-Р»РёСЃС‚
+                // Создаем вкладку пользователя, если это чей-то личный тир-лист
                 if (targetUserId) {
-                    const btnText = targetUserName === "Р—СЂРёС‚РµР»СЊ" ? "РЇ" : targetUserName;
+                    const btnText = targetUserName === "Зритель" ? "Я" : targetUserName;
                     const filtersBox = document.getElementById('tier-role-filters') || document.getElementById('role-toggles');
                     if (filtersBox && !document.getElementById('btn-user')) {
                         filtersBox.insertAdjacentHTML('beforeend', `<button id="btn-user" class="tier-role-btn user" onclick="setRole('user')">${btnText}</button>`);
@@ -507,14 +507,14 @@
 
                 setRole(currentTierRole);
             } catch (e) { 
-                console.error("РљР РРўРР§Р•РЎРљРђРЇ РћРЁРР‘РљРђ:", e);
-                document.getElementById('tier-content-area').innerHTML = `<div style="text-align:center; padding:50px; color:#ff5555;">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё!<br><span style="font-size:14px; color:#a4b09c; font-family:sans-serif;">${e.name}: ${e.message}</span></div>`; 
+                console.error("КРИТИЧЕСКАЯ ОШИБКА:", e);
+                document.getElementById('tier-content-area').innerHTML = `<div style="text-align:center; padding:50px; color:#ff5555;">Ошибка загрузки!<br><span style="font-size:14px; color:#a4b09c; font-family:sans-serif;">${e.name}: ${e.message}</span></div>`; 
             }
         }
 
         function setRole(role) {
             currentTierRole = role;
-            // Р‘РµР·РѕРїР°СЃРЅРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ РєР»Р°СЃСЃРѕРІ РєРЅРѕРїРѕРє, С‡С‚РѕР±С‹ СЃРєСЂРёРїС‚ РЅРµ РєСЂР°С€РёР»СЃСЏ
+            // Безопасное переключение классов кнопок, чтобы скрипт не крашился
             const btnS = document.getElementById('btn-streamer');
             if (btnS) btnS.classList.toggle('active', role === 'streamer');
             const btnC = document.getElementById('btn-chat');
@@ -569,13 +569,13 @@
             });
 
             if (!hasAnyCards) {
-                board.innerHTML = '<div style="text-align: center; font-size: 20px; color: #6b7a62; padding: 50px;">РџРѕРєР° РЅРµС‚ РѕС†РµРЅРѕРє РґР»СЏ СЌС‚РѕРіРѕ С‚РёСЂ-Р»РёСЃС‚Р°...</div>';
+                board.innerHTML = '<div style="text-align: center; font-size: 20px; color: #6b7a62; padding: 50px;">Пока нет оценок для этого тир-листа...</div>';
             }
             
             extractCoverColors();
         }
 
-        // --- Р›РћР“РРљРђ РҐРђРњР•Р›Р•РћРќРђ Р”Р›РЇ РљРђР РўРћР§Р•Рљ ---
+        // --- ЛОГИКА ХАМЕЛЕОНА ДЛЯ КАРТОЧЕК ---
         function extractCoverColors() {
             if (typeof ColorThief === 'undefined') return;
             const colorThief = new ColorThief();

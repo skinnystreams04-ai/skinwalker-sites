@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <style>
 
-       /* Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ (Р›РћР“РћРўРРџ) */
+       /* ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ (ЛОГОТИП) */
         .logo-dropdown { position: relative; display: inline-block; padding: 10px 0; }
         .nav-logo-wrap { display: flex; align-items: center; gap: 8px; color: var(--theme-primary, #a6e3a1); font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--theme-glow, rgba(166, 227, 161, 0.5)); cursor: pointer; transition: 0.3s; font-family: 'Neucha', cursive; }
         .nav-logo-wrap:hover { filter: brightness(1.2); }
@@ -27,7 +27,7 @@
         .logo-link:hover { background: rgba(0,0,0,0.4); color: var(--site-color); text-shadow: 0 0 10px var(--site-color); border-color: var(--site-color); }
         .logo-link.active { color: var(--site-color); background: rgba(0,0,0,0.3); border-left: 3px solid var(--site-color); border-radius: 4px 8px 8px 4px; }
  
-        /* Р“Р›РћР‘РђР›Р¬РќР«Р• Р¦Р’Р•РўРђ Р РҐРђРњР•Р›Р•РћРќ */
+        /* ГЛОБАЛЬНЫЕ ЦВЕТА И ХАМЕЛЕОН */
         :root {
             --theme-primary: #a6e3a1;
             --theme-glow: rgba(166, 227, 161, 0.5);
@@ -37,12 +37,12 @@
 
         body { margin: 0; padding: 0 0 40px 0; font-family: 'Neucha', cursive, sans-serif; background-color: #0b0d0a; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); color: #a4b09c; min-height: 100vh; overflow-x: hidden; }
 
-        /* РџР›РђР’РќР«Р• РџР•Р Р•РҐРћР”Р« Р”Р›РЇ РҐРђРњР•Р›Р•РћРќРђ */
+        /* ПЛАВНЫЕ ПЕРЕХОДЫ ДЛЯ ХАМЕЛЕОНА */
         .top-nav, .nav-logo, .hub-right-panel, .controls-bar, .search-input, .sort-select {
             transition: color 0.5s ease, text-shadow 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
         }
 
-        /* Р”РРќРђРњРР§Р•РЎРљРР™ Р¤РћРќ */
+        /* ДИНАМИЧЕСКИЙ ФОН */
         #dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: blur(40px) brightness(0.2); opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.5s ease, background-image 0.5s ease; }
         #dynamic-bg.active { opacity: 1; }
 
@@ -79,7 +79,7 @@
         .logout-neon { background: transparent; border: none; color: rgba(255, 85, 85, 0.6); font-size: 15px; text-transform: uppercase; font-weight: bold; cursor: pointer; transition: 0.3s; padding: 0; letter-spacing: 1px; font-family: 'Neucha', cursive;}
         .logout-neon:hover { color: #ff5555; text-shadow: 0 0 12px rgba(255, 85, 85, 0.8); transform: scale(1.05); }
 
-        /* Р’Р«РџРђР”РђР®Р©Р•Р• РњР•РќР® Р’РР—РЈРђР›Рђ */
+        /* ВЫПАДАЮЩЕЕ МЕНЮ ВИЗУАЛА */
         .visual-dropdown { position: relative; display: inline-block; }
         .visual-dropdown-content { display: none; position: absolute; right: 0; top: 100%; margin-top: 15px; background: rgba(14, 17, 13, 0.95); border: 1px solid var(--theme-panel-border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; min-width: 250px; backdrop-filter: blur(10px); flex-direction: column; gap: 15px; }
         .visual-dropdown.show .visual-dropdown-content { display: flex; }
@@ -100,7 +100,7 @@
         .role-toggle-btn.active.me { color: #a6e3a1; border-bottom-color: #a6e3a1; text-shadow: 0 0 8px rgba(166, 227, 161, 0.6); }
         .role-toggle-btn.active.chat { color: #b8a87b; border-bottom-color: #b8a87b; text-shadow: 0 0 8px rgba(184, 168, 123, 0.6); }
 
-        /* РџРђРќР•Р›Р¬ РЈРџР РђР’Р›Р•РќРРЇ */
+        /* ПАНЕЛЬ УПРАВЛЕНИЯ */
         .controls-bar { display: flex; justify-content: flex-start; align-items: center; gap: 15px; padding: 12px 25px; margin: 0 40px 30px 40px; background: rgba(14, 17, 13, 0.4); backdrop-filter: blur(15px); border: 1px solid var(--theme-panel-border); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: border-color 0.5s ease, box-shadow 0.5s ease; }
         .controls-divider { width: 1px; height: 30px; background: var(--theme-panel-border); margin: 0 10px; transition: 0.5s ease; }
         .search-input, .sort-select { background: transparent; border: none; border-bottom: 1px solid var(--theme-panel-border); color: #c4d1b8; padding: 8px 12px; font-family: 'Neucha', cursive; font-size: 18px; outline: none; border-radius: 0; transition: border-color 0.5s ease, box-shadow 0.5s ease;}
@@ -112,10 +112,10 @@
         .sort-dir-btn { background: transparent; border: none; color: #6b7a62; padding: 0 5px 0 15px; font-family: sans-serif; font-size: 24px; font-weight: bold; cursor: pointer; outline: none; transition: 0.2s; display: flex; justify-content: center; align-items: center; line-height: 1; }
         .sort-dir-btn:hover { color: var(--theme-primary); text-shadow: 0 0 10px var(--theme-glow); transform: translateY(-3px); }
 
-        /* РћРЎРќРћР’РќРђРЇ РЎР•РўРљРђ */
+        /* ОСНОВНАЯ СЕТКА */
         .main-layout { display: flex; gap: 30px; padding: 0 40px; max-width: 100%; margin: 0 auto; align-items: flex-start; width: 100%; box-sizing: border-box; }
         
-        /* РЎС‚РµРєР»СЏРЅРЅР°СЏ РІРёС‚СЂРёРЅР° */
+        /* Стеклянная витрина */
         .trophy-room { 
             flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; 
             background: rgba(14, 17, 13, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -124,19 +124,19 @@
             transition: border-color 0.5s ease, box-shadow 0.5s ease;
         }
 
-       /* РџР РђР’РђРЇ РџРђРќР•Р›Р¬ РҐРђР‘Рђ */
+       /* ПРАВАЯ ПАНЕЛЬ ХАБА */
         .hub-right-panel { width: 420px; flex-shrink: 0; background: #0b0d0a; border: 2px solid var(--theme-panel-border); border-radius: 12px; position: sticky; top: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow: hidden; transition: border-color 0.5s ease, box-shadow 0.5s ease; }
         .preview-placeholder { padding: 40px 20px; text-align: center; color: #6b7a62; font-size: 18px; display: flex; height: 100%; align-items: center; justify-content: center; }
         .preview-cover { width: 100%; height: 200px; object-fit: cover; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); border-bottom: 2px solid var(--theme-panel-border); transition: border-color 0.5s ease; }
         .preview-content { padding: 0 20px 20px 20px; margin-top: -60px; position: relative; z-index: 2; display: flex; flex-direction: column; }
         .preview-title { font-size: 24px; font-weight: bold; color: #fff; text-transform: uppercase; line-height: 1.1; text-align: center; transition: color 0.4s; text-shadow: 2px 2px 5px #000; }
 
-        /* Р“Р РђР¤РРљ Р РљР РРўР•Р РР Р’ РџРђРќР•Р›Р */
+        /* ГРАФИК И КРИТЕРИИ В ПАНЕЛИ */
         .theory-container { background: transparent; border: none; padding: 0; }
         .crit-row { display: flex; justify-content: space-between; font-size: 14px; color: #a4b09c; padding: 4px 10px; border-radius: 0 6px 6px 0; margin-bottom: 6px; transition: 0.3s; border-bottom: 1px dashed rgba(255,255,255,0.1); }
         .crit-row span:last-child { font-weight: bold; font-family: 'Neucha', cursive, sans-serif; font-size: 17px; color: #fff; text-shadow: 1px 1px 2px #000; }
 
-        /* РљРђР РўРћР§РљР (РЎ РђРќРРњР• РћР‘Р›РћР–РљРћР™ РќРђ Р’Р•РЎР¬ Р­РљР РђРќ) */
+        /* КАРТОЧКИ (С АНИМЕ ОБЛОЖКОЙ НА ВЕСЬ ЭКРАН) */
         .card-container { width: 100%; aspect-ratio: 2 / 3; position: relative; max-width: 220px; justify-self: center; }
         .card-container::before { content: ''; position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background: var(--card-color); filter: blur(40px); opacity: 0.15; z-index: -1; transition: 0.5s; border-radius: 50%; }
         .card-container:hover::before { opacity: 0.35; transform: scale(1.05); }
@@ -166,7 +166,7 @@
         
         body.is-admin .me-element { display: none !important; }
 
-        /* Р—РђР› РЎР›РђР’Р« Р РџРћРРЎРљ */
+        /* ЗАЛ СЛАВЫ И ПОИСК */
         .leaderboard-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .leaderboard-box { background: #0b0d0a; border: 2px solid #a6e3a1; border-radius: 12px; width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(166,227,161,0.2); position: relative; }
         .leaderboard-header { padding: 25px 20px; border-bottom: 1px solid #283325; text-align: center; font-size: 26px; font-weight: bold; color: #a6e3a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(166,227,161,0.5); flex-shrink: 0; font-family: 'Neucha', cursive; }
@@ -190,36 +190,36 @@
 </head>
 <body>
     <div id="dynamic-bg"></div>
-    <div class="loading-screen" id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column;">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
+    <div class="loading-screen" id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d0a; z-index: 9999; display: flex; justify-content: center; align-items: center; color: #a6e3a1; font-size: 24px; flex-direction: column;">Загрузка данных...</div>
 
     <nav class="top-nav">
         <div style="display: flex; align-items: center; gap: 50px;">
             
-            <!-- Р“Р›РћР‘РђР›Р¬РќР«Р™ РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬ РЎРђР™РўРћР’ -->
+            <!-- ГЛОБАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ САЙТОВ -->
             <div class="logo-dropdown">
                 <div class="nav-logo-wrap">Skinwalker РђРЅРёРјРµ <span class="logo-arrow">в–ј</span></div>
                 <div class="logo-dropdown-content">
-                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР° РЅР° С‚РµРєСѓС‰СѓСЋ РїР°РїРєСѓ РђРЅРёРјРµ -->
+                    <!-- Относительная ссылка на текущую папку Аниме -->
                     <a href="index.html" class="logo-link active" style="--site-color: #a6e3a1;">
                         <span style="font-size: 14px;">в–¶</span> РђРЅРёРјРµ
                     </a>
-                    <!-- РћС‚РЅРѕСЃРёС‚РµР»СЊРЅР°СЏ СЃСЃС‹Р»РєР°: РІС‹Р№С‚Рё РЅР°Р·Р°Рґ (../) Рё Р·Р°Р№С‚Рё РІ РїР°РїРєСѓ Game -->
+                    <!-- Относительная ссылка: выйти назад (../) и зайти в папку Game -->
                     <a href="../game/index.html" class="logo-link" style="--site-color: #ffd700;">
-                        <span style="font-size: 14px;">в–¶</span> РРіСЂС‹
+                        <span style="font-size: 14px;">▶</span> Игры
                     </a>
                 </div>
             </div>
             
-            <!-- Р›РћРљРђР›Р¬РќРћР• РњР•РќР® (РўРѕР»СЊРєРѕ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃР°Р№С‚Р°) -->
+            <!-- ЛОКАЛЬНОЕ МЕНЮ (Только для текущего сайта) -->
             <div style="display: flex; gap: 25px; align-items: center;">
-                <a href="index.html" class="nav-btn active" style="--btn-color: #ffd700; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">РҐР°Р±</a>
-                <a href="tierlist.html" class="nav-btn" style="--btn-color: #ff4a4a;">РўРёСЂ-Р»РёСЃС‚</a>
-                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Р—СЂРёС‚РµР»Рё</button>
+                <a href="index.html" class="nav-btn active" style="--btn-color: #ffd700; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">Хаб</a>
+                <a href="tierlist.html" class="nav-btn" style="--btn-color: #ff4a4a;">Тир-лист</a>
+                <button onclick="openLeaderboard()" class="nav-btn" style="--btn-color: #89b4fa;">Зрители</button>
                 
-                <!-- РњР•РќР® Р’РР—РЈРђР›Рђ Р”Р›РЇ РҐРђР‘Рђ -->
+                <!-- МЕНЮ ВИЗУАЛА ДЛЯ ХАБА -->
                 <div class="visual-dropdown" id="visual-dropdown">
-                    <!-- ... С‚СѓС‚ РѕСЃС‚Р°Р»СЊРЅРѕР№ РєРѕРґ РјРµРЅСЋ РІРёР·СѓР°Р»Р° Р±РµР· РёР·РјРµРЅРµРЅРёР№ ... -->
-                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Р’РёР·СѓР°Р»</button>
+                    <!-- ... тут остальной код меню визуала без изменений ... -->
+                    <button class="nav-btn" style="--btn-color: #a6e3a1;" onclick="toggleVisualMenu()">Визуал</button>
                     <div class="visual-dropdown-content">
                         <div class="mode-toggle" style="margin: 0; justify-content: center;">
                             <span id="label-score" class="mode-label inactive" onclick="document.getElementById('display-mode-switch').click()">123</span>
@@ -231,9 +231,9 @@
                         </div>
                         <div style="border-top: 1px dashed #283325; margin: 5px 0;"></div>
                         <div class="role-toggles" style="margin: 0; justify-content: center; flex-wrap: wrap;">
-                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">РЎС‚СЂРёРјРµСЂ</button>
+                            <button id="toggle-streamer" class="role-toggle-btn active streamer" onclick="toggleRoleVis('streamer')">Стример</button>
                             <button id="toggle-me" class="role-toggle-btn active me" onclick="toggleRoleVis('me')">РЇ</button>
-                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Р§Р°С‚</button>
+                            <button id="toggle-chat" class="role-toggle-btn active chat" onclick="toggleRoleVis('chat')">Чат</button>
                         </div>
                     </div>
                 </div>
@@ -241,61 +241,61 @@
         </div>
         
         <div class="nav-auth" id="nav-auth">
-            <button class="twitch-btn" onclick="loginTwitch()">Р’РѕР№С‚Рё С‡РµСЂРµР· Twitch</button>
+            <button class="twitch-btn" onclick="loginTwitch()">Войти через Twitch</button>
         </div>
     </nav>
 
     <div class="controls-bar" style="display: none;" id="controls-bar">
-        <input type="text" id="search-input" class="search-input" placeholder="РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ..." oninput="applyFiltersAndSort()">
+        <input type="text" id="search-input" class="search-input" placeholder="Поиск по названию..." oninput="applyFiltersAndSort()">
         <div class="controls-divider"></div>
         <select id="sort-select" class="sort-select" onchange="toggleRoleSelect(); applyFiltersAndSort();">
-            <option value="overall">РџРѕ РС‚РѕРіРѕРІРѕР№ РѕС†РµРЅРєРµ</option>
-            <option value="avgTheory">РџРѕ СЃСЂРµРґРЅРµРјСѓ РљСЂРёС‚РµСЂРёРµРІ</option>
-            <option value="plot">РџРѕ РЎСЋР¶РµС‚Сѓ</option>
-            <option value="visuals">РџРѕ Р’РёР·СѓР°Р»Сѓ</option>
-            <option value="music">РџРѕ РњСѓР·С‹РєРµ</option>
+            <option value="overall">По Итоговой оценке</option>
+            <option value="avgTheory">По среднему Критериев</option>
+            <option value="plot">По Сюжету</option>
+            <option value="visuals">По Визуалу</option>
+            <option value="music">По Музыке</option>
             <option value="world">РџРѕ РњРёСЂСѓ</option>
-            <option value="atmosphere">РџРѕ РџРµСЂСЃРѕРЅР°Р¶Р°Рј</option>
-            <option value="az">РџРѕ Р°Р»С„Р°РІРёС‚Сѓ (A-Z)</option>
-            <option value="date_watched">РџРѕ РґР°С‚Рµ РїСЂРѕСЃРјРѕС‚СЂР°</option>
-            <option value="release_year">РџРѕ РґР°С‚Рµ РІС‹РїСѓСЃРєР°</option>
-            <option value="episodes">РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ СЃРµСЂРёР№</option>
+            <option value="atmosphere">По Персонажам</option>
+            <option value="az">По алфавиту (A-Z)</option>
+            <option value="date_watched">По дате просмотра</option>
+            <option value="release_year">По дате выпуска</option>
+            <option value="episodes">По количеству серий</option>
         </select>
         <div class="controls-divider" id="role-divider"></div>
         <select id="role-select" class="sort-select" onchange="applyFiltersAndSort()">
-            <option value="streamer">РЎС‚СЂРёРјРµСЂ</option>
+            <option value="streamer">Стример</option>
             <option value="me" class="me-element">РЇ</option>
-            <option value="chat">Р§Р°С‚</option>
+            <option value="chat">Чат</option>
         </select>
-        <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="РР·РјРµРЅРёС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ">в†“</button>
+        <button id="sort-dir-btn" class="sort-dir-btn" onclick="toggleSortDir()" title="Изменить направление">↓</button>
     </div>
 
     <div class="main-layout" id="main-layout" style="display: none;">
-        <div id="trophy-room" class="trophy-room"><div class="loading">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ Р±Р°Р·РѕР№...</div></div>
+        <div id="trophy-room" class="trophy-room"><div class="loading">Синхронизация с базой...</div></div>
         
         <div class="hub-right-panel" id="hub-right-panel">
-            <div id="hub-preview-placeholder" class="preview-placeholder">РќР°РІРµРґРёС‚Рµ РєСѓСЂСЃРѕСЂ РЅР° Р»СЋР±РѕР№ С‚Р°Р№С‚Р» РІ СЃРµС‚РєРµ, С‡С‚РѕР±С‹ СѓРІРёРґРµС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ</div>
+            <div id="hub-preview-placeholder" class="preview-placeholder">Наведите курсор на любой тайтл в сетке, чтобы увидеть статистику</div>
             
             <div id="hub-preview-container" style="display: none; flex-direction: column;">
                 <img id="hub-preview-cover" src="" class="preview-cover" alt="cover">
                 <div class="preview-content">
-                    <div id="hub-preview-title" class="preview-title" style="margin-bottom: 10px;">РќР°Р·РІР°РЅРёРµ</div>
+                    <div id="hub-preview-title" class="preview-title" style="margin-bottom: 10px;">Название</div>
                     <div class="chart-container" style="height: 200px; margin-bottom: 15px;"><canvas id="hub-previewChart"></canvas></div>
                     <div class="custom-legend" id="hub-preview-legend"></div>
                     <div class="theory-container" id="hub-preview-theory" style="margin-top: 10px;"></div>
-                    <button id="hub-preview-btn" style="margin-top: 15px; width: 100%; background: #121612; border: 1px solid #4a5c41; color: #fff; padding: 10px; font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">РњРµРґРёР°С‚РµРєР° в–¶</button>
+                    <button id="hub-preview-btn" style="margin-top: 15px; width: 100%; background: #121612; border: 1px solid #4a5c41; color: #fff; padding: 10px; font-family: 'Neucha', cursive; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">Медиатека ▶</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Р•Р”РРќРћР• РћРљРќРћ Р—Р РРўР•Р›Р•Р™ (Р—РђР› РЎР›РђР’Р« + РџРћРРЎРљ) -->
+    <!-- ЕДИНОЕ ОКНО ЗРИТЕЛЕЙ (ЗАЛ СЛАВЫ + ПОИСК) -->
     <div id="leaderboard-modal" class="leaderboard-overlay" style="display: none;" onclick="if(event.target===this) this.style.display='none'">
         <div class="leaderboard-box" style="height: 700px;">
             <div class="close-btn" style="position: absolute; top: 15px; right: 20px; font-size: 32px; color: #a6e3a1; cursor: pointer; transition: 0.2s; z-index: 10;" onclick="document.getElementById('leaderboard-modal').style.display='none'" onmouseover="this.style.color='#ff5555'" onmouseout="this.style.color='#a6e3a1'">Г—</div>
-            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Р—Р°Р» СЃР»Р°РІС‹ Р·СЂРёС‚РµР»РµР№</div>
+            <div class="leaderboard-header" style="border-bottom: none; padding-bottom: 15px;">Зал славы зрителей</div>
             <div style="padding: 0 20px 15px 20px; border-bottom: 1px solid #283325;">
-                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Р’РІРµРґРёС‚Рµ РЅРёРєРЅРµР№Рј РґР»СЏ РїРѕРёСЃРєР°..." oninput="filterLeaderboard()">
+                <input type="text" id="lb-search" class="search-input" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid #4a5c41; border-radius: 8px; padding: 12px 15px; color: #c4d1b8; outline: none; font-family: 'Neucha', cursive; font-size: 16px;" placeholder="Введите никнейм для поиска..." oninput="filterLeaderboard()">
             </div>
             <div class="leaderboard-list" id="leaderboard-list"></div>
         </div>
@@ -350,7 +350,7 @@
             const listEl = document.getElementById('leaderboard-list');
             listEl.innerHTML = '';
             if (usersArray.length === 0) {
-                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">РќРёРєРѕРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ.</div>';
+                listEl.innerHTML = '<div style="text-align: center; color: #6b7a62; padding: 30px; font-size: 18px;">Никого не найдено.</div>';
                 return;
             }
             
@@ -359,14 +359,14 @@
                 const rank = originalIndex + 1;
                 
                 let rankClass = ''; let crown = rank;
-                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ‘‘'; }
-                else if (rank === 2) { rankClass = 'top-2'; crown = 'рџҐ€'; }
-                else if (rank === 3) { rankClass = 'top-3'; crown = 'рџҐ‰'; }
+                if (rank === 1) { rankClass = 'top-1'; crown = 'рџ'''; }
+                else if (rank === 2) { rankClass = 'top-2'; crown = '🥈'; }
+                else if (rank === 3) { rankClass = 'top-3'; crown = '🥉'; }
 
                 const dbUser = window.globalUsersDB[u.name.toLowerCase()];
                 const color = (dbUser && dbUser.color) ? dbUser.color : '#a4b09c';
                 const isOnline = dbUser && dbUser.last_online && (Date.now() - dbUser.last_online < 150000);
-                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">Р’ СЃРµС‚Рё</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">РќРµ РІ СЃРµС‚Рё</span>';
+                const statusDot = isOnline ? '<div class="status-dot status-online" style="display:inline-block; margin-right:6px;"></div><span style="color:#a6e3a1; font-size:13px; font-family:sans-serif;">В сети</span>' : '<div class="status-dot status-offline" style="display:inline-block; margin-right:6px;"></div><span style="color:#6b7a62; font-size:13px; font-family:sans-serif;">Не в сети</span>';
 
                 const html = `
                 <a href="profile.html?user=${u.id}" class="lb-item">
@@ -380,7 +380,7 @@
                     </div>
                     <div class="lb-stats">
                         <div class="lb-count">${u.count}</div>
-                        <div class="lb-count-label">РѕС†РµРЅРѕРє</div>
+                        <div class="lb-count-label">оценок</div>
                     </div>
                 </a>`;
                 listEl.insertAdjacentHTML('beforeend', html);
@@ -427,7 +427,7 @@
         
         function getTierData(score) {
             const num = Number(score) || 0;
-            if (num === 0) return { letter: 'вЂ”', color: '#6b7a62', glow: 'none' };
+            if (num === 0) return { letter: '—', color: '#6b7a62', glow: 'none' };
             if (num >= 9.0) return { letter: 'S', color: '#ff4a4a', glow: '0 0 15px rgba(255, 74, 74, 0.8)' };
             if (num >= 8.0) return { letter: 'A', color: '#ffd700', glow: '0 0 15px rgba(255, 215, 0, 0.8)' };
             if (num >= 7.0) return { letter: 'B', color: '#cba6f7', glow: '0 0 15px rgba(203, 166, 247, 0.8)' };
@@ -521,7 +521,7 @@
 
         function toggleSortDir() {
             currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
-            document.getElementById('sort-dir-btn').innerText = currentSortDir === 'desc' ? 'в†“' : 'в†‘';
+            document.getElementById('sort-dir-btn').innerText = currentSortDir === 'desc' ? '↓' : '↑';
             applyFiltersAndSort();
         }
 
@@ -572,13 +572,13 @@
                     
                     document.getElementById('nav-auth').innerHTML = `
                         <div class="user-profile-neon">
-                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">
+                            <div class="avatar-glow-wrap" style="--user-color: ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">
                                 <img src="${currentUser.profile_image_url}" class="user-avatar">
                             </div>
                             <div class="profile-info">
                                 <div class="profile-top">
-                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="РњРѕР№ РїСЂРѕС„РёР»СЊ">${currentUser.display_name}</span>
-                                    <button class="logout-neon" onclick="logoutTwitch()">Р’С‹Р№С‚Рё</button>
+                                    <span class="profile-name-top" style="color: ${uInfo.color}; text-shadow: 0 0 8px ${uInfo.color}; cursor: pointer; transition: 0.2s;" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter='none'" onclick="window.location.href='profile.html?user=${currentUser.id}'" title="Мой профиль">${currentUser.display_name}</span>
+                                    <button class="logout-neon" onclick="logoutTwitch()">Выйти</button>
                                 </div>
                                 <div class="profile-bottom">
                                     ${uInfo.badge}
@@ -599,7 +599,7 @@
                     }
                     startOnlineHeartbeat(); 
                 }
-            } catch (e) { console.error('РћС€РёР±РєР° Р°РІС‚РѕСЂРёР·Р°С†РёРё', e); }
+            } catch (e) { console.error('Ошибка авторизации', e); }
         }
         
         function startOnlineHeartbeat() {
@@ -619,7 +619,7 @@
             try {
                 const dbRes = await fetch(`${FIREBASE_BASE}/global_users.json`, { cache: 'no-store' });
                 if (dbRes.ok) { window.globalUsersDB = (await dbRes.json()) || {}; }
-            } catch(e) { console.warn("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±Р°Р·Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№", e); }
+            } catch(e) { console.warn("Не удалось загрузить базу пользователей", e); }
 
             await checkTwitchAuth();
 
@@ -633,7 +633,7 @@
                 window.globalCommData = commData;
 
                 const room = document.getElementById('trophy-room');
-                if (!data) { room.innerHTML = "<div class='loading'>РљРѕР»Р»РµРєС†РёСЏ РїСѓСЃС‚Р°.</div>"; return; }
+                if (!data) { room.innerHTML = "<div class='loading'>Коллекция пуста.</div>"; return; }
                 
                 globalFranchises = []; 
 
@@ -710,7 +710,7 @@
 
                     const baseSeason = seasons[0];
                     
-                    // РџСЂРѕРІРµСЂСЏРµРј Р’РЎР• СЃРµР·РѕРЅС‹ Рё С„РёР»СЊРјС‹ РІРЅСѓС‚СЂРё С„СЂР°РЅС€РёР·С‹ РЅР° РЅР°Р»РёС‡РёРµ СЃСЃС‹Р»РѕРє
+                    // Проверяем ВСЕ сезоны и фильмы внутри франшизы на наличие ссылок
                     const hasAnyVod = seasons.some(s => 
                         (s.videoUrls && s.videoUrls.length > 0) || 
                         (typeof s.videoUrl === 'string' && s.videoUrl.trim() !== '')
@@ -722,7 +722,7 @@
                         release_year: parseInt(baseSeason.info.year) || 0, date_watched: baseSeason.info.dateWatched ? new Date(baseSeason.info.dateWatched).getTime() : 0,
                         az: franchiseId.replace(/_/g, ' ').toLowerCase(),
                         scores: scoresObj,
-                        hasVod: hasAnyVod // РўРµРїРµСЂСЊ РєР°РјРµСЂР° РїРѕСЏРІРёС‚СЃСЏ, РµСЃР»Рё Р·Р°РїРёСЃСЊ РµСЃС‚СЊ С…РѕС‚СЊ РіРґРµ-С‚Рѕ
+                        hasVod: hasAnyVod // Теперь камера появится, если запись есть хоть где-то
                     });
                 }
 
@@ -773,15 +773,15 @@
             room.innerHTML = "";
             
             if (arr.length === 0) { 
-                room.innerHTML = "<div class='loading'>РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ...</div>"; 
+                room.innerHTML = "<div class='loading'>Ничего не найдено...</div>"; 
                 return; 
             }
 
             const isStreamer = currentUser && currentUser.login.toLowerCase() === ADMIN_USERNAME.toLowerCase();
             const validKeys = ['overall', 'avgTheory', 'plot', 'visuals', 'music', 'world', 'atmosphere'];
             const scoreKey = validKeys.includes(sortVal) ? sortVal : 'overall';
-            const sortNames = { 'avgTheory': 'РЎР Р•Р”РќР•РњРЈ РљР РРўР•Р РР®', 'plot': 'РЎР®Р–Р•РўРЈ', 'visuals': 'Р’РР—РЈРђР›РЈ', 'music': 'РњРЈР—Р«РљР•', 'world': 'РњРР РЈ', 'atmosphere': 'РџР•Р РЎРћРќРђР–РђРњ' };
-            const labelHtml = scoreKey !== 'overall' ? `<div style="text-align: center; color: #829c73; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 1px 1px 2px #000;">РћР¦Р•РќРљРђ РџРћ ${sortNames[scoreKey]}</div>` : '';
+            const sortNames = { 'avgTheory': 'СРЕДНЕМУ КРИТЕРИЮ', 'plot': 'СЮЖЕТУ', 'visuals': 'ВИЗУАЛУ', 'music': 'МУЗЫКЕ', 'world': 'МИРУ', 'atmosphere': 'ПЕРСОНАЖАМ' };
+            const labelHtml = scoreKey !== 'overall' ? `<div style="text-align: center; color: #829c73; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 1px 1px 2px #000;">ОЦЕНКА ПО ${sortNames[scoreKey]}</div>` : '';
 
             arr.forEach((f, index) => {
                 const safeIdForLink = encodeURIComponent(f.id).replace(/'/g, "%27");
@@ -816,8 +816,8 @@
                     }
                 };
 
-                const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'РЎС‚СЂРёРјРµСЂ', valStr) : '';
-                const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Р§Р°С‚', valChat) : '';
+                const strBoxHtml = visRoles.streamer ? getBoxHtml('streamer', 'Стример', valStr) : '';
+                const chatBoxHtml = visRoles.chat ? getBoxHtml('chat', 'Чат', valChat) : '';
                 const meBoxHtml = (!isStreamer && visRoles.me) ? getBoxHtml('me', 'РЇ', valMe) : '';
 
                 const cardHtml = `
@@ -954,11 +954,11 @@
                     <div style="color: #fff; font-size: 26px; font-weight: bold; text-shadow: ${numAvg > 0 ? getScoreShadow(numAvg, true) : 'none'}; margin-bottom: 5px; font-family: 'Neucha', cursive;">${numAvg > 0 ? numAvg : '-'}</div>
                     
                     <div style="width: 100%; display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed rgba(74, 92, 65, 0.6); padding-top: 8px; margin-top: 5px;">
-                        ${row('РЎСЋР¶РµС‚', theory.plot)}
-                        ${row('Р’РёР·СѓР°Р»', theory.visuals)}
-                        ${row('РњСѓР·С‹РєР°', theory.music)}
+                        ${row('Сюжет', theory.plot)}
+                        ${row('Визуал', theory.visuals)}
+                        ${row('Музыка', theory.music)}
                         ${row('РњРёСЂ', theory.world)}
-                        ${row('РџРµСЂСЃРѕРЅР°Р¶Рё', theory.atmosphere)}
+                        ${row('Персонажи', theory.atmosphere)}
                     </div>
                 </div>
                 `;
@@ -966,9 +966,9 @@
 
             document.getElementById('hub-preview-theory').innerHTML = `
                 <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
-                    ${visRoles.streamer ? createStatCol('РЎС‚СЂРёРјРµСЂ', radarColors[0].border, s.streamer.avgTheory, s.streamer, false, 0) : ''}
+                    ${visRoles.streamer ? createStatCol('Стример', radarColors[0].border, s.streamer.avgTheory, s.streamer, false, 0) : ''}
                     ${(!isStreamer && visRoles.me) ? createStatCol('РЇ', radarColors[2].border, s.me.avgTheory, s.me, true, 2) : ''}
-                    ${visRoles.chat ? createStatCol('Р§Р°С‚', radarColors[1].border, s.chat.avgTheory, s.chat, false, 1) : ''}
+                    ${visRoles.chat ? createStatCol('Чат', radarColors[1].border, s.chat.avgTheory, s.chat, false, 1) : ''}
                 </div>
             `;
 
@@ -987,7 +987,7 @@
             } else {
                 hubRadarChart = new Chart(ctx, {
                     type: 'radar',
-                    data: { labels: ['РЎСЋР¶РµС‚', 'Р’РёР·СѓР°Р»', 'РњСѓР·С‹РєР°', 'РњРёСЂ', 'РџРµСЂСЃРѕРЅР°Р¶Рё'], datasets: datasets },
+                    data: { labels: ['Сюжет', 'Визуал', 'Музыка', 'Мир', 'Персонажи'], datasets: datasets },
                     options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false, stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' }, pointLabels: { font: { size: 11, weight: 'bold' }, color: '#c4d1b8' } } } }
                 });
             }
