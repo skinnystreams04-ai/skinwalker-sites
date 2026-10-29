@@ -645,7 +645,11 @@
                 globalFranchises = []; 
 
                 for (const [franchiseId, seasonsObj] of Object.entries(data)) {
-                    const seasons = Object.entries(seasonsObj).map(([seasonId, sData]) => ({seasonId, ...sData}));
+                    if (!seasonsObj || typeof seasonsObj !== 'object') continue;
+                    const seasons = Object.entries(seasonsObj)
+                        .filter(([, sData]) => sData && typeof sData === 'object')
+                        .map(([seasonId, sData]) => ({seasonId, ...sData}));
+                    if (seasons.length === 0) continue;
                     let totalEp = 0;
                     
                     let streamer = { overall:0, plot:0, vis:0, mus:0, wor:0, atm:0, countOv:0, countTh:0 };

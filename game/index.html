@@ -483,6 +483,7 @@
                 globalGames = []; 
 
                 for (const [gameId, gameData] of Object.entries(data)) {
+                    if (!gameData || typeof gameData !== 'object') continue;
                     const info = gameData.info || {};
                     const sc = gameData.scores || {};
                     
