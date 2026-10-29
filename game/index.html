@@ -505,6 +505,7 @@
                     const gComm = safeCommData[gameId] ? safeCommData[gameId].ratings : null;
                     if (gComm) {
                         for (const [uid, r] of Object.entries(gComm)) {
+                            if (!r || typeof r !== 'object') continue;
                             const isMe = currentUser && uid === currentUser.id;
                             
                             if (safeNum(r.overall) > 0) {
@@ -560,14 +561,18 @@
                     const hours = info.hours || info.episodesTotal || '?';
                     const status = info.status || 'Без статуса';
 
+                    const title = typeof gameData.title === 'string' && gameData.title.trim()
+                        ? gameData.title
+                        : gameId.replace(/_/g, ' ');
+
                     globalGames.push({
                         id: gameId, 
-                        title: gameData.title || gameId.replace(/_/g, ' '), 
+                        title: title, 
                         coverUrl: gameData.coverUrl || '',
                         hours: safeNum(hours), 
                         badgeText: `${status} • ${hours} ч.`,
                         release_year: parseInt(info.year) || 0, 
-                        az: (gameData.title || gameId).toLowerCase(),
+                        az: title.toLowerCase(),
                         tier: sc.tier || 'UNRANKED', 
                         position: safeNum(sc.position) || 999,
                         scores: scoresObj
